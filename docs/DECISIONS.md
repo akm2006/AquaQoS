@@ -53,6 +53,17 @@ Public deployment and repository publication remain owner-authorized release ste
 Alternatives: require production resolver/API access and funded live wallets immediately.
 Evidence: prize rules; deployed-router docs describe credential gates and a different ABI.
 Reason: prove protocol behavior without depending on external onboarding. Consequences:
-select fork chain/block and verify deployed Aqua before demo; plain local EVM tests alone
-are engineering evidence, not automatically the final fork demonstration. Preserve upstream
-licenses and review derivative-source obligations before distributing/deploying modifications.
+  select fork chain/block and verify deployed Aqua before demo; plain local EVM tests alone
+  are engineering evidence, not automatically the final fork demonstration. Preserve upstream
+  licenses and review derivative-source obligations before distributing/deploying modifications.
+
+## 2026-09-06 — D006: Reproduce before designing the guard
+
+Decision: retain the current official Aqua/SwapVM router as the reproduction baseline and
+do not add CAPACITY_GUARD yet. Evidence: deterministic Solidity tests show two independent
+Aqua virtual ledgers can both quote, while the second settlement fails after the first
+consumes the maker's real output inventory; the failed transaction rolls back its input
+transfer and Aqua push. Reason: the observed gap is between virtual capacity and real
+inventory settlement, but guard semantics and protected membership are not specified.
+Consequence: add allowance and adversarial path tests before choosing native Extruction or
+a dispatcher extension. This is a tested failure mode, not a claim that Aqua is defective.

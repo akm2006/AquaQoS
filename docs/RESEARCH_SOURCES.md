@@ -1,8 +1,9 @@
 # Primary-source register
 
-All entries checked **2026-09-05**. Moving pages have no published commit identifier;
+All entries checked **2026-09-06**. Moving pages have no published commit identifier;
 recheck before relying on changed behavior. Exact candidates are in [source lock](../sources.lock.json).
-This file records inspected evidence, not compatibility or test certification.
+This file records inspected evidence and links the phase-1 executable reproduction;
+it is not a claim that the proposed guard is correct.
 
 | ID | Source / immutable reference | Supports / limits |
 | --- | --- | --- |
@@ -32,7 +33,8 @@ GitHub API default-branch commits and tags were fetched directly. Aqua main pack
 repository release tags. SwapVM main package says 0.0.6 while latest observed tag is v1.0.2.
 Do not pick packages by semver labels alone. SDK npm 0.3.1 existence/integrity confirmed;
 published bytes have not yet been compared to source. Dependency install/lockfile and ABI
-compatibility tests remain phase 1 work, not accomplished bootstrap work.
+compatibility is locally validated by `pnpm build` and `pnpm test`; the allowance-specific
+reproduction and custom guard remain open.
 
 Both pinned papers were downloaded to ignored `.research/`, hashed and text-extracted with
 pypdf for conceptual research. No layout review or paper-figure reproduction was needed.

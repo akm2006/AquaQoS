@@ -1,21 +1,17 @@
 # AquaQoS handoff
 
-Updated 2026-09-05. Phase 0 complete: bootstrap validated and independently reviewed.
-This handoff is included in the bootstrap milestone commit; identify it with `git log -1`.
-Stop here for relaunch before core implementation, as requested by the owner.
+Updated 2026-09-06. Phase 1 problem reproduction is complete; no CAPACITY_GUARD implementation exists.
 
-- Last milestone: researched and validated local project operating system; original brief preserved.
+- Last milestone: pinned official packages installed and shared-inventory settlement failure reproduced.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: none implemented or run; no claims of protocol correctness.
+- Protocol tests: `pnpm test` passes 2 Solidity tests; exact reproduction is documented in `PROBLEM_REPRODUCTION.md`.
 - Known risks: callback gap after VM program; per-order locking; final fees/wrapping;
   guarantee consumption undefined; incomplete membership/maker spend control; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
-- Benchmark: no scripts or measurements yet. Brief numbers are illustrative, not results.
+- Benchmark: no scripts or measurements yet. Brief numbers remain illustrative.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
-- Blockers: relaunch for new roles/skills before core implementation; no RPC/funds needed yet.
-  Human eligibility/provenance and contribution confirmation tracked in MANUAL_ACTIONS.
-  Disk headroom is 4.79 GiB; check before dependency installation.
+- Blockers: none for the next protocol-specification milestone. Human eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
 
 ## Bootstrap verification
 
@@ -31,17 +27,13 @@ Stop here for relaunch before core implementation, as requested by the owner.
   New-file whitespace check passed; the preserved brief retains its original Markdown hard break.
 - Independent `sol_auditor` review: status/diagnostic-context findings corrected; no remaining
   material bootstrap findings. This was operating-file review, not a protocol security audit.
-- Dependency compatibility and protocol tests: deliberately pending phase 1; no package lock
-  exists before installation. This is not a claim that current source candidates build together.
+- Dependency install/build/test: current pinned candidate pair resolves in the pnpm lockfile; peer-check reports only upstream optional Hardhat 2 / ethers 5 mismatches inside solidity-utils.
 
 ## Next three tasks
 
-1. Relaunch, confirm local skills/roles; install exact candidate baseline with dependency
-   lockfile and compile unmodified official Aqua/SwapVM using minimal Hardhat 3 harness.
-2. Reproduce shared-inventory and allowance failures, sibling virtual independence and
-   atomic rollback; retain deterministic command/trace. Do not implement guard yet.
-3. Define invariant and guarantee lifecycle; compare native Extruction/custom instruction,
-   resolve callback/fee bypass and Registry/Vault necessity through source/tests and review.
+1. Add the separate allowance-shortage reproduction and capture both failure preconditions.
+2. Specify CAPACITY_GUARD units, protected-domain membership, consumption/replenishment and final-settlement invariant from the observed execution path.
+3. Compare native Extruction with a custom dispatcher instruction, then obtain a read-only security review before implementing any guard.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

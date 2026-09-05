@@ -1,0 +1,11 @@
+packages:
+  - .
+storeDir: .pnpm-store
+# Official Solidity packages depend on Git-hosted Aqua/forge-std. All such URLs
+# are pinned below; install with --ignore-scripts and retain integrity lockfile.
+blockExoticSubdeps: false
+overrides:
+  '@1inch/aqua': https://codeload.github.com/1inch/aqua/tar.gz/81c26e4619ce21556ab02b3284ee2685de21fb18
+  '@1inch/solidity-utils': 6.9.10
+  '@openzeppelin/contracts': 5.4.0
+  forge-std: https://codeload.github.com/foundry-rs/forge-std/tar.gz/v1.11.0

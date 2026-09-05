@@ -1,0 +1,21 @@
+{
+  "name": "aquaqos",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.10.0",
+  "engines": { "node": ">=22.13.0" },
+  "scripts": {
+    "build": "hardhat build",
+    "test": "hardhat test solidity",
+    "check:bootstrap": "node scripts/check-bootstrap.mjs"
+  },
+  "devDependencies": {
+    "@1inch/aqua": "https://codeload.github.com/1inch/aqua/tar.gz/81c26e4619ce21556ab02b3284ee2685de21fb18",
+    "@1inch/swap-vm": "https://codeload.github.com/1inch/swap-vm/tar.gz/f09a41e689240adc645934f965c8061749397cd2",
+    "@1inch/solidity-utils": "6.9.10",
+    "@openzeppelin/contracts": "5.4.0",
+    "forge-std": "https://codeload.github.com/foundry-rs/forge-std/tar.gz/v1.11.0",
+    "hardhat": "3.8.0"
+  }
+}

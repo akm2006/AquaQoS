@@ -1,11 +1,11 @@
 {
-  "checkedAt": "2026-09-05",
-  "status": "source-inspected candidates; not locally build-validated",
+  "checkedAt": "2026-09-06",
+  "status": "source pins locally build/test-validated; protocol baseline only",
   "aqua": {"repository": "https://github.com/1inch/aqua", "ref": "v1.0.0", "commit": "81c26e4619ce21556ab02b3284ee2685de21fb18", "observedMain": "9c5c42e5840e8741fba3597c48456c9510212b66"},
   "swapVm": {"repository": "https://github.com/1inch/swap-vm", "ref": "main", "commit": "f09a41e689240adc645934f965c8061749397cd2", "packageVersion": "0.0.6", "observedLatestTag": "v1.0.2", "tagCommit": "32c687c2b73101fc26549e48fa1ff8a4d73afbac"},
   "template": {"repository": "https://github.com/1inch/swap-vm-template", "ref": "main", "commit": "e9f8def43c7e8fbe5d8453df2e0a83e2be17c38b", "use": "reference only"},
   "aquaSdk": {"repository": "https://github.com/1inch/sdks", "ref": "master", "commit": "cf377ec45b32fb5b5d141b9407f4635b9895f89d", "path": "typescript/aqua", "package": "@1inch/aqua-sdk", "version": "0.3.1", "integrity": "sha512-ribj/7E71vEQsg1q8ku6PVJUwU4wYXtlaDt/BYh6xde2KTLx5KGAHPHasbeWyWdgBAD5tK3IxnY1Ovzq5q6yew=="},
-  "toolchainCandidates": {"solc": "0.8.30", "hardhat": "3.8.0", "node": "22.16.0", "pnpm": "11.25.0", "solidityUtils": "6.9.10", "openzeppelin": "5.4.0", "forgeStd": "v1.11.0", "foundry": "not selected"},
+  "toolchainCandidates": {"solc": "0.8.30", "hardhat": "3.8.0", "node": "22.16.0", "pnpm": "11.10.0", "solidityUtils": "6.9.10", "openzeppelin": "5.4.0", "forgeStd": "v1.11.0", "foundry": "not selected"},
   "whitepapers": {
     "aqua": {"commit": "9c5c42e5840e8741fba3597c48456c9510212b66", "path": "docs/whitepaper-aqua-1.0.pdf", "sha256": "1ca2b96ff6537e251e3be3b87d04f40475e04c2f17eae3c76df06741a21e0884"},
     "swapVm": {"commit": "f09a41e689240adc645934f965c8061749397cd2", "path": "docs/whitepaper-swap-vm-1.0.pdf", "sha256": "3f1eef04615ecbe2eb77e91383442f7ab5a79a0f33968e7bb4b6a6b06a5887d9", "sponsorLinkedBranch": "release/1.1", "sponsorLinkedBranchCommit": "ac06e1bac021cd1983dc7c44d1f69b4b8861a945"}

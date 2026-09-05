@@ -1,15 +1,15 @@
 # Objective acceptance criteria
 
-All unchecked. Bootstrap checks are recorded in STATUS; no protocol tests exist yet.
+Problem-reproduction checks below reflect the completed executable milestone; later gates remain open.
 
 ## Problem reproduction
 
-- [ ] Pin official Aqua/SwapVM and compiler; fresh checkout command works without an MCP.
-- [ ] Two or more real strategies share one maker/output-token inventory, with sufficient allowance.
-- [ ] First fill changes real inventory and its own virtual balances; sibling virtual balance is unchanged.
-- [ ] Sibling quote/virtual capacity remains sufficient but actual settlement fails for inventory shortage.
+- [x] Pin official Aqua/SwapVM and compiler; local install/build/test works without an MCP.
+- [x] Two real strategies share one maker/output-token inventory, with sufficient allowance.
+- [x] First fill changes real inventory and its own virtual balances; sibling virtual balance is unchanged.
+- [x] Sibling quote/virtual capacity remains sufficient but actual settlement fails for inventory shortage.
 - [ ] Assert failure cause and complete rollback of real/virtual balances; separately reproduce allowance shortage.
-- [ ] Use real ERC-20 transfer calls on a local EVM; preserve trace and deterministic test command.
+- [x] Use real ERC-20 transfer calls on a local EVM; preserve deterministic test command in PROBLEM_REPRODUCTION.
 
 ## CAPACITY_GUARD
 
