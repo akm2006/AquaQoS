@@ -1,0 +1,34 @@
+# Local secrets and wallet material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+keystore/
+secrets/
+
+# Dependencies and generated output
+node_modules/
+.pnpm-store/
+.yarn/cache/
+artifacts/
+cache/
+out/
+broadcast/
+typechain-types/
+coverage/
+dist/
+build/
+.next/
+test-results/
+playwright-report/
+*.log
+__pycache__/
+.venv/
+
+# Local research/tool scratch; curated evidence belongs in docs or benchmarks
+.research/
+.tmp/
+.codex/.tmp/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,23 @@
+# Final submission package
+
+None of these delivery gates is satisfied merely by this bootstrap.
+
+- [ ] Classic eligibility/provenance confirmed; acceptance/staking/check-ins complete.
+- [ ] Working official Aqua/SwapVM integration and documented custom execution functionality.
+- [ ] Deterministic competing-fill reproduction and final positions demonstrable.
+- [ ] Unit/integration/adversarial/fuzz tests passing; independent findings resolved.
+- [ ] Reproducible A/B/C benchmark, raw results, methodology, limitations and gas.
+- [ ] Usable web app and proof page with verified contract/state/evidence links.
+- [ ] Repeatable demo/deployment scripts; chain/block/addresses/code verification recorded.
+- [ ] Actual token-transfer receipts and balance changes; local-fork replay if used.
+- [ ] README, consistent architecture diagram, threat model and benchmark documentation.
+- [ ] Optional 5–7 page technical paper only after essential package complete.
+- [ ] AI attribution by file/asset, prompts/specs, new/reused provenance and upstream notices.
+- [ ] Owner-approved public repository, coherent history, secrets review and fresh-clone rehearsal.
+- [ ] 2–4 minute >=720p working demo with human narration; video restrictions checked.
+- [ ] ETHGlobal description explains problem, exact contribution, limitations and 1inch integration.
+- [ ] Map official contracts -> source pins/code; VM customization -> instruction/tests;
+  token transfers -> receipts; position -> replay/UI; history -> commits.
+- [ ] Human submits correct track/1inch selection before 2026-09-13 16:00 UTC; save confirmation.
+- [ ] Final public-link and evidence audit; STATUS updated with release commit and remaining risks.
+- [ ] Optional X/public assets only after technical package and explicit owner approval.

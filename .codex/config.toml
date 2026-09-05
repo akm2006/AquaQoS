@@ -1,0 +1,4 @@
+# Project reviewer budget; standalone roles are discovered in agents/.
+[agents]
+max_threads = 2
+max_depth = 1
