@@ -1,0 +1,60 @@
+{
+  "checkedAt": "2026-09-06",
+  "sourceCommit": "eeee95a09a1ddafbb0db73262fd946afad82ab9d",
+  "dirtyBeforeReplay": false,
+  "install": "pnpm install --frozen-lockfile --ignore-scripts --offline --store-dir <existing repository package cache>",
+  "installExit": 0,
+  "packagesReused": 528,
+  "buildExit": 0,
+  "solidityTestsPassed": 15,
+  "solidityFuzzRuns": 256,
+  "transactionReplayExit": 0,
+  "node": "v22.16.0",
+  "hardhat": "3.8.0",
+  "ethers": "6.13.4",
+  "sourceHashes": {
+    "contracts/AquaQoSRouter.sol": "9037de4f5c0f5b6c5d30eb8c27c7e56cf0d4c28f627c4d43bec8efab7b3b0e03",
+    "contracts/AquaQoSVault.sol": "2c286d38a19255f1ea0b525ddb5ce97aab02c7dbe55b4a92224215509fc8cae2",
+    "scripts/check-transactions.mjs": "f486e66711b6ae1eb06480a295ad8b2e7ff712c09cb6356201d7b74572586bac",
+    "hardhat.config.ts": "b21612a9aaab3812fff34a2a1c61b5eea60b57dfd04ecbeebf9ca5e636baee8d",
+    "package.json": "d0805064eb75311be9ac8f5662845eab20d09e42c40ba6360316fb977d290ad2",
+    "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1"
+  },
+  "gas": [
+    {
+      "count": 1,
+      "gas": [
+        137265,
+        137265
+      ]
+    },
+    {
+      "count": 2,
+      "gas": [
+        146250,
+        146250
+      ]
+    },
+    {
+      "count": 4,
+      "gas": [
+        165475,
+        165475
+      ]
+    },
+    {
+      "count": 8,
+      "gas": [
+        210404,
+        210404
+      ]
+    }
+  ],
+  "runtimeHashesMatchedPriorRun": true,
+  "cleanRawSha256": "b34b2457dbd6bf8993621923c7ebb19b015fb24f357f22a0cce7bdc6f299e6ae",
+  "limitations": [
+    "Uncached network installation failed with download error 23",
+    "Existing package and compiler caches reused",
+    "Four subsequent negative tests pass in main checkout and are outside this replay revision"
+  ]
+}

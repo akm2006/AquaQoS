@@ -17,7 +17,7 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Written units, reserve, guarantee-consumption/replenishment semantics and exact invariant.
 - [x] Compare native Extruction versus dispatcher extension using pinned current interfaces.
 - [ ] Trace quote/swap and all fee/callback paths; check final total maker debit, not a provisional register.
-- [ ] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
+- [x] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
   within the claimed protected domain. Test the selected program-validation/enforcement mechanism.
 - [x] Exact-in/out, both token directions, same-state quote/swap agreement and stale-quote recheck tested.
 - [ ] Boundary capacity allowed; one unit above rejected; zero/max/rounding/underflow handled.
@@ -27,8 +27,8 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 ## Registry / Vault, if retained
 
 - [x] ADR establishes necessity and trust boundary; omit unused abstractions.
-- [ ] Only authorized maker configures; full maker/app/hash/token identity, no duplicate/unknown entries.
-- [ ] Atomic ship/dock registration, active-state validation, stale sibling removal and reship identity tested.
+- [x] Only authorized maker configures; full maker/app/hash/token identity, no duplicate/unknown entries.
+- [x] Atomic ship/dock registration, active-state validation, stale sibling removal and reship identity tested.
 - [ ] Reject reserve/guarantee overconfiguration; bound enumeration with measured worst-case gas.
 - [ ] Withdrawals, approvals, arbitrary calls, other apps and upgrades cannot silently bypass claimed protection.
 - [x] Document maker escape/pause behavior and the point at which guarantees cease.

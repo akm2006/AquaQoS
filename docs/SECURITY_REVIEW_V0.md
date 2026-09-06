@@ -46,5 +46,16 @@ Root accepts these prototype limits; they remain explicit release/benchmark gate
   fills may reject; quantify this in benchmark results.
 - Representative eight-strategy gas and fresh-transaction clearing/sequence tests
   now pass; see TRANSACTION_VALIDATION. Worst-case gas, broader
-  stateful fuzzing, malicious/noncanonical-program regressions and clean checkout
-  replay remain open. Do not equate the passing local suite with final acceptance.
+  stateful fuzzing remain open. Clean-source replay using package/compiler caches
+  passes at eeee95a; uncached downloads remain unverified. Do not equate the passing
+  local suite with final acceptance.
+
+## Additional negative regressions
+
+The 19-test suite includes exact-error quote/swap rejection for a vault order with
+the guard omitted or its salt changed (unregistered hash); duplicate guard, guard
+arguments and trailing instructions shipped by an ordinary maker (wrapper rejects).
+Docked hashes cannot be reshipped; a new salt reactivates normally and the old hash
+stays inactive. Unauthorized configuration/activation/docking/withdrawal and another
+app's attempt to Aqua.pull from the vault fail. Root traced these assertions into
+pinned MakerTraits building, Aqua active markers/app keys and immutable ship logic.

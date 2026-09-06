@@ -12,6 +12,8 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 | 2026-09-06 specification checks | scripts/check-capacity-model.mjs, strengthened reproduction snapshots | Codex authored bounded exhaustive arithmetic checks and real-token rollback assertions; model outcomes are not performance benchmarks |
 | 2026-09-06 guard implementation | contracts/AquaQoSRouter.sol, contracts/AquaQoSVault.sol, test/AquaQoS.t.sol, supporting docs | Codex root implemented router/vault and regression corrections; a bounded worker wrote initial integration tests; separate read-only reviewers found and checked the allowance-floor correction. Owner requested continued implementation and plain-language progress updates. |
 | 2026-09-06 transaction replay | scripts/check-transactions.mjs, build roots/direct ethers pin, benchmarks/raw/transactions-v1.json, TRANSACTION_VALIDATION | Root implemented separate-transaction checks and generated EVM receipts/gas/state; a read-only benchmark auditor challenged assertions and provenance. This is a group-size micro-measurement, not the full benchmark. |
+| 2026-09-06 enforcement regressions | test/AquaQoS.t.sol, acceptance/status/review docs | Root added omitted/malformed-guard, changed-hash, dock/reship, configuration authorization and cross-app pull tests against exact upstream error behavior. |
+| 2026-09-06 clean-source rehearsal | benchmarks/raw/clean-replay-eeee95a.json, TRANSACTION_VALIDATION | Root cloned committed source locally, installed from the existing package cache after network failures, rebuilt and reran tests/replay, and compared source/runtime hashes and gas. |
 
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.

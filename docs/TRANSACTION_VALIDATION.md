@@ -61,4 +61,29 @@ A separate read-only benchmark reviewer checked the workload and requested stron
 failure-cause, input/virtual movement and provenance assertions; those were added.
 The auditor then independently recomputed all 12 successful raw swaps, checked the
 failed receipt/revert bytes, source hashes and gas table, and closed both findings.
-Clean-checkout rehearsal and complete A/B/C benchmark acceptance remain open.
+Complete A/B/C benchmark acceptance remains open.
+
+## Clean-source rehearsal
+
+Revision `eeee95a09a1ddafbb0db73262fd946afad82ab9d` was locally cloned with
+`git clone --no-hardlinks` into an ignored scratch directory on 2026-09-06.
+The clone had no node_modules or compiled artifacts. Uncached installation hit
+repeated native-package download error 23 both inside and outside the sandbox.
+A second fresh clone installed all 528 packages from the existing repository cache:
+
+```sh
+pnpm install --frozen-lockfile --ignore-scripts --offline --store-dir <existing-repository-cache>
+pnpm build
+pnpm test
+pnpm test:transactions
+```
+
+All exited zero: six Solidity entry files compiled; 15 committed tests passed
+(256 fuzz runs); the transaction replay recorded dirty=false. All source hashes,
+deployed runtime hashes and the four gas pairs matched the original run.
+The [rehearsal record](../benchmarks/raw/clean-replay-eeee95a.json) retains revision,
+commands, outcomes, hashes and limitations. Compiler cache was also reused.
+This establishes clean-source reproducibility with caches, not uncached network
+availability. Four subsequently added negative tests pass in the main checkout
+(19 total); they are outside this rehearsal revision. Scratch clones are ignored
+and retained locally; no public repository was created.

@@ -4,6 +4,9 @@ pragma solidity 0.8.30;
 import { ISwapVM } from "@1inch/swap-vm/src/interfaces/ISwapVM.sol";
 import { ITakerCallbacks } from "@1inch/swap-vm/src/interfaces/ITakerCallbacks.sol";
 import { TakerTraitsLib } from "@1inch/swap-vm/src/libs/TakerTraits.sol";
+import { MakerTraitsLib } from "@1inch/swap-vm/src/libs/MakerTraits.sol";
+import { XYCSwap } from "@1inch/swap-vm/src/instructions/XYCSwap.sol";
+import { Salt } from "@1inch/swap-vm/src/instructions/Controls.sol";
 import { AquaStrategyBuilders } from "@1inch/swap-vm/test/base/AquaStrategyBuilders.sol";
 import { IAqua } from "@1inch/aqua/src/interfaces/IAqua.sol";
 import { IERC20 } from "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol";
@@ -272,6 +275,93 @@ contract AquaQoSTest is AquaStrategyBuilders, ITakerCallbacks {
         vault.checkCapacity(bytes32(uint256(1)), address(tokenB), 1);
         vm.expectRevert(AquaQoSVault.VirtualCapacityExceeded.selector);
         vault.checkCapacity(hash, address(tokenB), type(uint256).max);
+    }
+
+    function _programOrder(address maker_, bytes memory program) private view returns (ISwapVM.Order memory) {
+        MakerTraitsLib.Args memory args;
+        args.maker = maker_;
+        args.tokenA = address(tokenA);
+        args.tokenB = address(tokenB);
+        args.useAquaInsteadOfSignature = true;
+        args.program = program;
+        return MakerTraitsLib.build(args);
+    }
+
+    function test_omittedGuardOrChangedSaltCannotUseVaultRegistration() public {
+        _createPair();
+        _fundAndApprove(5000);
+        ISwapVM.Order memory omitted = _programOrder(address(vault), bytes.concat(XYCSwap.build(), Salt.build(1)));
+        ISwapVM.Order memory changedSalt = vault.order(99);
+        ISwapVM.Order[2] memory invalid = [omitted, changedSalt];
+        ISwapVM viewRouter = router.asView();
+        for (uint256 i; i < invalid.length; i++) {
+            bytes32 hash = router.hash(invalid[i]);
+            bytes memory reason = abi.encodeWithSelector(IAqua.SafeBalancesForTokenNotInActiveStrategy.selector,
+                address(vault), address(router), hash, address(tokenA));
+            vm.expectRevert(reason);
+            viewRouter.quote(invalid[i], 100, _takerData(false, true, true));
+            vm.prank(taker);
+            vm.expectRevert(reason);
+            router.swap(invalid[i], 100, _takerData(false, true, true));
+        }
+        assertEq(tokenB.balanceOf(address(vault)), 1000);
+    }
+
+    function test_routerRejectsDuplicateGuardArgumentsAndTrailingInstructions() public {
+        // An ordinary maker may ship arbitrary programs. These must fail the wrapper's
+        // own validation, independently of the restricted vault's shipping API.
+        bytes memory inner = bytes.concat(XYCSwap.build(), Salt.build(1));
+        bytes[3] memory programs = [bytes.concat(hex"05000500", inner),
+            bytes.concat(hex"0501ff", inner), bytes.concat(hex"0500", inner, hex"5000")];
+        address[] memory tokens = new address[](2);
+        tokens[0] = address(tokenA); tokens[1] = address(tokenB);
+        uint256[] memory amounts = new uint256[](2);
+        amounts[0] = 1000; amounts[1] = 1000;
+        ISwapVM viewRouter = router.asView();
+        for (uint256 i; i < programs.length; i++) {
+            ISwapVM.Order memory order_ = _programOrder(address(this), programs[i]);
+            aqua.ship(address(router), abi.encode(order_), tokens, amounts);
+            vm.expectRevert(AquaQoSRouter.InvalidGuardProgram.selector);
+            viewRouter.quote(order_, 100, _takerData(false, true, true));
+            vm.prank(taker);
+            vm.expectRevert(AquaQoSRouter.InvalidGuardProgram.selector);
+            router.swap(order_, 100, _takerData(false, true, true));
+        }
+    }
+
+    function test_dockedHashCannotBeReshippedAndNewSaltReactivates() public {
+        (,, bytes32 oldHash,) = _createPair();
+        vault.pause();
+        vault.dockAll();
+        vm.expectRevert(abi.encodeWithSelector(IAqua.StrategiesMustBeImmutable.selector, address(router), oldHash));
+        vault.createStrategy(1, 1000, 1000, 500, 500);
+        bytes32 newHash = vault.createStrategy(3, 1000, 1000, 500, 500);
+        vault.activate();
+        vm.expectRevert(AquaQoSVault.UnknownStrategy.selector);
+        vault.checkCapacity(oldHash, address(tokenB), 1);
+        vault.checkCapacity(newHash, address(tokenB), 500);
+        (, uint8 marker) = aqua.rawBalances(address(vault), address(router), oldHash, address(tokenB));
+        assertEq(marker, 0xff);
+    }
+
+    function test_unauthorizedConfigurationAndOtherAppPullFail() public {
+        (,, bytes32 hash,) = _createPair();
+        vault.pause();
+        vm.startPrank(taker);
+        vm.expectRevert(AquaQoSVault.Unauthorized.selector);
+        vault.createStrategy(3, 1000, 1000, 0, 0);
+        vm.expectRevert(AquaQoSVault.Unauthorized.selector);
+        vault.setGuarantees(hash, 0, 0);
+        vm.expectRevert(AquaQoSVault.Unauthorized.selector);
+        vault.activate();
+        vm.expectRevert(AquaQoSVault.Unauthorized.selector);
+        vault.dockAll();
+        vm.expectRevert(AquaQoSVault.Unauthorized.selector);
+        vault.withdraw(address(tokenB), taker, 1);
+        vm.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        aqua.pull(address(vault), hash, address(tokenB), 1, taker);
+        vm.stopPrank();
+        assertEq(tokenB.balanceOf(address(vault)), 1000);
     }
 
     function test_ownerCallbackCannotPauseAndNestedSiblingIsRejectedBeforeTransfer() public {

@@ -8,11 +8,15 @@ and first integration suite work locally; full protocol acceptance remains open.
   1/2/4/8-strategy gas retained with receipts in benchmarks/raw/transactions-v1.json.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: `pnpm test` passes 15 Solidity tests, including 256 fuzz runs in one
-  property test. Three tests reproduce raw Aqua failures; twelve exercise the v0 guard.
+- Protocol tests: `pnpm test` passes 19 Solidity tests, including 256 fuzz runs in one
+  property test. Three tests reproduce raw Aqua failures; sixteen exercise the v0 guard.
   No currently failing tests. Test inventory: test/AquaQoS.t.sol and PROBLEM_REPRODUCTION.
 - `pnpm test:transactions`: passed; exact failure bytes, full fill accounting, sibling
   isolation, aggregate backing, reservation events and transaction clearing asserted.
+- Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
+  build, 15 committed tests and replay passed; source/runtime hashes and gas match.
+  Uncached downloads failed with error 23; network-only install remains unverified.
+  Four newer negative tests pass in main checkout (19 total). See TRANSACTION_VALIDATION.
 - Known risks: same-transaction conservatism; worst-case group gas unmeasured;
   unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
@@ -51,9 +55,9 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Close noncanonical-program/lifecycle/stateful-fuzz gaps in ACCEPTANCE_CRITERIA;
+1. Expand stateful-fuzz and integer-boundary coverage in ACCEPTANCE_CRITERIA;
    expand gas evidence to callback/lifecycle extremes where relevant.
-2. Rehearse a clean checkout install/build/test/replay; retain clean revision provenance.
+2. Retain a raw baseline failure trace and retry uncached install when downloads work.
 3. Implement shared A/B/C benchmark workloads and independent methodology review.
    Frontend remains downstream of protocol/benchmark acceptance.
 
