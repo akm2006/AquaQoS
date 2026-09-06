@@ -295,6 +295,9 @@ async function runSystem(system, count, trace) {
   return {
     system, count, seed: trace.seed,
     setupGas: runs.reduce((sum, run) => sum + run.setupGas, 0),
+    policy: runs[0].policy,
+    addresses: runs[0].addresses,
+    deployments: runs.flatMap(run => run.deployments ?? []),
     scenarios: runs.flatMap(run => run.scenarios),
   };
 }
