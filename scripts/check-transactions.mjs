@@ -12,7 +12,8 @@ const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cw
 const report = {
   kind: 'local-transaction-validation-and-gas-v1',
   sourceCommit: git('rev-parse', 'HEAD'), dirty: git('status', '--porcelain') !== '',
-  node: process.version, pnpm: execFileSync('pnpm', ['--version'], { encoding: 'utf8' }).trim(),
+  node: process.version,
+  pnpm: execFileSync(process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm', ['--version'], { encoding: 'utf8' }).trim(),
   hardhat: packageVersion('hardhat'), ethers: packageVersion('ethers'), solc: '0.8.30',
   evm: 'cancun', optimizerRuns: 700, viaIR: true,
   sourceHashes: Object.fromEntries(['contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol',
