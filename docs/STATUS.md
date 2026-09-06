@@ -19,7 +19,8 @@ and first integration suite work locally; full protocol acceptance remains open.
 - Benchmark method: [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md) now fixes A/B/C
   allocations, identical offered demand, XYC pricing disclosure and outcome classes;
   the runner now covers 2/4 strategies, low/concentrated/replenishment workloads,
-  raw settlement failures and QoS guard rejections. Clean-source replay is pending.
+  raw settlement failures and QoS guard rejections. Clean replay and independent
+  metric recomputation pass; measured tables are in BENCHMARK_RESULTS.md.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.
@@ -28,8 +29,9 @@ and first integration suite work locally; full protocol acceptance remains open.
   numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
-- Benchmark: representative full-swap gas 137265/146250/165475/210404 for 1/2/4/8
-  strategies. Not guard overhead or A/B/C performance evidence. See TRANSACTION_VALIDATION.
+- Benchmark: clean A/B/C raw evidence is in benchmarks/raw/a-b-c-v1.json. In the
+  concentrated workload, B has settlement failures while C has guard rejections and
+  zero protected-capacity violations; low contention is neutral. See BENCHMARK_RESULTS.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
 - Blockers: none for independent protocol validation. Human eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
 - Review: separate read-only review found M1 (allowance after permissionless replenishment);
@@ -63,8 +65,10 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Commit and replay the A/B/C benchmark from a clean source; independently recompute metrics.
-2. Write measured benchmark results/limitations and close only supported acceptance gates.
+1. Extend benchmark coverage with adversarial order permutations and explicit capital/
+   false-rejection metrics, or document them as release-open limitations.
+2. Close remaining protocol acceptance gaps (fee/callback closure, lifecycle gas,
+   fresh install) before frontend work.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
    Frontend remains downstream of protocol/benchmark acceptance.
 

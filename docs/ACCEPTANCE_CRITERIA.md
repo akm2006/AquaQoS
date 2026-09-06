@@ -49,15 +49,16 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 
 The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md).
 
-- [ ] Conservative/raw/QoS share initial real inventory, offered demand, pricing assumptions and seeded workloads.
+- [x] Conservative/raw/QoS share initial real inventory, immutable offered demand, XYC
+  pricing assumptions and seeded workloads; the tested guarantee policy is recorded.
 - [ ] Include concentrated demand, sibling contention, replenishment, adversarial ordering, low contention and
   overloaded regimes. Conservative setup includes an honestly documented reserve/allocation policy.
-- [ ] Raw machine-readable per-attempt records, initial/final state, seed, commit, gas settings and commands retained.
+- [x] Raw machine-readable per-attempt records, initial/final state, seed, commit, gas settings and commands retained.
 - [ ] Metrics: virtual/shared ratio, successful volume, settlement failures, guarantee violations,
   capital utilization, unsafe rejections, burst utilization and gas. Define each denominator/unit.
-- [ ] Report rejection and failed-fill counts over all attempts; do not reclassify rejection as filled demand.
-- [ ] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
-- [ ] Findings reproducible; neutral or losing cases included; no target invented performance threshold.
+- [x] Report rejection and failed-fill counts over all attempts; do not reclassify rejection as filled demand.
+- [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
+- [x] Findings reproducible; neutral and losing cases are included; no target performance threshold was invented.
 
 ## Frontend, deployment and demo
 
