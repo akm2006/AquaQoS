@@ -20,7 +20,8 @@ and first integration suite work locally; full protocol acceptance remains open.
   allocations, identical offered demand, XYC pricing disclosure and outcome classes;
   the runner now covers 2/4 strategies, low/concentrated/replenishment workloads,
   raw settlement failures and QoS guard rejections. Clean replay and independent
-  metric recomputation pass; measured tables are in BENCHMARK_RESULTS.md.
+  metric recomputation pass; exact trace/state/error checks are now independent;
+  measured tables are in BENCHMARK_RESULTS.md. Matched-guarantee sensitivity remains open.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.

@@ -38,16 +38,19 @@ failure; values are output units, not silently dropped attempts.
 | 4 | concentrated overload | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) |
 | 4 | replenishment | 3,750/5,000 (q 1,250) | 5,000/5,000 | 5,000/5,000 |
 
-The C burst-utilization metric is `0.1333` for the two-strategy concentrated case,
-`0.0571` for the four-strategy concentrated case, `0.0833` and `0.0179` for the
-corresponding replenishment cases, and zero in low contention. No protected-capacity
-violation was observed in the C runs. Quote input/slippage for every attempt is kept
-in the raw report because A has shallower virtual depth by design.
+The C **net burst outstanding** ratio is `0.1333` for the two-strategy concentrated
+case, `0.0571` for the four-strategy concentrated case, `0.0833` and `0.0179` for the
+corresponding replenishment cases, and zero in low contention. It is computed from
+initial virtual depth minus final virtual depth, so later replenishment can reduce it;
+it is not a cumulative peak-burst metric. No protected-capacity violation was observed
+in the C runs. Quote input/slippage for every attempt is kept in the raw report because
+A has shallower virtual depth by design.
 
 ## Representative swap gas
 
-These are median `gasUsed` values by outcome within this fixture; setup/deployment gas
-is retained separately in the raw file. They are not a universal gas estimate.
+These are median `gasUsed` values by outcome within this fixture; deployment, mint,
+approval and shipping gas is retained separately as setup gas, while replenishment
+push gas remains attached to its action. They are not a universal gas estimate.
 
 | Strategies | Workload | A | B | C |
 | ---: | --- | --- | --- | --- |
@@ -63,6 +66,11 @@ quote beyond shared inventory and then rolls back at settlement, while AquaQoS r
 before token movement and preserves guarantees. Conservative Aqua rejects earlier when
 its per-strategy virtual depth is exhausted. The low-contention workload is a neutral
 case where QoS adds gas without increasing volume.
+
+The result is policy-specific: C uses full shared virtual depth with guarantees of
+`B/(2N)`, while A uses `B/N` depth and `B/N` guarantees. This run therefore does not
+isolate the guard's effect from the chosen guarantee ratio. A matched-guarantee
+sensitivity run remains open before making a broad capital-efficiency claim.
 
 This is only six fixtures, two group sizes, one TokenMock pair, and three fixed local
 workloads. It does not measure hostile ERC-20 behavior, decrementing allowances in the

@@ -131,11 +131,11 @@ async function runSystemScenario(system, count, trace, name, actions) {
     const data = contract.abi.encodeFunctionData(method, args);
     return contract.abi.decodeFunctionResult(method, await rpc('eth_call', [{ to: contract.address, data, from }, 'latest']));
   };
-  const send = async (contract, method, args = [], from = owner) => {
+  const send = async (contract, method, args = [], from = owner, setupTx = true) => {
     const data = contract.abi.encodeFunctionData(method, args);
     const txHash = await rpc('eth_sendTransaction', [{ from, to: contract.address, data, gas: gasLimit }]);
     const receipt = await rpc('eth_getTransactionReceipt', [txHash]);
-    systemLog.setupGas += Number(BigInt(receipt.gasUsed));
+    if (setupTx) systemLog.setupGas += Number(BigInt(receipt.gasUsed));
     assert.equal(receipt.status, '0x1', `${system} setup ${method}`);
     return receipt;
   };
@@ -202,7 +202,7 @@ async function runSystemScenario(system, count, trace, name, actions) {
   const attempt = async (scenario, actionIndex, action) => {
     if (action.type === 'push') {
       const before = await snapshot();
-      const receipt = await send(aqua, 'push', [maker, router.address, hashes[action.strategy], tokens[action.token].address, action.amount], taker);
+      const receipt = await send(aqua, 'push', [maker, router.address, hashes[action.strategy], tokens[action.token].address, action.amount], taker, false);
       const after = await snapshot();
       assert.equal(after.tokens[action.token].balance - before.tokens[action.token].balance, BigInt(action.amount));
       assert.equal(after.tokens[action.token].virtual[action.strategy] - before.tokens[action.token].virtual[action.strategy], BigInt(action.amount));
@@ -257,6 +257,9 @@ async function runSystemScenario(system, count, trace, name, actions) {
   scenario.finalState = await snapshot();
   const swaps = scenario.attempts.filter(a => a.type === 'swap');
   const sum = key => swaps.filter(a => a.outcome === key).reduce((n, a) => n + BigInt(a.amount), 0n);
+  const successfulOutput = sum('success');
+  const offeredOutput = scenario.offeredVolume;
+  const deposits = scenario.actions.reduce((sum, action) => sum + BigInt(action.amount), 0n);
   const burstCapacity = system === 'C' ? 2n * BigInt(count) * (backing - guarantee) : 0n;
   const burstUsed = system === 'C' ? scenario.finalState.tokens.reduce((sum, token, tokenIndex) => sum + token.virtual.reduce((inner, value, i) => {
     const consumed = backing - value;
@@ -265,17 +268,20 @@ async function runSystemScenario(system, count, trace, name, actions) {
   }, 0n), 0n) : 0n;
   scenario.metrics = {
     attemptedOutput: scenario.offeredVolume,
-    successfulOutput: sum('success'),
+    successfulOutput,
     quoteRejectedOutput: sum('quote_rejection'),
     guardRejectedOutput: sum('guard_rejection'),
     settlementFailedOutput: sum('settlement_failure'),
-    successRatio: Number(sum('success')) / Number(scenario.offeredVolume || 1n),
+    successRatio: Number(successfulOutput) / Number(offeredOutput || 1n),
+    sharedLiquidityRatio: Number(successfulOutput) / Number(offeredOutput || 1n),
+    advertisedVirtualDepth: 2n * virtual * BigInt(count),
+    capitalUtilization: Number(successfulOutput) / Number(2n * backing + deposits),
     quoteCount: swaps.filter(a => a.quoteInput !== null).length,
     quoteInputTotal: swaps.filter(a => a.quoteInput !== null).reduce((n, a) => n + BigInt(a.quoteInput), 0n),
       gasByOutcome: Object.fromEntries([...new Set(swaps.map(a => a.outcome))].map(k => [k, swaps.filter(a => a.outcome === k).map(a => a.gasUsed)])),
     guaranteeViolations: swaps.filter(a => a.protectedCapacityViolation).length,
-    burstUsed, burstCapacity,
-    burstUtilization: burstCapacity ? Number(burstUsed) / Number(burstCapacity) : 0,
+    netBurstOutstanding: burstUsed, netBurstCapacity: burstCapacity,
+    netBurstUtilization: burstCapacity ? Number(burstUsed) / Number(burstCapacity) : 0,
       setupGas: systemLog.setupGas,
   };
   systemLog.scenarios = [scenario];
