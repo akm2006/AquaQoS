@@ -67,8 +67,8 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Extend benchmark coverage with adversarial order permutations and explicit capital/
-   false-rejection metrics, or document them as release-open limitations.
+1. Add a matched-guarantee C sensitivity and an explicit false-rejection replay, or
+   keep those limitations release-open with an owner and denominator.
 2. Close remaining protocol acceptance gaps (fee/callback closure, lifecycle gas,
    fresh install) before frontend work.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
