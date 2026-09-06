@@ -13,7 +13,7 @@ pnpm benchmark:a-b-c
 pnpm check:benchmark
 ```
 
-The clean run recorded source commit `07885738bfbc54432ab9302b84adafcc9a9ad7cd`,
+The clean run recorded runner source commit `9c7d94cc0410a78f335eea3a57169e11a740efba`,
 `dirty=false`, Node `22.16.0`, pnpm `11.10.0`, Hardhat `3.8.0`, ethers `6.13.4`,
 solc `0.8.30`, Cancun, viaIR and optimizer runs `700`. Each workload starts from a
 fresh EVM and the exact same demand trace is replayed for A, B and C.
@@ -28,6 +28,12 @@ All systems use the same fee-free XYC exact-output program and integer rounding.
 `success/offered` is successful maker output divided by all offered output. `q` is
 virtual quote rejection, `g` is AquaQoS guard rejection, and `f` is raw settlement
 failure; values are output units, not silently dropped attempts.
+
+The raw `capitalUtilization` metric is successful output divided by total initial
+two-token backing plus declared push deposits. `advertisedVirtualDepth` is the sum
+of both virtual token balances across strategies. A false/unsafe-guard-rejection
+counter is intentionally not claimed yet; matched-guard replay is a release-open
+follow-up.
 
 | Strategies | Workload | A | B | C |
 | ---: | --- | --- | --- | --- |
