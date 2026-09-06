@@ -109,6 +109,13 @@ match rounded XYC input, both transfers, sibling isolation and reservation event
 All checks passed: 137 accepted, 55 rejected. A read-only auditor regenerated the
 PRNG sequence and decoded/recomputed all 192 raw swap attempts independently.
 
+On 2026-09-07, a separate benchmark-auditor review confirmed that these adaptive
+sequences are not A/B/C evidence and approved the constraints in
+[BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md): one immutable demand trace per
+scenario, equal backing and allowances, explicit raw settlement failures, visible
+XYC quote differences, clean-source provenance including pnpm, and neutral/losing
+workloads.
+
 These are targeted validation sequences. Offered amounts adapt to virtual depth
 and taker affordability; deposits restore capacity, the first two attempts force
 both outcomes, and group sizes use different seeds. They are not comparable A/B/C

@@ -47,6 +47,8 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 
 ## Benchmark
 
+The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md).
+
 - [ ] Conservative/raw/QoS share initial real inventory, offered demand, pricing assumptions and seeded workloads.
 - [ ] Include concentrated demand, sibling contention, replenishment, adversarial ordering, low contention and
   overloaded regimes. Conservative setup includes an honestly documented reserve/allocation policy.

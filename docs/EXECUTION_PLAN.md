@@ -28,8 +28,9 @@ Each milestone requires implementation where applicable, actual passing checks, 
 assumptions, updated STATUS/decisions, disposition of findings and a coherent commit.
 No artificial commit count: commit actual increments. Review [acceptance](ACCEPTANCE_CRITERIA.md).
 
-Immediate next phase: define and independently review the A/B/C methodology before
-implementing measurements. Preserve identical offered demand, equal initial backing,
-explicit guarantee/allocation policies, price/slippage differences, raw failures and
-losing cases. Existing group-size gas and adaptive validation sequences do not satisfy
-that comparison gate. See STATUS for remaining validation and reproduction work.
+Immediate next phase: implement the audited A/B/C methodology in
+[BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md). Preserve identical offered demand,
+equal initial backing, explicit guarantee/allocation policies, price/slippage
+differences, raw failures and losing cases. Existing group-size gas and adaptive
+validation sequences do not satisfy that comparison gate. See STATUS for remaining
+validation and reproduction work.

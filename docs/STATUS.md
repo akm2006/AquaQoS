@@ -16,6 +16,9 @@ and first integration suite work locally; full protocol acceptance remains open.
 - Seeded sequences: seeds 1/42/12648430 on 2/4/8 strategies, 64 attempts each;
   137 fills admitted and 55 capacity rejections, all matching the independent model.
   Adaptive demand and supported mock tokens only; not A/B/C benchmark evidence.
+- Benchmark method: [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md) now fixes A/B/C
+  allocations, identical offered demand, XYC pricing disclosure and outcome classes;
+  implementation waits for independent audit.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.
@@ -59,10 +62,8 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Specify and independently review A/B/C workload fairness, allocation/guarantee policy
-   and XYC price differences before implementation.
-2. Implement shared offered-demand benchmark; retain a raw baseline failure trace
-   and measure callback/lifecycle extremes where relevant.
+1. Implement the audited shared offered-demand A/B/C benchmark and retain raw failures.
+2. Re-run the benchmark on a clean commit and independently recompute its metrics.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
    Frontend remains downstream of protocol/benchmark acceptance.
 

@@ -103,3 +103,18 @@ the follow-up read-only review confirmed the correction's invariant.
 Every activation also explicitly resets all group baselines after checking both
 tokens. Deployment must attest actual nonproxy Aqua/router code; checking the
 router's AQUA getter alone does not authenticate its implementation.
+
+## 2026-09-07 — D009: Predeclare the A/B/C benchmark contract
+
+Decision: benchmark conservative Aqua, raw overcommitment and AquaQoS with equal
+initial real backing, identical deterministic offered-demand streams and the same
+XYC quote/rounding rules. Keep conservative depth differences visible in the input
+quote instead of fabricating equal prices. Count quote rejection, guard rejection,
+settlement failure and success separately, and preserve every attempt in raw JSON.
+Alternatives: compare only successful trades, adapt demand after failures, or report
+the existing stateful validation as a market benchmark. Evidence: the existing
+stateful run adapts demand and uses different seeds per group size; it validates the
+model but cannot establish comparative utilization or failure rates. Reason: define
+the denominator and price/depth trade-off before writing measurement code. Consequence:
+benchmark implementation is gated on this methodology and a read-only benchmark audit;
+no performance claim is valid from the current gas microcases alone.
