@@ -1,6 +1,6 @@
 {
   "kind": "local-a-b-c-benchmark-v1",
-  "sourceCommit": "07885738bfbc54432ab9302b84adafcc9a9ad7cd",
+  "sourceCommit": "9c7d94cc0410a78f335eea3a57169e11a740efba",
   "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
@@ -71,7 +71,7 @@
     "contracts/AquaQoSRouter.sol": "9037de4f5c0f5b6c5d30eb8c27c7e56cf0d4c28f627c4d43bec8efab7b3b0e03",
     "contracts/AquaQoSVault.sol": "2c286d38a19255f1ea0b525ddb5ce97aab02c7dbe55b4a92224215509fc8cae2",
     "hardhat.config.ts": "77703f0405416ae97e2ecdfdff5306562bd78ee12c0edfea4df10b1f2a9fd803",
-    "benchmarks/run-a-b-c.mjs": "e74e56b4977d9a87154a92d5f1a6d790281fdab1c2ab06e98f772a1422360a23",
+    "benchmarks/run-a-b-c.mjs": "fe942a795035a2bef931ec9bf5aaf036e2924a4261aa50fd353cd7d1686126ab",
     "package.json": "03bc456585ebec253be031e6a5f08426fb4d5e351dfcfd6d0a3d60df575c869a",
     "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1",
     "docs/BENCHMARK_METHODOLOGY.md": "9637a719fe7f8fceafeb24d3a9cab019def6b2779ae569404db3b6aeab5133a4"
@@ -349,7 +349,7 @@
       "system": "A",
       "count": 2,
       "seed": 41473,
-      "setupGas": 21211907,
+      "setupGas": 21163284,
       "policy": {
         "backing": "10000",
         "virtualDepth": "5000",
@@ -971,6 +971,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.25585,
             "quoteCount": 8,
             "quoteInputTotal": "5849",
             "gasByOutcome": {
@@ -986,9 +989,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7054428
           },
           "finalState": {
@@ -1464,6 +1467,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 0.3333333333333333,
+            "sharedLiquidityRatio": 0.3333333333333333,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.3,
             "quoteCount": 2,
             "quoteInputTotal": "15000",
             "gasByOutcome": {
@@ -1479,9 +1485,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7054428
           },
           "finalState": {
@@ -1853,6 +1859,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 0.75,
+            "sharedLiquidityRatio": 0.75,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.3333333333333333,
             "quoteCount": 3,
             "quoteInputTotal": "20000",
             "gasByOutcome": {
@@ -1866,10 +1875,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
-            "setupGas": 7103051
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7054428
           },
           "finalState": {
             "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
@@ -1901,7 +1910,7 @@
       "system": "B",
       "count": 2,
       "seed": 41473,
-      "setupGas": 21211907,
+      "setupGas": 21163284,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -2523,6 +2532,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.25585,
             "quoteCount": 8,
             "quoteInputTotal": "5338",
             "gasByOutcome": {
@@ -2538,9 +2550,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7054428
           },
           "finalState": {
@@ -2987,6 +2999,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "6000",
             "successRatio": 0.5,
+            "sharedLiquidityRatio": 0.5,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.45,
             "quoteCount": 5,
             "quoteInputTotal": "98576",
             "gasByOutcome": {
@@ -3004,9 +3019,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7054428
           },
           "finalState": {
@@ -3365,6 +3380,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.4444444444444444,
             "quoteCount": 4,
             "quoteInputTotal": "17780",
             "gasByOutcome": {
@@ -3376,10 +3394,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
-            "setupGas": 7103051
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7054428
           },
           "finalState": {
             "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
@@ -3411,7 +3429,7 @@
       "system": "C",
       "count": 2,
       "seed": 41473,
-      "setupGas": 28335266,
+      "setupGas": 28286655,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -4054,6 +4072,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.25585,
             "quoteCount": 8,
             "quoteInputTotal": "5338",
             "gasByOutcome": {
@@ -4069,9 +4090,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "30000",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "30000",
+            "netBurstUtilization": 0,
             "setupGas": 9428885
           },
           "finalState": {
@@ -4540,6 +4561,9 @@
             "guardRejectedOutput": "9000",
             "settlementFailedOutput": "0",
             "successRatio": 0.5,
+            "sharedLiquidityRatio": 0.5,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.45,
             "quoteCount": 3,
             "quoteInputTotal": "19287",
             "gasByOutcome": {
@@ -4555,9 +4579,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "4000",
-            "burstCapacity": "30000",
-            "burstUtilization": 0.13333333333333333,
+            "netBurstOutstanding": "4000",
+            "netBurstCapacity": "30000",
+            "netBurstUtilization": 0.13333333333333333,
             "setupGas": 9428885
           },
           "finalState": {
@@ -4916,6 +4940,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.4444444444444444,
             "quoteCount": 4,
             "quoteInputTotal": "17780",
             "gasByOutcome": {
@@ -4927,10 +4954,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "2500",
-            "burstCapacity": "30000",
-            "burstUtilization": 0.08333333333333333,
-            "setupGas": 9477496
+            "netBurstOutstanding": "2500",
+            "netBurstCapacity": "30000",
+            "netBurstUtilization": 0.08333333333333333,
+            "setupGas": 9428885
           },
           "finalState": {
             "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
@@ -4962,7 +4989,7 @@
       "system": "A",
       "count": 4,
       "seed": 41985,
-      "setupGas": 21695747,
+      "setupGas": 21647124,
       "policy": {
         "backing": "10000",
         "virtualDepth": "2500",
@@ -5652,6 +5679,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.12335,
             "quoteCount": 8,
             "quoteInputTotal": "2684",
             "gasByOutcome": {
@@ -5667,9 +5697,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7215708
           },
           "finalState": {
@@ -6418,6 +6448,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 0.4444444444444444,
+            "sharedLiquidityRatio": 0.4444444444444444,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.3,
             "quoteCount": 4,
             "quoteInputTotal": "15000",
             "gasByOutcome": {
@@ -6436,9 +6469,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7215708
           },
           "finalState": {
@@ -6858,6 +6891,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 0.75,
+            "sharedLiquidityRatio": 0.75,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.17647058823529413,
             "quoteCount": 3,
             "quoteInputTotal": "10000",
             "gasByOutcome": {
@@ -6871,10 +6907,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
-            "setupGas": 7264331
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7215708
           },
           "finalState": {
             "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
@@ -6910,7 +6946,7 @@
       "system": "B",
       "count": 4,
       "seed": 41985,
-      "setupGas": 21695747,
+      "setupGas": 21647124,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -7600,6 +7636,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.12335,
             "quoteCount": 8,
             "quoteInputTotal": "2510",
             "gasByOutcome": {
@@ -7615,9 +7654,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7215708
           },
           "finalState": {
@@ -8316,6 +8355,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "4500",
             "successRatio": 0.6666666666666666,
+            "sharedLiquidityRatio": 0.6666666666666666,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.45,
             "quoteCount": 9,
             "quoteInputTotal": "25342",
             "gasByOutcome": {
@@ -8334,9 +8376,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
             "setupGas": 7215708
           },
           "finalState": {
@@ -8743,6 +8785,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.23529411764705882,
             "quoteCount": 4,
             "quoteInputTotal": "6396",
             "gasByOutcome": {
@@ -8754,10 +8799,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "0",
-            "burstUtilization": 0,
-            "setupGas": 7264331
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7215708
           },
           "finalState": {
             "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
@@ -8793,7 +8838,7 @@
       "system": "C",
       "count": 4,
       "seed": 41985,
-      "setupGas": 29841893,
+      "setupGas": 29793282,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -9504,6 +9549,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.12335,
             "quoteCount": 8,
             "quoteInputTotal": "2510",
             "gasByOutcome": {
@@ -9519,9 +9567,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "0",
-            "burstCapacity": "70000",
-            "burstUtilization": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "70000",
+            "netBurstUtilization": 0,
             "setupGas": 9931094
           },
           "finalState": {
@@ -10250,6 +10298,9 @@
             "guardRejectedOutput": "4500",
             "settlementFailedOutput": "0",
             "successRatio": 0.6666666666666666,
+            "sharedLiquidityRatio": 0.6666666666666666,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.45,
             "quoteCount": 6,
             "quoteInputTotal": "13479",
             "gasByOutcome": {
@@ -10268,9 +10319,9 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "4000",
-            "burstCapacity": "70000",
-            "burstUtilization": 0.05714285714285714,
+            "netBurstOutstanding": "4000",
+            "netBurstCapacity": "70000",
+            "netBurstUtilization": 0.05714285714285714,
             "setupGas": 9931094
           },
           "finalState": {
@@ -10677,6 +10728,9 @@
             "guardRejectedOutput": "0",
             "settlementFailedOutput": "0",
             "successRatio": 1,
+            "sharedLiquidityRatio": 1,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.23529411764705882,
             "quoteCount": 4,
             "quoteInputTotal": "6396",
             "gasByOutcome": {
@@ -10688,10 +10742,10 @@
               ]
             },
             "guaranteeViolations": 0,
-            "burstUsed": "1250",
-            "burstCapacity": "70000",
-            "burstUtilization": 0.017857142857142856,
-            "setupGas": 9979705
+            "netBurstOutstanding": "1250",
+            "netBurstCapacity": "70000",
+            "netBurstUtilization": 0.017857142857142856,
+            "setupGas": 9931094
           },
           "finalState": {
             "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
