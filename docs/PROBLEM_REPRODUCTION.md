@@ -6,7 +6,7 @@ official Aqua/SwapVM sources and no custom guard.
 Run:
 
 ```text
-pnpm install --ignore-scripts
+pnpm install --frozen-lockfile --ignore-scripts
 pnpm build
 pnpm test
 ```
@@ -23,9 +23,14 @@ maker cannot transfer `500` output.
 The test uses taker-first ordering and verifies that the failed input transfer,
 Aqua push, and virtual balances all roll back atomically. The official
 SafeERC20 implementation masks the underlying ERC-20 failure as
-`SafeTransferFromFailed()`, so the test proves the precondition through balances
-and verifies repair by minting only the missing output inventory. Allowance-
-specific reproduction remains a follow-up case.
+`SafeTransferFromFailed()`. Separate tests therefore prove the preconditions
+through balances and allowances, then repair only the missing inventory or only
+the insufficient Aqua allowance before replaying the same fill successfully.
 
-Observed on 2026-09-06: Hardhat Solidity tests, 2 passing; build succeeds with
+Observed on 2026-09-06: Hardhat Solidity tests, 3 passing; build succeeds with
 the expected upstream transient-storage and test initcode-size warnings.
+
+Rollback assertions snapshot real balances and Aqua/router allowances for maker,
+taker, router and Aqua, plus both virtual token balances. Both sibling ledgers
+are checked around the failed competing fill. Quotes use the static view interface.
+A fresh checkout replay and retained execution trace are still required.

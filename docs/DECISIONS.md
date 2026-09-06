@@ -67,3 +67,21 @@ transfer and Aqua push. Reason: the observed gap is between virtual capacity and
 inventory settlement, but guard semantics and protected membership are not specified.
 Consequence: add allowance and adversarial path tests before choosing native Extruction or
 a dispatcher extension. This is a tested failure mode, not a claim that Aqua is defective.
+
+## 2026-09-06 — D007: Wrapper opcode plus restricted maker vault
+
+Decision: specify CAPACITY_GUARD as a first-in-program wrapper opcode on a minimal custom
+SwapVM router, backed by one restricted maker vault that also owns bounded membership and
+guarantee configuration. Native Extruction is not the enforcement point. Alternatives:
+read-only opcode, Extruction target, registry with an ordinary maker wallet, or copying and
+modifying SwapVM settlement. Evidence: the wrapper can run the remaining program and inspect
+final `ctx.swap` plus `ctx.fee`; Extruction receives only `SwapRegisters`, while output-side
+protocol fees add dynamically resolved Aqua pulls. A wallet or registry cannot stop unrelated spending.
+Reason: this is the smallest design that can make omission, final-fee accounting and sibling
+reentrancy part of one explicit protected domain. Consequences: programs must begin with the
+wrapper; the vault validates shipping and lifecycle; transient reservations serialize nested
+capacity use. Same-transaction post-settlement calls may be conservatively rejected in v0.
+The canonical v0 recipe is fee-free guard `0x05` + XYC + salt, constructed by a
+non-upgradeable pair-specific vault with immutable Aqua/router addresses and no arbitrary
+execution path. Fee recipes remain deferred. Implementation may begin only with the tests
+listed in CAPACITY_GUARD_SPEC.

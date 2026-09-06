@@ -40,7 +40,31 @@ contract SharedInventoryReproductionTest is AquaSwapVMTest {
     }
 
     function _ship(ISwapVM.Order memory order) internal returns (bytes32) {
-        return shipStrategy(order, tokenA, tokenB, 1000, 1000);
+        address[] memory tokens = new address[](2);
+        tokens[0] = address(tokenA);
+        tokens[1] = address(tokenB);
+        uint256[] memory amounts = new uint256[](2);
+        amounts[0] = amounts[1] = 1000;
+        vm.startPrank(maker);
+        tokenA.approve(address(aqua), type(uint256).max);
+        tokenB.approve(address(aqua), type(uint256).max);
+        bytes32 shipped = aqua.ship(address(swapVM), abi.encode(order), tokens, amounts);
+        vm.stopPrank();
+        assertEq(shipped, swapVM.hash(order));
+        return shipped;
+    }
+
+    function _state(bytes32 orderHash) internal view returns (bytes32) {
+        (uint256 virtualA, uint256 virtualB) = getAquaBalances(orderHash);
+        bytes32 digest = keccak256(abi.encode(virtualA, virtualB));
+        address[4] memory accounts = [maker, address(taker), address(swapVM), address(aqua)];
+        for (uint256 i; i < accounts.length; i++) {
+            digest = keccak256(abi.encode(digest,
+                tokenA.balanceOf(accounts[i]), tokenB.balanceOf(accounts[i]),
+                tokenA.allowance(accounts[i], address(aqua)), tokenB.allowance(accounts[i], address(aqua)),
+                tokenA.allowance(accounts[i], address(swapVM)), tokenB.allowance(accounts[i], address(swapVM))));
+        }
+        return digest;
     }
 
     function test_sharedInventory_doubleCommitment_failsOnlyAtSettlement() public {
@@ -54,7 +78,7 @@ contract SharedInventoryReproductionTest is AquaSwapVMTest {
         vm.prank(address(taker));
         tokenA.approve(address(swapVM), type(uint256).max);
 
-        (uint256 quotedIn, uint256 quotedOut,) = swapVM.quote(
+        (uint256 quotedIn, uint256 quotedOut,) = swapVM.asView().quote(
             first,
             600,
             _takerData(true)
@@ -72,7 +96,7 @@ contract SharedInventoryReproductionTest is AquaSwapVMTest {
         assertEq(siblingBBefore, 1000);
         assertGe(tokenB.allowance(maker, address(aqua)), 500);
 
-        (uint256 siblingIn, uint256 siblingOut,) = swapVM.quote(
+        (uint256 siblingIn, uint256 siblingOut,) = swapVM.asView().quote(
             sibling,
             500,
             _takerData(true)
@@ -84,8 +108,12 @@ contract SharedInventoryReproductionTest is AquaSwapVMTest {
         uint256 takerInputBefore = tokenA.balanceOf(address(taker));
         uint256 makerOutputBefore = tokenB.balanceOf(maker);
         uint256 takerOutputBefore = tokenB.balanceOf(address(taker));
+        bytes32 firstBefore = _state(firstHash);
+        bytes32 siblingBefore = _state(siblingHash);
         vm.expectRevert(SafeERC20.SafeTransferFromFailed.selector);
         taker.swap(sibling, 500, _takerData(true));
+        assertEq(_state(firstHash), firstBefore);
+        assertEq(_state(siblingHash), siblingBefore);
 
         // The input transfer and Aqua.push are atomic with the failed output pull.
         assertEq(tokenA.balanceOf(maker), makerInputBefore);
@@ -105,12 +133,47 @@ contract SharedInventoryReproductionTest is AquaSwapVMTest {
         vm.prank(address(taker));
         tokenA.approve(address(swapVM), type(uint256).max);
 
+        assertGe(tokenB.allowance(maker, address(aqua)), 500);
+        bytes32 beforeFailure = _state(orderHash);
         vm.expectRevert(SafeERC20.SafeTransferFromFailed.selector);
         taker.swap(order, 500, _takerData(true));
+        assertEq(_state(orderHash), beforeFailure);
 
         tokenB.mint(maker, 100);
         taker.swap(order, 500, _takerData(true));
         (, uint256 balanceOut) = getAquaBalances(orderHash);
+        assertEq(balanceOut, 500);
+    }
+
+    function test_settlement_failure_can_be_repaired_by_restoring_allowance() public {
+        ISwapVM.Order memory order = _order(4);
+        bytes32 orderHash = _ship(order);
+        tokenB.mint(maker, 1000);
+        tokenA.mint(address(taker), 5000);
+        vm.prank(address(taker));
+        tokenA.approve(address(swapVM), type(uint256).max);
+        vm.prank(maker);
+        tokenB.approve(address(aqua), 400);
+
+        assertEq(tokenB.balanceOf(maker), 1000);
+        assertEq(tokenB.allowance(maker, address(aqua)), 400);
+        (uint256 quotedIn, uint256 quotedOut,) = swapVM.asView().quote(order, 500, _takerData(true));
+        assertEq(quotedIn, 1000);
+        assertEq(quotedOut, 500);
+        bytes32 beforeFailure = _state(orderHash);
+        vm.expectRevert(SafeERC20.SafeTransferFromFailed.selector);
+        taker.swap(order, 500, _takerData(true));
+        assertEq(_state(orderHash), beforeFailure);
+        assertEq(tokenB.balanceOf(maker), 1000);
+        assertEq(tokenB.allowance(maker, address(aqua)), 400);
+        (uint256 balanceIn, uint256 balanceOut) = getAquaBalances(orderHash);
+        assertEq(balanceIn, 1000);
+        assertEq(balanceOut, 1000);
+
+        vm.prank(maker);
+        tokenB.approve(address(aqua), type(uint256).max);
+        taker.swap(order, 500, _takerData(true));
+        (, balanceOut) = getAquaBalances(orderHash);
         assertEq(balanceOut, 500);
     }
 }

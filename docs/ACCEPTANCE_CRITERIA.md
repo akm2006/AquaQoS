@@ -1,6 +1,6 @@
 # Objective acceptance criteria
 
-Problem-reproduction checks below reflect the completed executable milestone; later gates remain open.
+Problem-reproduction checks below reflect the executable evidence; unverified release gates remain open.
 
 ## Problem reproduction
 
@@ -8,13 +8,14 @@ Problem-reproduction checks below reflect the completed executable milestone; la
 - [x] Two real strategies share one maker/output-token inventory, with sufficient allowance.
 - [x] First fill changes real inventory and its own virtual balances; sibling virtual balance is unchanged.
 - [x] Sibling quote/virtual capacity remains sufficient but actual settlement fails for inventory shortage.
-- [ ] Assert failure cause and complete rollback of real/virtual balances; separately reproduce allowance shortage.
+- [x] Assert failure cause and complete rollback of real/virtual balances; separately reproduce allowance shortage.
 - [x] Use real ERC-20 transfer calls on a local EVM; preserve deterministic test command in PROBLEM_REPRODUCTION.
+- [ ] Verify a fresh checkout install/build/test and retain an execution trace.
 
 ## CAPACITY_GUARD
 
-- [ ] Written units, reserve, guarantee-consumption/replenishment semantics and exact invariant.
-- [ ] Compare native Extruction versus dispatcher extension using pinned current interfaces.
+- [x] Written units, reserve, guarantee-consumption/replenishment semantics and exact invariant.
+- [x] Compare native Extruction versus dispatcher extension using pinned current interfaces.
 - [ ] Trace quote/swap and all fee/callback paths; check final total maker debit, not a provisional register.
 - [ ] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
   within the claimed protected domain. Test the selected program-validation/enforcement mechanism.

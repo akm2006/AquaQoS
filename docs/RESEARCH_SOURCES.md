@@ -1,6 +1,8 @@
 # Primary-source register
 
-All entries checked **2026-09-06**. Moving pages have no published commit identifier;
+Bootstrap entries checked **2026-09-05**; pinned contract source was reinspected
+on **2026-09-06** for reproduction and guard design. Event pages were not all
+rechecked on September 6. Moving pages have no published commit identifier;
 recheck before relying on changed behavior. Exact candidates are in [source lock](../sources.lock.json).
 This file records inspected evidence and links the phase-1 executable reproduction;
 it is not a claim that the proposed guard is correct.

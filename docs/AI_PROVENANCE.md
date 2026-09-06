@@ -7,6 +7,9 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 | 2026-09-05 takeover | Winning-package markdown | Supplied by owner, pre-existing at takeover; original authorship/time not yet established |
 | 2026-09-05 bootstrap | AGENTS, README, docs, source lock, local Codex roles/config/skills, bootstrap check | Codex generated from owner's detailed operating requirements; official-source research assisted by one read-only agent |
 | 2026-09-05 human input | Project direction and bootstrap requirements | Owner supplied the thesis, priorities, source hierarchy, acceptance requirements and authorization boundaries; further substantive human review/contributions must be recorded |
+| 2026-09-06 protocol baseline | Hardhat setup, shared-inventory/allowance tests, reproduction documentation | Codex implemented against pinned official sources; read-only protocol and security agents reviewed source paths, assertions and claims |
+| 2026-09-06 guard specification | CAPACITY_GUARD invariant, wrapper/vault boundary and D007 | Codex drafted and corrected the design through independent read-only source and security review; no production contract exists yet |
+| 2026-09-06 specification checks | scripts/check-capacity-model.mjs, strengthened reproduction snapshots | Codex authored bounded exhaustive arithmetic checks and real-token rollback assertions; model outcomes are not performance benchmarks |
 
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
