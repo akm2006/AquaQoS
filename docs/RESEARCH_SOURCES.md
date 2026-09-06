@@ -63,3 +63,12 @@ permissionless push; per-order lock plus callback timing. Native Simulator alway
 reverts delegated effects; inherited rescue can transfer router-held balances only.
 Context7 `/1inch/aqua` documentation described docking as withdrawal; pinned source
 sets virtual state/markers and makes no real-token transfer. Source takes precedence.
+
+2026-09-06 replay tooling: Context7 `/websites/hardhat` and installed Hardhat 3.8.0
+`dist/src/types/network.d.ts` confirm network.create (connect deprecated),
+provider.request, artifact/build-info APIs and npmFilesToBuild. Context7
+`/websites/ethers_v6` [ABI reference](https://docs.ethers.org/v6/api/abi/) supports
+Interface encoding/decoding; pinned ethers 6.13.4 was already installed transitively
+and is now a direct dependency. No new Hardhat plugin is needed. Pinned TakerTraits.sol
+build packs ten uint16 indexes and uint16 flags; script encodes only its empty-slice
+exact-output recipe. Compiled XYC source validates independent ceil input arithmetic.

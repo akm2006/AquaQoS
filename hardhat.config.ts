@@ -3,6 +3,10 @@ import { defineConfig } from "hardhat/config";
 export default defineConfig({
   solidity: {
     version: "0.8.30",
+    npmFilesToBuild: [
+      "@1inch/aqua/src/Aqua.sol",
+      "@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
+    ],
     settings: {
       optimizer: { enabled: true, runs: 700 },
       viaIR: true,

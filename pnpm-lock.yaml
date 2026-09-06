@@ -26,6 +26,9 @@ importers:
       '@openzeppelin/contracts':
         specifier: 5.4.0
         version: 5.4.0
+      ethers:
+        specifier: 6.13.4
+        version: 6.13.4
       forge-std:
         specifier: https://codeload.github.com/foundry-rs/forge-std/tar.gz/v1.11.0
         version: https://codeload.github.com/foundry-rs/forge-std/tar.gz/v1.11.0

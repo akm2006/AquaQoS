@@ -44,6 +44,7 @@ Root accepts these prototype limits; they remain explicit release/benchmark gate
   paused dock-all and withdrawal permit migration.
 - Reservations outlive settlement until transaction end. Safe sequential same-tx
   fills may reject; quantify this in benchmark results.
-- Eight-strategy gas measurement, fresh-transaction clearing/sequence tests, broader
+- Representative eight-strategy gas and fresh-transaction clearing/sequence tests
+  now pass; see TRANSACTION_VALIDATION. Worst-case gas, broader
   stateful fuzzing, malicious/noncanonical-program regressions and clean checkout
   replay remain open. Do not equate the passing local suite with final acceptance.

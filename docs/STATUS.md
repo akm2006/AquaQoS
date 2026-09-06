@@ -3,17 +3,21 @@
 Updated 2026-09-06. Phase: v0 protocol implementation and validation. Guard/router/vault
 and first integration suite work locally; full protocol acceptance remains open.
 
-- Last milestone: canonical XYC wrapper opcode 0x05, restricted maker vault, transient
-  reservations, lifecycle controls and reviewed allowance-floor correction (D008).
+- Last milestone: separate mined-transaction replay proves reservation clearing,
+  sibling fills, replenishment and fresh-transaction maker exit; representative
+  1/2/4/8-strategy gas retained with receipts in benchmarks/raw/transactions-v1.json.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
 - Protocol tests: `pnpm test` passes 15 Solidity tests, including 256 fuzz runs in one
   property test. Three tests reproduce raw Aqua failures; twelve exercise the v0 guard.
   No currently failing tests. Test inventory: test/AquaQoS.t.sol and PROBLEM_REPRODUCTION.
-- Known risks: same-transaction conservatism; fresh-transaction clearing not yet tested;
-  bounded group gas unmeasured; unsupported token behavior; docs/ABI drift;
+- `pnpm test:transactions`: passed; exact failure bytes, full fill accounting, sibling
+  isolation, aggregate backing, reservation events and transaction clearing asserted.
+- Known risks: same-transaction conservatism; worst-case group gas unmeasured;
+  unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
-- Benchmark: no scripts or measurements yet. Brief numbers remain illustrative.
+- Benchmark: representative full-swap gas 137265/146250/165475/210404 for 1/2/4/8
+  strategies. Not guard overhead or A/B/C performance evidence. See TRANSACTION_VALIDATION.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
 - Blockers: none for independent protocol validation. Human eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
 - Review: separate read-only review found M1 (allowance after permissionless replenishment);
@@ -47,11 +51,11 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Test separate top-level transactions (reservation clearing, repeated fills/replenishment)
-   and close noncanonical-program/lifecycle/stateful-fuzz gaps in ACCEPTANCE_CRITERIA.
-2. Measure gas for 1/2/4/8-strategy groups and retain deterministic machine-readable evidence.
-3. Rehearse a clean checkout and retain transfer traces, then implement the shared A/B/C
-   benchmark workloads. Frontend remains downstream of protocol/benchmark acceptance.
+1. Close noncanonical-program/lifecycle/stateful-fuzz gaps in ACCEPTANCE_CRITERIA;
+   expand gas evidence to callback/lifecycle extremes where relevant.
+2. Rehearse a clean checkout install/build/test/replay; retain clean revision provenance.
+3. Implement shared A/B/C benchmark workloads and independent methodology review.
+   Frontend remains downstream of protocol/benchmark acceptance.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.
