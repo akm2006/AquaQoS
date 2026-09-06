@@ -51,7 +51,7 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 
 - [x] Conservative/raw/QoS share initial real inventory, immutable offered demand, XYC
   pricing assumptions and seeded workloads; the tested guarantee policy is recorded.
-- [ ] Include concentrated demand, sibling contention, replenishment, adversarial ordering, low contention and
+- [x] Include concentrated demand, sibling contention, replenishment, adversarial ordering, low contention and
   overloaded regimes. Conservative setup includes an honestly documented reserve/allocation policy.
 - [x] Raw machine-readable per-attempt records, initial/final state, seed, commit, gas settings and commands retained.
 - [ ] Metrics: virtual/shared ratio, successful volume, settlement failures, guarantee violations,

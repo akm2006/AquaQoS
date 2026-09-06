@@ -44,6 +44,11 @@ follow-up.
 | 4 | concentrated overload | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) |
 | 4 | replenishment | 3,750/5,000 (q 1,250) | 5,000/5,000 | 5,000/5,000 |
 
+The raw report also includes `adversarialOrder`, the exact concentrated demand
+multiset replayed in reverse order, with the same outcome accounting and checker
+coverage. It is omitted from the compact table above; no scenario is dropped from
+the denominator.
+
 The C **net burst outstanding** ratio is `0.1333` for the two-strategy concentrated
 case, `0.0571` for the four-strategy concentrated case, `0.0833` and `0.0179` for the
 corresponding replenishment cases, and zero in low contention. It is computed from

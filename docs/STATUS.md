@@ -19,7 +19,7 @@ protocol acceptance remains open.
   Adaptive demand and supported mock tokens only; not A/B/C benchmark evidence.
 - Benchmark method: [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md) now fixes A/B/C
   allocations, identical offered demand, XYC pricing disclosure and outcome classes;
-  the runner now covers 2/4 strategies, low/concentrated/replenishment workloads,
+  the runner now covers 2/4 strategies, low/concentrated/adversarial/replenishment workloads,
   raw settlement failures and QoS guard rejections. Clean replay and independent
   metric recomputation pass; exact trace/state/error checks are now independent;
   measured tables are in BENCHMARK_RESULTS.md. Matched-guarantee sensitivity remains open.

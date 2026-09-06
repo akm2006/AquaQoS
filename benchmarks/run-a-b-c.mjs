@@ -90,7 +90,8 @@ function makeDemandTrace(count, seed) {
     { type: 'swap', strategy: Math.min(1, count - 1), aToB: true, amount: replenishAmount },
     { type: 'swap', strategy: 0, aToB: true, amount: replenishAmount },
   ];
-  return { seed, count, lowContention: low, concentratedOverload: concentrated, replenishment };
+  const adversarialOrder = [...concentrated].reverse();
+  return { seed, count, lowContention: low, concentratedOverload: concentrated, adversarialOrder, replenishment };
 }
 
 async function runSystemScenario(system, count, trace, name, actions) {
@@ -294,6 +295,7 @@ async function runSystem(system, count, trace) {
   const entries = Object.entries({
     lowContention: trace.lowContention,
     concentratedOverload: trace.concentratedOverload,
+    adversarialOrder: trace.adversarialOrder,
     replenishment: trace.replenishment,
   });
   const runs = [];

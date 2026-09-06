@@ -15,7 +15,8 @@ const canonical = action => ({ actionIndex: action.actionIndex, type: action.typ
 const runMap = new Map(report.runs.map(run => [`${run.count}/${run.system}`, run]));
 for (const [countText, trace] of Object.entries(report.demandTrace)) {
   const count = Number(countText);
-  const traceActions = Object.values({ lowContention: trace.lowContention, concentratedOverload: trace.concentratedOverload, replenishment: trace.replenishment });
+  const traceActions = Object.values({ lowContention: trace.lowContention, concentratedOverload: trace.concentratedOverload,
+    adversarialOrder: trace.adversarialOrder, replenishment: trace.replenishment });
   for (const actions of traceActions) assert.ok(actions.length > 0);
   for (const system of ['A', 'B', 'C']) {
     const run = runMap.get(`${count}/${system}`);
@@ -25,6 +26,7 @@ for (const [countText, trace] of Object.entries(report.demandTrace)) {
     assert.equal(BigInt(run.policy.backing), 10_000n);
     assert.equal(BigInt(run.policy.virtualDepth), expectedVirtual);
     assert.equal(BigInt(run.policy.guarantee), expectedGuarantee);
+    assert.equal(run.scenarios.length, 4);
     for (const scenario of run.scenarios) {
       const expected = trace[scenario.name];
       const expectedIndexed = expected.map((action, actionIndex) => ({ ...action, actionIndex }));
