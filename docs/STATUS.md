@@ -1,11 +1,12 @@
 # AquaQoS handoff
 
-Updated 2026-09-07. Phase: v0 protocol implementation and validation. Guard/router/vault
-and first integration suite work locally; full protocol acceptance remains open.
+Updated 2026-09-07. Phase: v0 protocol implementation, security review and measurement.
+Guard/router/vault, integration tests and the first fair benchmark work locally; full
+protocol acceptance remains open.
 
-- Last milestone: 192 seeded model-versus-EVM swaps and 30 replenishments passed,
-  plus numeric limits/rollback regressions. Independent auditor regenerated every
-  seeded attempt; raw results remain in benchmarks/raw/transactions-v1.json.
+- Last milestone: clean A/B/C replay and independent checker passed across six local
+  fixtures; raw results remain in benchmarks/raw/a-b-c-v1.json. The earlier 192 seeded
+  model-versus-EVM swaps and numeric limits/rollback regressions also remain green.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
 - Protocol tests: `pnpm test` passes 24 Solidity tests, including 256 fuzz runs in one
