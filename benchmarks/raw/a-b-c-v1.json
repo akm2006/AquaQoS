@@ -1,6 +1,6 @@
 {
   "kind": "local-a-b-c-benchmark-v1",
-  "sourceCommit": "9c7d94cc0410a78f335eea3a57169e11a740efba",
+  "sourceCommit": "65e143234e79636191309eb9967f897006c7d34b",
   "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
@@ -71,7 +71,7 @@
     "contracts/AquaQoSRouter.sol": "9037de4f5c0f5b6c5d30eb8c27c7e56cf0d4c28f627c4d43bec8efab7b3b0e03",
     "contracts/AquaQoSVault.sol": "2c286d38a19255f1ea0b525ddb5ce97aab02c7dbe55b4a92224215509fc8cae2",
     "hardhat.config.ts": "77703f0405416ae97e2ecdfdff5306562bd78ee12c0edfea4df10b1f2a9fd803",
-    "benchmarks/run-a-b-c.mjs": "fe942a795035a2bef931ec9bf5aaf036e2924a4261aa50fd353cd7d1686126ab",
+    "benchmarks/run-a-b-c.mjs": "4717a1657eb5c55314d51f6a1b9082da0c5297fa4d4ed7489101a777dbb65824",
     "package.json": "03bc456585ebec253be031e6a5f08426fb4d5e351dfcfd6d0a3d60df575c869a",
     "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1",
     "docs/BENCHMARK_METHODOLOGY.md": "9637a719fe7f8fceafeb24d3a9cab019def6b2779ae569404db3b6aeab5133a4"
@@ -164,6 +164,44 @@
         {
           "type": "swap",
           "strategy": 1,
+          "aToB": true,
+          "amount": 3000
+        }
+      ],
+      "adversarialOrder": [
+        {
+          "type": "swap",
+          "strategy": 1,
+          "aToB": true,
+          "amount": 3000
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 3000
+        },
+        {
+          "type": "swap",
+          "strategy": 1,
+          "aToB": true,
+          "amount": 3000
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 3000
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 3000
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
           "aToB": true,
           "amount": 3000
         }
@@ -310,6 +348,62 @@
           "amount": 1500
         }
       ],
+      "adversarialOrder": [
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 3,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 2,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 1,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 3,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 2,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 1500
+        },
+        {
+          "type": "swap",
+          "strategy": 0,
+          "aToB": true,
+          "amount": 1500
+        }
+      ],
       "replenishment": [
         {
           "type": "swap",
@@ -349,7 +443,7 @@
       "system": "A",
       "count": 2,
       "seed": 41473,
-      "setupGas": 21163284,
+      "setupGas": 28217712,
       "policy": {
         "backing": "10000",
         "virtualDepth": "5000",
@@ -368,6 +462,34 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaSwapVMRouter",
+          "transactionHash": "0xe6d39ee4972e51c99ac9cf6a9e27adb4aab37027bc0fcd33f49fc90d220f5152",
+          "runtimeHash": "0x1b13f9da38687eb9c6692be4dc0e44a746fb78dd492d2073130fa1d143f77197",
+          "runtimeBytes": 20376
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x8de207724a936ccd221bc6538fe274055740bd01b05ae37f7a2ab0ac4a91fd3c",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0xd3efb8bd300f9b340735767fa0a23b84b70cf383f49a67d5f7a26bbb8e1efcee",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -1515,6 +1637,502 @@
           }
         },
         {
+          "name": "adversarialOrder",
+          "seed": 41473,
+          "offeredVolume": "18000",
+          "initialState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "5000",
+                  "5000"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "5000",
+                  "5000"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "7500",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "5000",
+                      "5000"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "5000",
+                      "5000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992500",
+                    "virtual": [
+                      "5000",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "5000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "7500",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "7500",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992500",
+                    "virtual": [
+                      "5000",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "5000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "7500",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "12500",
+                      "12500"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "2000",
+                      "2000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "18000",
+            "successfulOutput": "6000",
+            "quoteRejectedOutput": "12000",
+            "guardRejectedOutput": "0",
+            "settlementFailedOutput": "0",
+            "successRatio": 0.3333333333333333,
+            "sharedLiquidityRatio": 0.3333333333333333,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.3,
+            "quoteCount": 2,
+            "quoteInputTotal": "15000",
+            "gasByOutcome": {
+              "success": [
+                113708,
+                113708
+              ],
+              "quote_rejection": [
+                36324,
+                36324,
+                36324,
+                36324
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7054428
+          },
+          "finalState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "25000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "985000",
+                "virtual": [
+                  "12500",
+                  "12500"
+                ]
+              },
+              {
+                "balance": "4000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1006000",
+                "virtual": [
+                  "2000",
+                  "2000"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "replenishment",
           "seed": 41473,
           "offeredVolume": "10000",
@@ -1910,7 +2528,7 @@
       "system": "B",
       "count": 2,
       "seed": 41473,
-      "setupGas": 21163284,
+      "setupGas": 28217712,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -1929,6 +2547,34 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaSwapVMRouter",
+          "transactionHash": "0xe6d39ee4972e51c99ac9cf6a9e27adb4aab37027bc0fcd33f49fc90d220f5152",
+          "runtimeHash": "0x1b13f9da38687eb9c6692be4dc0e44a746fb78dd492d2073130fa1d143f77197",
+          "runtimeBytes": 20376
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x8de207724a936ccd221bc6538fe274055740bd01b05ae37f7a2ab0ac4a91fd3c",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0xd3efb8bd300f9b340735767fa0a23b84b70cf383f49a67d5f7a26bbb8e1efcee",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -3049,6 +3695,465 @@
           }
         },
         {
+          "name": "adversarialOrder",
+          "seed": 41473,
+          "offeredVolume": "18000",
+          "initialState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "4286",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "14286",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "995714",
+                    "virtual": [
+                      "10000",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "10000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "4286",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "4286",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "14286",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "995714",
+                    "virtual": [
+                      "10000",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "10000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "18572",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "991428",
+                    "virtual": [
+                      "14286",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "7000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "4286",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "10715",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "18572",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "991428",
+                    "virtual": [
+                      "14286",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "7000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "10715",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "10715",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "10715",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "10715",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "18000",
+            "successfulOutput": "9000",
+            "quoteRejectedOutput": "0",
+            "guardRejectedOutput": "0",
+            "settlementFailedOutput": "9000",
+            "successRatio": 0.5,
+            "sharedLiquidityRatio": 0.5,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.45,
+            "quoteCount": 6,
+            "quoteInputTotal": "51432",
+            "gasByOutcome": {
+              "success": [
+                113708,
+                113708,
+                113708
+              ],
+              "settlement_failure": [
+                126779,
+                126779,
+                126779
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7054428
+          },
+          "finalState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "29287",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "980713",
+                "virtual": [
+                  "14286",
+                  "25001"
+                ]
+              },
+              {
+                "balance": "1000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1009000",
+                "virtual": [
+                  "7000",
+                  "4000"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "replenishment",
           "seed": 41473,
           "offeredVolume": "10000",
@@ -3429,7 +4534,7 @@
       "system": "C",
       "count": 2,
       "seed": 41473,
-      "setupGas": 28286655,
+      "setupGas": 37715540,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -3448,6 +4553,41 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaQoSRouter",
+          "transactionHash": "0x39b0ec30ed0ca9a4fed3062f46b1a62f4400cc1941352e345421ce375be5b7f0",
+          "runtimeHash": "0xb86ca1447bf3e60a76710116f10629f015fc3f5c010bb0346e542a7788b76046",
+          "runtimeBytes": 21072
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x46becc4f13edc6d8d0506883835ee43609546697ac4e4fb199bbe80405ef7de9",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0x779e07276d54d41e63b2d5257d033e9e11ac1ef0dbb82bc34de343532b3c7d69",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+          "name": "AquaQoSVault",
+          "transactionHash": "0x46c21c779d50daa52404a301c54f12f733f736dfc1249744a92b60d26ebeaaac",
+          "runtimeHash": "0x3d83db8b2daf6e328d635b98fa57698eaf3921705b8292b4869b65bb40a775d7",
+          "runtimeBytes": 8209
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -4609,6 +5749,495 @@
           }
         },
         {
+          "name": "adversarialOrder",
+          "seed": 41473,
+          "offeredVolume": "18000",
+          "initialState": {
+            "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "4286",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 146226,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "14286",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "995714",
+                    "virtual": [
+                      "10000",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "10000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "4286",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "4286",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 146156,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "14286",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "995714",
+                    "virtual": [
+                      "10000",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "10000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "18572",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "991428",
+                    "virtual": [
+                      "14286",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "7000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "4286",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": "10715",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 146088,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "18572",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "991428",
+                    "virtual": [
+                      "14286",
+                      "14286"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "7000",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "10715",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8"
+              },
+              "status": "0x0",
+              "gasUsed": 79604,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8",
+                "gas": 79604,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8"
+              },
+              "status": "0x0",
+              "gasUsed": 79604,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8",
+                "gas": 79604,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "3000",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8"
+              },
+              "status": "0x0",
+              "gasUsed": 79604,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "29287",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "980713",
+                    "virtual": [
+                      "14286",
+                      "25001"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "4000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "3000"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e80000000000000000000000000000000000000000000000000000000000000bb8",
+                "gas": 79604,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "18000",
+            "successfulOutput": "9000",
+            "quoteRejectedOutput": "0",
+            "guardRejectedOutput": "9000",
+            "settlementFailedOutput": "0",
+            "successRatio": 0.5,
+            "sharedLiquidityRatio": 0.5,
+            "advertisedVirtualDepth": "40000",
+            "capitalUtilization": 0.45,
+            "quoteCount": 3,
+            "quoteInputTotal": "19287",
+            "gasByOutcome": {
+              "success": [
+                146226,
+                146156,
+                146088
+              ],
+              "guard_rejection": [
+                79604,
+                79604,
+                79604
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "4000",
+            "netBurstCapacity": "30000",
+            "netBurstUtilization": 0.13333333333333333,
+            "setupGas": 9428885
+          },
+          "finalState": {
+            "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+            "tokens": [
+              {
+                "balance": "29287",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "980713",
+                "virtual": [
+                  "14286",
+                  "25001"
+                ]
+              },
+              {
+                "balance": "1000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1009000",
+                "virtual": [
+                  "7000",
+                  "4000"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "replenishment",
           "seed": 41473,
           "offeredVolume": "10000",
@@ -4989,7 +6618,7 @@
       "system": "A",
       "count": 4,
       "seed": 41985,
-      "setupGas": 21647124,
+      "setupGas": 28862832,
       "policy": {
         "backing": "10000",
         "virtualDepth": "2500",
@@ -5008,6 +6637,34 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaSwapVMRouter",
+          "transactionHash": "0xe6d39ee4972e51c99ac9cf6a9e27adb4aab37027bc0fcd33f49fc90d220f5152",
+          "runtimeHash": "0x1b13f9da38687eb9c6692be4dc0e44a746fb78dd492d2073130fa1d143f77197",
+          "runtimeBytes": 20376
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x8de207724a936ccd221bc6538fe274055740bd01b05ae37f7a2ab0ac4a91fd3c",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0xd3efb8bd300f9b340735767fa0a23b84b70cf383f49a67d5f7a26bbb8e1efcee",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -6503,6 +8160,778 @@
           }
         },
         {
+          "name": "adversarialOrder",
+          "seed": 41985,
+          "offeredVolume": "13500",
+          "initialState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "2500",
+                  "2500",
+                  "2500",
+                  "2500"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "2500",
+                  "2500",
+                  "2500",
+                  "2500"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3750",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "2500",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "2500",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "13750",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996250",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "3750",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3750",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "13750",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996250",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "2500",
+                      "2500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992500",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "2500",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "2500",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "3750",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3750",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992500",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "2500",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "2500",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "21250",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "988750",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "3750",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3750",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "21250",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "988750",
+                    "virtual": [
+                      "6250",
+                      "2500",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "1000",
+                      "2500",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "3750",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 6,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 7,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            },
+            {
+              "actionIndex": 8,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011"
+              },
+              "status": "0x0",
+              "gasUsed": 36324,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "25000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "985000",
+                    "virtual": [
+                      "6250",
+                      "6250",
+                      "6250",
+                      "6250"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "1000",
+                      "1000",
+                      "1000",
+                      "1000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "Panic",
+                "args": [
+                  "17"
+                ],
+                "data": "0x4e487b710000000000000000000000000000000000000000000000000000000000000011",
+                "gas": 36324,
+                "failed": true
+              },
+              "outcome": "quote_rejection"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "13500",
+            "successfulOutput": "6000",
+            "quoteRejectedOutput": "7500",
+            "guardRejectedOutput": "0",
+            "settlementFailedOutput": "0",
+            "successRatio": 0.4444444444444444,
+            "sharedLiquidityRatio": 0.4444444444444444,
+            "advertisedVirtualDepth": "20000",
+            "capitalUtilization": 0.3,
+            "quoteCount": 4,
+            "quoteInputTotal": "15000",
+            "gasByOutcome": {
+              "success": [
+                113708,
+                113708,
+                113708,
+                113708
+              ],
+              "quote_rejection": [
+                36324,
+                36324,
+                36324,
+                36324,
+                36324
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7215708
+          },
+          "finalState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "25000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "985000",
+                "virtual": [
+                  "6250",
+                  "6250",
+                  "6250",
+                  "6250"
+                ]
+              },
+              {
+                "balance": "4000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1006000",
+                "virtual": [
+                  "1000",
+                  "1000",
+                  "1000",
+                  "1000"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "replenishment",
           "seed": 41985,
           "offeredVolume": "5000",
@@ -6946,7 +9375,7 @@
       "system": "B",
       "count": 4,
       "seed": 41985,
-      "setupGas": 21647124,
+      "setupGas": 28862832,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -6965,6 +9394,34 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaSwapVMRouter",
+          "transactionHash": "0xe6d39ee4972e51c99ac9cf6a9e27adb4aab37027bc0fcd33f49fc90d220f5152",
+          "runtimeHash": "0x1b13f9da38687eb9c6692be4dc0e44a746fb78dd492d2073130fa1d143f77197",
+          "runtimeBytes": 20376
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x8de207724a936ccd221bc6538fe274055740bd01b05ae37f7a2ab0ac4a91fd3c",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0xd3efb8bd300f9b340735767fa0a23b84b70cf383f49a67d5f7a26bbb8e1efcee",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -8410,6 +10867,728 @@
           }
         },
         {
+          "name": "adversarialOrder",
+          "seed": 41985,
+          "offeredVolume": "13500",
+          "initialState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000",
+                  "10000",
+                  "10000"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000",
+                  "10000",
+                  "10000"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "11765",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "998235",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "11765",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "998235",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "13530",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996470",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "13530",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996470",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "15295",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "994705",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "15295",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "994705",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17060",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992940",
+                    "virtual": [
+                      "11765",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "8500",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "2522",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "17060",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992940",
+                    "virtual": [
+                      "11765",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "8500",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "19582",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "990418",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "2500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1007500",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "2522",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "2522",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 113708,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "19582",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "990418",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "2500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1007500",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "2522",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 6,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "2522",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            },
+            {
+              "actionIndex": 7,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3897",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            },
+            {
+              "actionIndex": 8,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "3897",
+              "quoteError": null,
+              "status": "0x0",
+              "gasUsed": 126779,
+              "before": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "SafeTransferFromFailed",
+                "args": [],
+                "data": "0xf4059071",
+                "gas": 126779,
+                "failed": true
+              },
+              "outcome": "settlement_failure"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "13500",
+            "successfulOutput": "9000",
+            "quoteRejectedOutput": "0",
+            "guardRejectedOutput": "0",
+            "settlementFailedOutput": "4500",
+            "successRatio": 0.6666666666666666,
+            "sharedLiquidityRatio": 0.6666666666666666,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.45,
+            "quoteCount": 9,
+            "quoteInputTotal": "22420",
+            "gasByOutcome": {
+              "success": [
+                113708,
+                113708,
+                113708,
+                113708,
+                113708,
+                113708
+              ],
+              "settlement_failure": [
+                126779,
+                126779,
+                126779
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "0",
+            "netBurstCapacity": "0",
+            "netBurstUtilization": 0,
+            "setupGas": 7215708
+          },
+          "finalState": {
+            "maker": "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266",
+            "tokens": [
+              {
+                "balance": "22104",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "987896",
+                "virtual": [
+                  "14287",
+                  "11765",
+                  "11765",
+                  "14287"
+                ]
+              },
+              {
+                "balance": "1000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1009000",
+                "virtual": [
+                  "7000",
+                  "8500",
+                  "8500",
+                  "7000"
+                ]
+              }
+            ]
+          }
+        },
+        {
           "name": "replenishment",
           "seed": 41985,
           "offeredVolume": "5000",
@@ -8838,7 +12017,7 @@
       "system": "C",
       "count": 4,
       "seed": 41985,
-      "setupGas": 29793282,
+      "setupGas": 39724376,
       "policy": {
         "backing": "10000",
         "virtualDepth": "10000",
@@ -8857,6 +12036,41 @@
         ]
       },
       "deployments": [
+        {
+          "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+          "name": "Aqua",
+          "transactionHash": "0xb50452a01e108c49c46fa0aa22a80c1cb5a03041932e83df2078b552c3a4cf27",
+          "runtimeHash": "0x5fe8e5e52c06b758f036c212a6730a31f804ce615cbd59770fb917c33575921d",
+          "runtimeBytes": 2678
+        },
+        {
+          "address": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
+          "name": "AquaQoSRouter",
+          "transactionHash": "0x39b0ec30ed0ca9a4fed3062f46b1a62f4400cc1941352e345421ce375be5b7f0",
+          "runtimeHash": "0xb86ca1447bf3e60a76710116f10629f015fc3f5c010bb0346e542a7788b76046",
+          "runtimeBytes": 21072
+        },
+        {
+          "address": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
+          "name": "TokenMock",
+          "transactionHash": "0x46becc4f13edc6d8d0506883835ee43609546697ac4e4fb199bbe80405ef7de9",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
+          "name": "TokenMock",
+          "transactionHash": "0x779e07276d54d41e63b2d5257d033e9e11ac1ef0dbb82bc34de343532b3c7d69",
+          "runtimeHash": "0x73b4c23856571c5ee4ced0ad8859f93fb7dd33be5f19a2faa9bdacb426170ae9",
+          "runtimeBytes": 2210
+        },
+        {
+          "address": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+          "name": "AquaQoSVault",
+          "transactionHash": "0x46c21c779d50daa52404a301c54f12f733f736dfc1249744a92b60d26ebeaaac",
+          "runtimeHash": "0x3d83db8b2daf6e328d635b98fa57698eaf3921705b8292b4869b65bb40a775d7",
+          "runtimeBytes": 8209
+        },
         {
           "address": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
           "name": "Aqua",
@@ -10347,6 +13561,758 @@
                   "8500",
                   "8500",
                   "8500"
+                ]
+              }
+            ]
+          }
+        },
+        {
+          "name": "adversarialOrder",
+          "seed": 41985,
+          "offeredVolume": "13500",
+          "initialState": {
+            "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+            "tokens": [
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000",
+                  "10000",
+                  "10000"
+                ]
+              },
+              {
+                "balance": "10000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1000000",
+                "virtual": [
+                  "10000",
+                  "10000",
+                  "10000",
+                  "10000"
+                ]
+              }
+            ]
+          },
+          "attempts": [
+            {
+              "actionIndex": 0,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165445,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "10000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1000000",
+                    "virtual": [
+                      "10000",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "11765",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "998235",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 1,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165357,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "11765",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "998235",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  },
+                  {
+                    "balance": "8500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1001500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "10000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "13530",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996470",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 2,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165269,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "13530",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "996470",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "10000",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "7000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1003000",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "10000",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "15295",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "994705",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 3,
+              "type": "swap",
+              "strategy": 1,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "1765",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165181,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "15295",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "994705",
+                    "virtual": [
+                      "11765",
+                      "10000",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "5500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1004500",
+                    "virtual": [
+                      "8500",
+                      "10000",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "17060",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992940",
+                    "virtual": [
+                      "11765",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "8500",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "1765",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 4,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "2522",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165097,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "17060",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "992940",
+                    "virtual": [
+                      "11765",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "4000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1006000",
+                    "virtual": [
+                      "8500",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "19582",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "990418",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "2500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1007500",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "2522",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 5,
+              "type": "swap",
+              "strategy": 3,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": "2522",
+              "quoteError": null,
+              "status": "0x1",
+              "gasUsed": 165097,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "19582",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "990418",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "11765"
+                    ]
+                  },
+                  {
+                    "balance": "2500",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1007500",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "8500"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "outcome": "success",
+              "expectedInput": "2522",
+              "protectedCapacityViolation": false
+            },
+            {
+              "actionIndex": 6,
+              "type": "swap",
+              "strategy": 2,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc"
+              },
+              "status": "0x0",
+              "gasUsed": 101890,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc",
+                "gas": 101890,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            },
+            {
+              "actionIndex": 7,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc"
+              },
+              "status": "0x0",
+              "gasUsed": 101890,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc",
+                "gas": 101890,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            },
+            {
+              "actionIndex": 8,
+              "type": "swap",
+              "strategy": 0,
+              "aToB": true,
+              "amount": "1500",
+              "quoteInput": null,
+              "quoteError": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc"
+              },
+              "status": "0x0",
+              "gasUsed": 101890,
+              "before": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "after": {
+                "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+                "tokens": [
+                  {
+                    "balance": "22104",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "987896",
+                    "virtual": [
+                      "14287",
+                      "11765",
+                      "11765",
+                      "14287"
+                    ]
+                  },
+                  {
+                    "balance": "1000",
+                    "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                    "takerBalance": "1009000",
+                    "virtual": [
+                      "7000",
+                      "8500",
+                      "8500",
+                      "7000"
+                    ]
+                  }
+                ]
+              },
+              "trace": {
+                "name": "InsufficientCapacity",
+                "args": [
+                  "1000",
+                  "1500"
+                ],
+                "data": "0x1040f08900000000000000000000000000000000000000000000000000000000000003e800000000000000000000000000000000000000000000000000000000000005dc",
+                "gas": 101890,
+                "failed": true
+              },
+              "outcome": "guard_rejection"
+            }
+          ],
+          "actions": [],
+          "metrics": {
+            "attemptedOutput": "13500",
+            "successfulOutput": "9000",
+            "quoteRejectedOutput": "0",
+            "guardRejectedOutput": "4500",
+            "settlementFailedOutput": "0",
+            "successRatio": 0.6666666666666666,
+            "sharedLiquidityRatio": 0.6666666666666666,
+            "advertisedVirtualDepth": "80000",
+            "capitalUtilization": 0.45,
+            "quoteCount": 6,
+            "quoteInputTotal": "12104",
+            "gasByOutcome": {
+              "success": [
+                165445,
+                165357,
+                165269,
+                165181,
+                165097,
+                165097
+              ],
+              "guard_rejection": [
+                101890,
+                101890,
+                101890
+              ]
+            },
+            "guaranteeViolations": 0,
+            "netBurstOutstanding": "4000",
+            "netBurstCapacity": "70000",
+            "netBurstUtilization": 0.05714285714285714,
+            "setupGas": 9931094
+          },
+          "finalState": {
+            "maker": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
+            "tokens": [
+              {
+                "balance": "22104",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "987896",
+                "virtual": [
+                  "14287",
+                  "11765",
+                  "11765",
+                  "14287"
+                ]
+              },
+              {
+                "balance": "1000",
+                "allowance": "115792089237316195423570985008687907853269984665640564039457584007913129639935",
+                "takerBalance": "1009000",
+                "virtual": [
+                  "7000",
+                  "8500",
+                  "8500",
+                  "7000"
                 ]
               }
             ]
