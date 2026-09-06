@@ -9,11 +9,12 @@ import { Interface, MaxUint256, keccak256 } from 'ethers';
 const hashFile = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const packageVersion = name => JSON.parse(readFileSync(`node_modules/${name}/package.json`, 'utf8')).version;
 const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cwd().replaceAll('\\', '/')}`, ...args], { encoding: 'utf8' }).trim();
+const pnpm = process.env.npm_config_user_agent?.match(/(?:^|\s)pnpm\/([^\s]+)/)?.[1] ?? 'unknown';
 const report = {
   kind: 'local-transaction-validation-and-gas-v1',
   sourceCommit: git('rev-parse', 'HEAD'), dirty: git('status', '--porcelain') !== '',
   node: process.version,
-  pnpm: execFileSync(process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm', ['--version'], { encoding: 'utf8' }).trim(),
+  pnpm,
   hardhat: packageVersion('hardhat'), ethers: packageVersion('ethers'), solc: '0.8.30',
   evm: 'cancun', optimizerRuns: 700, viaIR: true,
   sourceHashes: Object.fromEntries(['contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol',
