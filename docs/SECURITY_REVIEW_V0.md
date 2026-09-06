@@ -54,7 +54,7 @@ Root accepts these prototype limits; they remain explicit release/benchmark gate
 
 ## Additional negative regressions
 
-The 19-test suite includes exact-error quote/swap rejection for a vault order with
+The 24-test suite includes exact-error quote/swap rejection for a vault order with
 the guard omitted or its salt changed (unregistered hash); duplicate guard, guard
 arguments and trailing instructions shipped by an ordinary maker (wrapper rejects).
 Docked hashes cannot be reshipped; a new salt reactivates normally and the old hash
