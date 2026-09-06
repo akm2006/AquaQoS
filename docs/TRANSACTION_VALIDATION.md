@@ -84,6 +84,37 @@ deployed runtime hashes and the four gas pairs matched the original run.
 The [rehearsal record](../benchmarks/raw/clean-replay-eeee95a.json) retains revision,
 commands, outcomes, hashes and limitations. Compiler cache was also reused.
 This establishes clean-source reproducibility with caches, not uncached network
-availability. Four subsequently added negative tests pass in the main checkout
-(19 total); they are outside this rehearsal revision. Scratch clones are ignored
+availability. Nine subsequently added numeric/stateful tests pass in the main checkout
+(24 total); they are outside this rehearsal revision. Scratch clones are ignored
 and retained locally; no public repository was created.
+
+## Seeded trading sequences
+
+The same command now also runs three 64-trade sequences against the real contracts,
+with a separate JavaScript model of virtual balances, actual inventory, taker funds
+and remaining entitlements. Every swap is mined separately. Source seeds and all
+192 attempted swaps plus 30 replenishment pushes are retained in the raw report.
+
+| xorshift32 seed | Strategies | Accepted | Capacity rejections |
+| --- | ---: | ---: | ---: |
+| 1 | 2 | 43 | 21 |
+| 42 | 4 | 45 | 19 |
+| 12648430 | 8 | 49 | 15 |
+
+Each fixture starts with 10,000 per maker token and aggregate guarantees of 5,000
+per token. The model predicts admission, independently updates balances after
+successful fills/pushes, and compares every step to EVM state. Rejections must
+have the exact predicted capacity error and preserve state; positive fills must
+match rounded XYC input, both transfers, sibling isolation and reservation events.
+All checks passed: 137 accepted, 55 rejected. A read-only auditor regenerated the
+PRNG sequence and decoded/recomputed all 192 raw swap attempts independently.
+
+These are targeted validation sequences. Offered amounts adapt to virtual depth
+and taker affordability; deposits restore capacity, the first two attempts force
+both outcomes, and group sizes use different seeds. They are not comparable A/B/C
+workloads, an exhaustive state-space proof or a test of decrementing allowances.
+The original group-size gas microcases remain separate and unchanged.
+
+Solidity fuzzing uses Hardhat 3.8.0's fixed default seed, verified in installed
+`solidity-test/config.ts`: `0x7727ea51af0441c20da14dcd68a15dac8c9ebd589c5be8fa8c87c1d3720450bc`.
+It runs 256 cases. No extra seed configuration is needed with the pinned runner.

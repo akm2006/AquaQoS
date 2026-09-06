@@ -12,6 +12,7 @@ import { IAqua } from "@1inch/aqua/src/interfaces/IAqua.sol";
 import { IERC20 } from "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol";
 import { SafeERC20 } from "@1inch/solidity-utils/contracts/libraries/SafeERC20.sol";
 import { TokenMock } from "@1inch/solidity-utils/contracts/mocks/TokenMock.sol";
+import { SafeCast } from "@openzeppelin/contracts/utils/math/SafeCast.sol";
 
 import { AquaQoSRouter } from "../contracts/AquaQoSRouter.sol";
 import { AquaQoSVault } from "../contracts/AquaQoSVault.sol";
@@ -275,6 +276,96 @@ contract AquaQoSTest is AquaStrategyBuilders, ITakerCallbacks {
         vault.checkCapacity(bytes32(uint256(1)), address(tokenB), 1);
         vm.expectRevert(AquaQoSVault.VirtualCapacityExceeded.selector);
         vault.checkCapacity(hash, address(tokenB), type(uint256).max);
+    }
+
+    function test_zeroGuaranteeUsesFundedBurstAndMovesRealTokens() public {
+        tokenA.mint(address(vault), 1000);
+        tokenB.mint(address(vault), 1000);
+        bytes32 hash = vault.createStrategy(21, 1000, 1000, 0, 0);
+        vault.activate();
+        _fundAndApprove(5000);
+        ISwapVM.Order memory order_ = vault.order(21);
+
+        vm.prank(taker);
+        router.swap(order_, 500, _takerData(false, true, true));
+
+        (uint256 virtualB,) = aqua.rawBalances(address(vault), address(router), hash, address(tokenB));
+        assertEq(tokenA.balanceOf(taker), 4000);
+        assertEq(tokenB.balanceOf(taker), 5500);
+        assertEq(tokenB.balanceOf(address(vault)), 500);
+        assertEq(virtualB, 500);
+    }
+
+    function test_createRejectsZeroVirtualCapacityAndGuaranteeAboveVirtualCapacity() public {
+        vm.expectRevert(AquaQoSVault.InvalidConfiguration.selector);
+        vault.createStrategy(22, 0, 1, 0, 0);
+        vm.expectRevert(AquaQoSVault.InvalidConfiguration.selector);
+        vault.createStrategy(23, 1, 1, 2, 1);
+    }
+
+    function test_aquaUint248MaximumShipsAndNextUnitReverts() public {
+        uint256 maximum = type(uint248).max;
+        bytes32 hash = vault.createStrategy(24, maximum, maximum, 0, 0);
+        (uint256 virtualA, uint8 marker) = aqua.rawBalances(address(vault), address(router), hash, address(tokenA));
+        assertEq(virtualA, maximum);
+        assertEq(marker, 2);
+
+        vm.expectRevert(abi.encodeWithSelector(
+            SafeCast.SafeCastOverflowedUintDowncast.selector, uint8(248), maximum + 1
+        ));
+        vault.createStrategy(25, maximum + 1, maximum + 1, 0, 0);
+        (, marker) = aqua.rawBalances(address(vault), address(router), router.hash(vault.order(25)), address(tokenA));
+        assertEq(marker, 0, "failed ship must not create an Aqua balance");
+    }
+
+    function test_maxVirtualInputLedgerOverflowRevertsWholeFill() public {
+        uint256 maximum = type(uint248).max;
+        bytes32 hash = vault.createStrategy(26, maximum, maximum, 0, 0);
+        vault.activate();
+        tokenA.mint(taker, 2);
+        tokenB.mint(address(vault), 1);
+        vm.prank(taker);
+        tokenA.approve(address(router), 2);
+        ISwapVM.Order memory order_ = vault.order(26);
+        (uint256 quotedIn, uint256 quotedOut,) = router.asView().quote(order_, 1, _takerData(false, true, true));
+        assertEq(quotedIn, 2);
+        assertEq(quotedOut, 1);
+
+        vm.prank(taker);
+        vm.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        router.swap(order_, 1, _takerData(false, true, true));
+
+        (uint256 virtualA,) = aqua.rawBalances(address(vault), address(router), hash, address(tokenA));
+        (uint256 virtualB,) = aqua.rawBalances(address(vault), address(router), hash, address(tokenB));
+        assertEq(tokenA.balanceOf(taker), 2);
+        assertEq(tokenA.balanceOf(address(vault)), 0);
+        assertEq(tokenA.allowance(taker, address(router)), 2);
+        assertEq(tokenB.balanceOf(address(vault)), 1);
+        assertEq(virtualA, maximum);
+        assertEq(virtualB, maximum);
+        assertEq(vault.reservation(hash, address(tokenB)), 0);
+        vault.pause();
+    }
+
+    function test_xycMultiplicationOverflowFailsBeforeAnyTransfer() public {
+        uint256 maximum = type(uint248).max;
+        bytes32 hash = vault.createStrategy(27, maximum, maximum, 0, 0);
+        vault.activate();
+
+        ISwapVM.Order memory order_ = vault.order(27);
+        ISwapVM viewRouter = router.asView();
+        vm.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        viewRouter.quote(order_, type(uint256).max, _takerData(true, true, true));
+        vm.prank(taker);
+        vm.expectRevert(abi.encodeWithSignature("Panic(uint256)", 0x11));
+        router.swap(order_, type(uint256).max, _takerData(true, true, true));
+
+        (uint256 virtualA,) = aqua.rawBalances(address(vault), address(router), hash, address(tokenA));
+        (uint256 virtualB,) = aqua.rawBalances(address(vault), address(router), hash, address(tokenB));
+        assertEq(virtualA, maximum);
+        assertEq(virtualB, maximum);
+        assertEq(tokenA.balanceOf(address(vault)), 0);
+        assertEq(tokenB.balanceOf(address(vault)), 0);
     }
 
     function _programOrder(address maker_, bytes memory program) private view returns (ISwapVM.Order memory) {

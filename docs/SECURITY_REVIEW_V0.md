@@ -46,7 +46,9 @@ Root accepts these prototype limits; they remain explicit release/benchmark gate
   fills may reject; quantify this in benchmark results.
 - Representative eight-strategy gas and fresh-transaction clearing/sequence tests
   now pass; see TRANSACTION_VALIDATION. Worst-case gas, broader
-  stateful fuzzing remain open. Clean-source replay using package/compiler caches
+  exhaustive/adversarial state-space coverage remains open. Three fixed-seed
+  transaction sequences now pass; their adaptive demand limits are documented.
+  Clean-source replay using package/compiler caches
   passes at eeee95a; uncached downloads remain unverified. Do not equate the passing
   local suite with final acceptance.
 
@@ -59,3 +61,11 @@ Docked hashes cannot be reshipped; a new salt reactivates normally and the old h
 stays inactive. Unauthorized configuration/activation/docking/withdrawal and another
 app's attempt to Aqua.pull from the vault fail. Root traced these assertions into
 pinned MakerTraits building, Aqua active markers/app keys and immutable ship logic.
+
+Numeric tests cover funded zero-guarantee burst, invalid initial capacity,
+uint248 maximum registration and max+1 rejection, input-ledger overflow and XYC
+multiplication overflow. Root reviewed the worker diff, corrected external-call
+ordering around test cheatcodes, and added explicit quote/input/allowance rollback
+assertions. A quote at the maximum input ledger can succeed while the actual push
+overflows; this preserves atomicity but limits fill availability. No production
+contract or acceptance invariant was weakened to accommodate it.

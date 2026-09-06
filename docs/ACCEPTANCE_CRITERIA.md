@@ -20,8 +20,10 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
   within the claimed protected domain. Test the selected program-validation/enforcement mechanism.
 - [x] Exact-in/out, both token directions, same-state quote/swap agreement and stale-quote recheck tested.
-- [ ] Boundary capacity allowed; one unit above rejected; zero/max/rounding/underflow handled.
+- [x] Boundary capacity allowed; one unit above rejected; zero/max/rounding/underflow handled.
 - [ ] Every admitted fill preserves the specified sibling capacity/reserve after settlement.
+  Three fixed-seed 64-trade sequences and 30 pushes satisfy model-versus-EVM checks;
+  this evidence is bounded and does not establish all sequences/token behaviors.
 - [x] Replenishment restores defined capacity; guard reverts do not mutate state.
 
 ## Registry / Vault, if retained
@@ -38,7 +40,8 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Official Aqua handles token movement and virtual accounting; custom functionality executes inside SwapVM.
 - [ ] Separate review checks cross-order/router callbacks, reentrancy, hostile tokens, fees, allowance changes,
   lifecycle/config changes, griefing/DoS, integer limits and transaction ordering.
-- [ ] Unit/integration/fuzz/property tests cover material paths; fixed seeds and failures retained.
+- [x] Unit/integration/fuzz/property tests cover the current material paths; fixed seeds and
+  failures are retained. Broader token-behavior and exhaustive-state coverage remain open.
 - [ ] No high/critical unresolved findings at release; other accepted risks identify owner and justification.
 - [ ] Fresh install/build/test commands and runtime/tool versions verified.
 

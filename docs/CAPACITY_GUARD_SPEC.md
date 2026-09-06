@@ -104,6 +104,13 @@ entitlement recovers automatically, capped at `g[i]`. A quote is only a
 same-state eligibility result and creates no reservation. Swap execution must
 recheck and reserve against current state.
 
+Capacity eligibility is not a full settlement guarantee, even at identical state.
+At Aqua's uint248 maximum virtual input balance, a tiny output may be priced and
+pass the guard but its input push cannot fit; upstream checked addition reverts
+the whole swap. Extreme XYC multiplication likewise reverts. Numeric regressions
+verify these boundaries and rollback; v0 does not replace upstream arithmetic or
+promise input-ledger headroom. Use bounded inputs for supported demonstration workloads.
+
 Docking, adding, removing, or changing a guarantee must go through the vault in
 one transaction and is allowed only while the whole token-pair group is paused.
 Activation checks both token invariants. Unknown, duplicate, unguarded, docked,

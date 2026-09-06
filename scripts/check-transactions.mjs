@@ -15,7 +15,7 @@ const report = {
   node: process.version, hardhat: packageVersion('hardhat'), ethers: packageVersion('ethers'), solc: '0.8.30',
   evm: 'cancun', optimizerRuns: 700, viaIR: true,
   sourceHashes: Object.fromEntries(['contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol',
-    'scripts/check-transactions.mjs', 'hardhat.config.ts', 'package.json', 'pnpm-lock.yaml'].map(p => [p, hashFile(p)])),
+    'scripts/check-transactions.mjs', 'test/AquaQoS.t.sol', 'hardhat.config.ts', 'package.json', 'pnpm-lock.yaml'].map(p => [p, hashFile(p)])),
   pins: JSON.parse(readFileSync('sources.lock.json', 'utf8')),
   scenarios: [],
 };
@@ -104,7 +104,7 @@ async function fixture(count, backing, guarantee) {
     }
     return result;
   }
-  async function swap(index, amount, aToB = true, success = true, label = 'swap') {
+  async function swap(index, amount, aToB = true, success = true, label = 'swap', failureArgs) {
     const before = await state();
     const receipt = await write(router, 'swap', [orders[index], amount, traits(aToB)], taker, success, true, label);
     const after = await state();
@@ -116,8 +116,7 @@ async function fixture(count, backing, guarantee) {
       const data = trace.returnValue.startsWith('0x') ? trace.returnValue : '0x' + trace.returnValue;
       const error = vault.abi.parseError(data);
       assert.equal(error.name, 'InsufficientCapacity', 'reject for capacity, not another settlement error');
-      assert.equal(error.args[0], 500n);
-      assert.equal(error.args[1], 501n);
+      assert.deepEqual(error.args.toArray(), failureArgs, 'capacity error arguments match independent expectation');
       log.transactions.at(-1).failure = { returnData: data, name: error.name, args: error.args.toArray(),
         traceGas: trace.gas, traceFailed: trace.failed };
     }
@@ -154,7 +153,7 @@ try {
   const quote = await f.read(f.router, 'quote', [f.orders[0], 500, traits(true)]);
   assert.equal(quote[0], 1000n);
   await f.swap(0, 500, true, true, 'first guarantee');
-  await f.swap(1, 501, true, false, 'unsafe sibling rejection');
+  await f.swap(1, 501, true, false, 'unsafe sibling rejection', [500n, 501n]);
   await f.swap(1, 500, true, true, 'sibling guarantee in fresh transaction');
   await f.write(f.aqua, 'push', [f.vault.address, f.router.address, f.hashes[0], f.tokens[1].address, 500], f.taker, true, true, 'direct replenishment');
   assert.equal((await f.state())[1].remaining, 500n);
@@ -176,6 +175,74 @@ for (const count of [1, 2, 4, 8]) {
     await g.swap(0, 100, true, true, 'first output 100');
     await g.swap(0, 100, true, true, 'second output 100');
   } finally { await g.connection.close(); }
+}
+
+// Stateful validation, not comparative market workloads. Hold the model separately
+// from contract getters and replay every attempted fill in its own transaction.
+for (const [count, seed] of [[2, 1], [4, 42], [8, 0xc0ffee]]) {
+  const backing = 10000n, guarantee = backing / BigInt(2 * count);
+  const s = await fixture(count, Number(backing), Number(guarantee));
+  try {
+    s.log.name = 'seeded-trading'; s.log.seed = seed;
+    const virtual = [Array(count).fill(backing), Array(count).fill(backing)];
+    const real = [backing, backing], takerBalances = [1000000n, 1000000n];
+    const baseline = backing - guarantee;
+    const remaining = v => v <= baseline ? 0n : (v - baseline < guarantee ? v - baseline : guarantee);
+    const minimum = (a, b) => a < b ? a : b;
+    let randomState = seed >>> 0;
+    const random = () => {
+      randomState ^= randomState << 13; randomState ^= randomState >>> 17; randomState ^= randomState << 5;
+      return randomState >>> 0;
+    };
+    async function checkModel() {
+      const actual = await s.state();
+      for (let token = 0; token < 2; token++) {
+        assert.deepEqual(actual[token].virtual, virtual[token], 'independent virtual ledger');
+        assert.equal(actual[token].balance, real[token]);
+        assert.equal(actual[token].takerBalance, takerBalances[token]);
+        assert.equal(actual[token].remaining, virtual[token].reduce((sum, v) => sum + remaining(v), 0n));
+        assert.equal(actual[token].allowance, MaxUint256, 'supported mock preserves infinite approval');
+      }
+    }
+    let accepted = 0, rejected = 0;
+    for (let step = 0; step < 64; step++) {
+      const index = random() % count;
+      // Alternate concentrated-output stretches with mixed directions.
+      const out = step % 16 < 8 ? 1 : random() % 2;
+      const input = 1 - out;
+      if (step % 7 === 0 || virtual[out][index] <= 1n) {
+        const deposit = 500n;
+        const before = await s.state();
+        await s.write(s.aqua, 'push', [s.vault.address, s.router.address, s.hashes[index], s.tokens[out].address, deposit],
+          s.taker, true, true, `seed ${seed} step ${step} replenish`);
+        virtual[out][index] += deposit; real[out] += deposit; takerBalances[out] -= deposit;
+        await checkModel();
+        Object.assign(s.log.transactions.at(-1), { before, after: await s.state() });
+      }
+      let debit = BigInt(1 + random() % 2500);
+      if (step === 0) debit = real[out] - BigInt(count - 1) * guarantee + 1n;
+      if (step === 1) debit = 1n; // Ensure the same sequence exercises admission as well as rejection.
+      debit = minimum(debit, virtual[out][index] - 1n);
+      const affordable = takerBalances[input] * virtual[out][index] / (virtual[input][index] + takerBalances[input]);
+      debit = minimum(debit, affordable);
+      assert.ok(debit > 0n, 'sequence must remain priced and funded');
+      const cost = (debit * virtual[input][index] + virtual[out][index] - debit - 1n) / (virtual[out][index] - debit);
+      const required = debit + virtual[out].reduce((sum, v, i) => sum + remaining(v - (i === index ? debit : 0n)), 0n);
+      const shouldPass = real[out] >= required;
+      await s.swap(index, debit, out === 1, shouldPass, `seed ${seed} step ${step}`,
+        shouldPass ? undefined : [real[out], required]);
+      if (shouldPass) {
+        accepted++;
+        virtual[out][index] -= debit; virtual[input][index] += cost;
+        real[out] -= debit; real[input] += cost;
+        takerBalances[out] += debit; takerBalances[input] -= cost;
+      } else rejected++;
+      await checkModel();
+    }
+    assert.ok(accepted > 0 && rejected > 0, 'each seed must cover both outcomes');
+    s.log.outcomes = { accepted, rejected, attempted: 64 };
+    console.log(`Stateful seed ${seed}, ${count} strategies: ${accepted} accepted, ${rejected} rejected; model matched every step`);
+  } finally { await s.connection.close(); }
 }
 const output = new URL('../benchmarks/raw/transactions-v1.json', import.meta.url);
 mkdirSync(new URL('../benchmarks/raw/', import.meta.url), { recursive: true });

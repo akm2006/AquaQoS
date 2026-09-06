@@ -1,23 +1,27 @@
 # AquaQoS handoff
 
-Updated 2026-09-06. Phase: v0 protocol implementation and validation. Guard/router/vault
+Updated 2026-09-07. Phase: v0 protocol implementation and validation. Guard/router/vault
 and first integration suite work locally; full protocol acceptance remains open.
 
-- Last milestone: separate mined-transaction replay proves reservation clearing,
-  sibling fills, replenishment and fresh-transaction maker exit; representative
-  1/2/4/8-strategy gas retained with receipts in benchmarks/raw/transactions-v1.json.
+- Last milestone: 192 seeded model-versus-EVM swaps and 30 replenishments passed,
+  plus numeric limits/rollback regressions. Independent auditor regenerated every
+  seeded attempt; raw results remain in benchmarks/raw/transactions-v1.json.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: `pnpm test` passes 19 Solidity tests, including 256 fuzz runs in one
-  property test. Three tests reproduce raw Aqua failures; sixteen exercise the v0 guard.
+- Protocol tests: `pnpm test` passes 24 Solidity tests, including 256 fuzz runs in one
+  property test. Three tests reproduce raw Aqua failures; twenty-one exercise v0.
   No currently failing tests. Test inventory: test/AquaQoS.t.sol and PROBLEM_REPRODUCTION.
 - `pnpm test:transactions`: passed; exact failure bytes, full fill accounting, sibling
   isolation, aggregate backing, reservation events and transaction clearing asserted.
+- Seeded sequences: seeds 1/42/12648430 on 2/4/8 strategies, 64 attempts each;
+  137 fills admitted and 55 capacity rejections, all matching the independent model.
+  Adaptive demand and supported mock tokens only; not A/B/C benchmark evidence.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.
-  Four newer negative tests pass in main checkout (19 total). See TRANSACTION_VALIDATION.
+  Nine newer tests pass in main checkout (24 total). See TRANSACTION_VALIDATION.
 - Known risks: same-transaction conservatism; worst-case group gas unmeasured;
+  numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
 - Benchmark: representative full-swap gas 137265/146250/165475/210404 for 1/2/4/8
@@ -55,10 +59,11 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Expand stateful-fuzz and integer-boundary coverage in ACCEPTANCE_CRITERIA;
-   expand gas evidence to callback/lifecycle extremes where relevant.
-2. Retain a raw baseline failure trace and retry uncached install when downloads work.
-3. Implement shared A/B/C benchmark workloads and independent methodology review.
+1. Specify and independently review A/B/C workload fairness, allocation/guarantee policy
+   and XYC price differences before implementation.
+2. Implement shared offered-demand benchmark; retain a raw baseline failure trace
+   and measure callback/lifecycle extremes where relevant.
+3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
    Frontend remains downstream of protocol/benchmark acceptance.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,

@@ -26,3 +26,12 @@ Read-only benchmark auditor scope: equal backing/demand, transaction isolation,
 failure cause, all token/virtual changes, provenance and measured-versus-assumed
 claims. Auditor recomputed the final raw swaps and closed assertion gaps after
 root corrections; no A/B/C benefit or worst-case gas claim was authorized by evidence.
+
+Stateful/numeric continuation: owner requested continued engineering. Root reused the
+replay harness for three fixed-seed 64-trade sequences with a separately maintained
+ledger; retain every attempt and direct deposit. Read-only auditor scope: regenerate
+PRNG/calldata, independently check capacity, rounding, accounting and honest limitations.
+Worker scope: five numeric tests in test/AquaQoS.t.sol only, using pinned Aqua/XYC
+errors; no production/config edits or nested agents. Root reviewed the diff, corrected
+test call ordering, added explicit quote-versus-saturated-ledger rollback evidence,
+and reran the full suite. No arithmetic limits or invariants were silently weakened.

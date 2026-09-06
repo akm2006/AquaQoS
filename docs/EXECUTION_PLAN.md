@@ -28,6 +28,8 @@ Each milestone requires implementation where applicable, actual passing checks, 
 assumptions, updated STATUS/decisions, disposition of findings and a coherent commit.
 No artificial commit count: commit actual increments. Review [acceptance](ACCEPTANCE_CRITERIA.md).
 
-Immediate next session: validate local roles loaded, install only pinned baseline dependencies,
-create lockfile, run upstream smoke compilation, then reproduce sibling virtual/real divergence.
-No CAPACITY_GUARD until the settlement/extension and guarantee semantics gates are closed.
+Immediate next phase: define and independently review the A/B/C methodology before
+implementing measurements. Preserve identical offered demand, equal initial backing,
+explicit guarantee/allocation policies, price/slippage differences, raw failures and
+losing cases. Existing group-size gas and adaptive validation sequences do not satisfy
+that comparison gate. See STATUS for remaining validation and reproduction work.

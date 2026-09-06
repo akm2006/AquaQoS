@@ -14,6 +14,7 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 | 2026-09-06 transaction replay | scripts/check-transactions.mjs, build roots/direct ethers pin, benchmarks/raw/transactions-v1.json, TRANSACTION_VALIDATION | Root implemented separate-transaction checks and generated EVM receipts/gas/state; a read-only benchmark auditor challenged assertions and provenance. This is a group-size micro-measurement, not the full benchmark. |
 | 2026-09-06 enforcement regressions | test/AquaQoS.t.sol, acceptance/status/review docs | Root added omitted/malformed-guard, changed-hash, dock/reship, configuration authorization and cross-app pull tests against exact upstream error behavior. |
 | 2026-09-06 clean-source rehearsal | benchmarks/raw/clean-replay-eeee95a.json, TRANSACTION_VALIDATION | Root cloned committed source locally, installed from the existing package cache after network failures, rebuilt and reran tests/replay, and compared source/runtime hashes and gas. |
+| 2026-09-06 stateful/numeric validation | scripts/check-transactions.mjs and raw evidence, test/AquaQoS.t.sol, updated spec/review/status | Root implemented fixed-seed model-versus-EVM sequences; read-only auditor independently regenerated all 192 swaps. A bounded worker added five numeric tests; root reviewed the actual diff and strengthened quote/rollback assertions. |
 
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
