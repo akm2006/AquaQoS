@@ -19,23 +19,23 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [ ] Trace quote/swap and all fee/callback paths; check final total maker debit, not a provisional register.
 - [ ] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
   within the claimed protected domain. Test the selected program-validation/enforcement mechanism.
-- [ ] Exact-in/out, both token directions, same-state quote/swap agreement and stale-quote recheck tested.
+- [x] Exact-in/out, both token directions, same-state quote/swap agreement and stale-quote recheck tested.
 - [ ] Boundary capacity allowed; one unit above rejected; zero/max/rounding/underflow handled.
 - [ ] Every admitted fill preserves the specified sibling capacity/reserve after settlement.
-- [ ] Replenishment restores defined capacity; guard reverts do not mutate state.
+- [x] Replenishment restores defined capacity; guard reverts do not mutate state.
 
 ## Registry / Vault, if retained
 
-- [ ] ADR establishes necessity and trust boundary; omit unused abstractions.
+- [x] ADR establishes necessity and trust boundary; omit unused abstractions.
 - [ ] Only authorized maker configures; full maker/app/hash/token identity, no duplicate/unknown entries.
 - [ ] Atomic ship/dock registration, active-state validation, stale sibling removal and reship identity tested.
 - [ ] Reject reserve/guarantee overconfiguration; bound enumeration with measured worst-case gas.
 - [ ] Withdrawals, approvals, arbitrary calls, other apps and upgrades cannot silently bypass claimed protection.
-- [ ] Document maker escape/pause behavior and the point at which guarantees cease.
+- [x] Document maker escape/pause behavior and the point at which guarantees cease.
 
 ## Integration and security
 
-- [ ] Official Aqua handles token movement and virtual accounting; custom functionality executes inside SwapVM.
+- [x] Official Aqua handles token movement and virtual accounting; custom functionality executes inside SwapVM.
 - [ ] Separate review checks cross-order/router callbacks, reentrancy, hostile tokens, fees, allowance changes,
   lifecycle/config changes, griefing/DoS, integer limits and transaction ordering.
 - [ ] Unit/integration/fuzz/property tests cover material paths; fixed seeds and failures retained.

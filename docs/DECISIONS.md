@@ -85,3 +85,21 @@ The canonical v0 recipe is fee-free guard `0x05` + XYC + salt, constructed by a
 non-upgradeable pair-specific vault with immutable Aqua/router addresses and no arbitrary
 execution path. Fee recipes remain deferred. Implementation may begin only with the tests
 listed in CAPACITY_GUARD_SPEC.
+
+## 2026-09-06 — D008: Preserve allowance for permissionless replenishment
+
+Decision: additionally require output allowance >= sum configured guarantees +
+sum transient reservations + final debit. Keep the existing inventory admission
+formula. Alternatives: check only output inventory, or check projected input
+allowance. Evidence: independent contract review M1 found that standard tokens
+may decrement maximum approvals; permissionless Aqua.push restores entitlement
+without restoring allowance and bypasses an input-only router check.
+Reason: a preserved full-guarantee allowance floor covers all future replenishment,
+including direct pushes and nested swaps. Consequences: conservative liveness when
+allowance approaches configured guarantees; no arbitrary reapproval API. Exit is
+pause/dock-all/withdraw. Tests exercise decrementing approvals and direct push;
+the follow-up read-only review confirmed the correction's invariant.
+
+Every activation also explicitly resets all group baselines after checking both
+tokens. Deployment must attest actual nonproxy Aqua/router code; checking the
+router's AQUA getter alone does not authenticate its implementation.

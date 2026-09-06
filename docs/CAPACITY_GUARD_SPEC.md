@@ -1,6 +1,6 @@
 # CAPACITY_GUARD specification v0
 
-Status: implementation contract for review, not yet implemented or proven.
+Status: v0 router/vault implemented with local EVM tests; acceptance gaps remain.
 
 Independent source/security review completed; the lead incorporated its findings.
 `node scripts/check-capacity-model.mjs` passes 327,168 bounded settlement cases
@@ -72,6 +72,20 @@ above all remaining entitlements as burst capacity. Arithmetic must reject
 overflow and treat subtraction as saturating only in the explicitly written
 `max(..., 0)` term.
 
+Every output admission additionally requires:
+
+```text
+token.allowance(vault, Aqua) >= sum(g[i]) + sum(r[i]) + d
+```
+
+Activation establishes the full guarantee allowance floor; every output debit
+preserves it. Anyone may call Aqua.push, which restores virtual entitlement and
+real balance but cannot restore vault allowance. This floor covers tokens that
+decrement even maximum approvals. It is conservative for tokens that preserve
+maximum approval. Allowance exactly equal to the full guarantee sum blocks all
+positive outputs. No arbitrary approval/reapproval API exists; the owner may
+pause, dock all and withdraw to migrate if allowance limits trading.
+
 The reservation is transient transaction state. Nested sibling execution sees
 it; a revert automatically removes it; successful top-level completion clears
 it at transaction end. A later swap in the same transaction may be rejected
@@ -94,9 +108,10 @@ Docking, adding, removing, or changing a guarantee must go through the vault in
 one transaction and is allowed only while the whole token-pair group is paused.
 Activation checks both token invariants. Unknown, duplicate, unguarded, docked,
 or ninth strategies are rejected. The fixed bound is deliberately small for
-predictable gas and must be measured before it is reconsidered. Changing a
-guarantee while paused takes a new live virtual-balance snapshot and resets
-`b[i] = v[i] - g[i]`; reactivation must pass feasibility again.
+predictable gas and must be measured before it is reconsidered. Every activation
+resets all baselines together to `b[i] = v[i] - g[i]` using live virtual balances,
+including unchanged guarantees. Pausing ends the prior commitment; reactivation
+starts a newly backed commitment and must pass feasibility again.
 All lifecycle/configuration/withdrawal operations must also reject if any
 reservation was made for this vault during the current transaction. This prevents
 an owner-controlled callback from pausing, docking, resetting baselines or

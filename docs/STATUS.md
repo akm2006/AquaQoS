@@ -1,17 +1,28 @@
 # AquaQoS handoff
 
-Updated 2026-09-06. Inventory/allowance reproductions and v0 specification review are implemented; fresh-checkout replay and retained trace remain open. No guard implementation exists.
+Updated 2026-09-06. Phase: v0 protocol implementation and validation. Guard/router/vault
+and first integration suite work locally; full protocol acceptance remains open.
 
-- Last milestone: isolated allowance failure, strengthened rollback assertions, reviewed guard design and executable capacity model.
+- Last milestone: canonical XYC wrapper opcode 0x05, restricted maker vault, transient
+  reservations, lifecycle controls and reviewed allowance-floor correction (D008).
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: `pnpm test` passes 3 Solidity tests; inventory and allowance failures are isolated and documented in `PROBLEM_REPRODUCTION.md`.
-- Known risks: transient reservation implementation and same-transaction conservatism;
-  bounded group gas; vault pause/dock code; unsupported token behavior; docs/ABI drift;
+- Protocol tests: `pnpm test` passes 15 Solidity tests, including 256 fuzz runs in one
+  property test. Three tests reproduce raw Aqua failures; twelve exercise the v0 guard.
+  No currently failing tests. Test inventory: test/AquaQoS.t.sol and PROBLEM_REPRODUCTION.
+- Known risks: same-transaction conservatism; fresh-transaction clearing not yet tested;
+  bounded group gas unmeasured; unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
 - Benchmark: no scripts or measurements yet. Brief numbers remain illustrative.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
-- Blockers: none for the v0 implementation milestone. Human eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
+- Blockers: none for independent protocol validation. Human eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
+- Review: separate read-only review found M1 (allowance after permissionless replenishment);
+  corrected output floor and follow-up review closed it. SECURITY_REVIEW_V0 records scope
+  and limits; this is not an external audit or final security certification.
+- Local compiled byte sizes (solc 0.8.30, viaIR, optimizer 700, Cancun): router runtime
+  21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
+  Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
+  transient-state composability warning corresponds to the documented v0 limitation.
 
 ## Bootstrap verification
 
@@ -31,14 +42,16 @@ Updated 2026-09-06. Inventory/allowance reproductions and v0 specification revie
 - Independent protocol/security reviews selected wrapper opcode `0x05` over Extruction and corrected fee undercounting, virtual-surplus deadlock, vault boundaries and lifecycle scope before implementation.
 - `node scripts/check-capacity-model.mjs`: 327,168 bounded settlement cases passed,
   plus consumption, burst and replenishment examples. Model evidence only, not a contract proof.
-- Latest `pnpm test`: 3 passed; rollback snapshots cover both token balances and Aqua/router
+- Baseline rollback snapshots cover both token balances and Aqua/router
   allowances across maker, taker, router and Aqua. Order-hash equality now asserts rather than assumes.
 
 ## Next three tasks
 
-1. Implement the smallest XYC-only vault, wrapper opcode and custom router from the reviewed specification.
-2. Add exact-boundary, one-unit-over, stale-quote, nested-sibling and pause/dock tests.
-3. Run independent contract review and measure group-size gas before expanding beyond fee-free v0.
+1. Test separate top-level transactions (reservation clearing, repeated fills/replenishment)
+   and close noncanonical-program/lifecycle/stateful-fuzz gaps in ACCEPTANCE_CRITERIA.
+2. Measure gas for 1/2/4/8-strategy groups and retain deterministic machine-readable evidence.
+3. Rehearse a clean checkout and retain transfer traces, then implement the shared A/B/C
+   benchmark workloads. Frontend remains downstream of protocol/benchmark acceptance.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

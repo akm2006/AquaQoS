@@ -48,3 +48,18 @@ no sibling entitlement scheduler found in those paths. Web queries for Aqua guar
 liquidity and SwapVM capacity guard did not establish originality. Search official
 issues/PRs, SDK/starter variants and recent ETHGlobal showcase projects before novelty claims.
 The initial limited search is not proof that no equivalent project exists.
+
+## 2026-09-06 implementation verification
+
+Rechecked the official 1inch prize page linked above: modified SwapVM and local-fork
+transfers remain permitted; no qualification claim is inferred from local unit tests.
+Inspected installed pinned Aqua `src/Aqua.sol` ship/dock/pull/push and SwapVM
+`src/SwapVM.sol`, `src/routers/AquaSwapVMRouter.sol`, `src/libs/VM.sol`,
+`src/libs/ProtocolFee.sol`, `src/instructions/Controls.sol` and `XYCSwap.sol`.
+Refs and SHAs remain the A1/S1 identities above and sources.lock.json.
+Supported claims: canonical wrapper dispatch through virtual _runOpcode; quote's
+static context; fee-free final amountOut debit; independent virtual markers;
+permissionless push; per-order lock plus callback timing. Native Simulator always
+reverts delegated effects; inherited rescue can transfer router-held balances only.
+Context7 `/1inch/aqua` documentation described docking as withdrawal; pinned source
+sets virtual state/markers and makes no real-token transfer. Source takes precedence.
