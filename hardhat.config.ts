@@ -5,6 +5,7 @@ export default defineConfig({
     version: "0.8.30",
     npmFilesToBuild: [
       "@1inch/aqua/src/Aqua.sol",
+      "@1inch/swap-vm/src/routers/AquaSwapVMRouter.sol",
       "@1inch/solidity-utils/contracts/mocks/TokenMock.sol",
     ],
     settings: {

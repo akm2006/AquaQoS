@@ -18,7 +18,8 @@ and first integration suite work locally; full protocol acceptance remains open.
   Adaptive demand and supported mock tokens only; not A/B/C benchmark evidence.
 - Benchmark method: [BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md) now fixes A/B/C
   allocations, identical offered demand, XYC pricing disclosure and outcome classes;
-  implementation waits for independent audit.
+  the runner now covers 2/4 strategies, low/concentrated/replenishment workloads,
+  raw settlement failures and QoS guard rejections. Clean-source replay is pending.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.
@@ -62,8 +63,8 @@ and first integration suite work locally; full protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Implement the audited shared offered-demand A/B/C benchmark and retain raw failures.
-2. Re-run the benchmark on a clean commit and independently recompute its metrics.
+1. Commit and replay the A/B/C benchmark from a clean source; independently recompute metrics.
+2. Write measured benchmark results/limitations and close only supported acceptance gates.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
    Frontend remains downstream of protocol/benchmark acceptance.
 

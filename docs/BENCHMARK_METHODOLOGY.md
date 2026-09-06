@@ -23,8 +23,9 @@ the same maker/taker accounts.
   full backing as its virtual balance. Real maker inventory is shared and unchanged.
   Settlement failures are expected when aggregate successful output exceeds it.
 * **C — AquaQoS:** AquaQoS router/vault, every strategy advertises the full backing,
-  and each strategy receives an equal guarantee (`backing / N`). The guard may use
-  the remaining burst capacity only when sibling guarantees remain protected.
+  and each strategy receives an equal guarantee (`backing / (2N)`). Aggregate
+  guarantees reserve half the backing; the other half is measurable burst capacity
+  that can be used only while sibling guarantees remain protected.
 
 The A quotes are intentionally shallower. All systems still use the same XYC
 formula, fee setting, rounding and offered output amounts; input required by each
@@ -40,7 +41,7 @@ For each strategy count `N` (at least 1, 2, 4 and 8), each fixture starts with:
 * deterministic strategy salts, registration order and program bytes;
 * A virtual/real per-strategy allocation `B/N`;
 * B and C virtual balance `B` per strategy;
-* C guarantees totaling `B` per token, with no initial burst consumption;
+* C guarantees totaling `B/2` per token, with no initial burst consumption;
 * the same XYC exact-output quote, token direction, fee and integer rounding rules.
 
 No system receives a different initial inventory, extra replenishment or a different

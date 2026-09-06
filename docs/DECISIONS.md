@@ -118,3 +118,17 @@ model but cannot establish comparative utilization or failure rates. Reason: def
 the denominator and price/depth trade-off before writing measurement code. Consequence:
 benchmark implementation is gated on this methodology and a read-only benchmark audit;
 no performance claim is valid from the current gas microcases alone.
+
+## 2026-09-07 — D010: Reserve half backing for v0 burst measurement
+
+Decision: the comparative v0 fixture sets each AquaQoS guarantee to `B / (2N)`
+while each strategy advertises virtual depth `B`. This reserves half of shared backing
+for protected guarantees and leaves a declared burst budget for the concentrated
+workload. Conservative Aqua still splits virtual depth and backing at `B / N`; raw
+Aqua remains fully overcommitted at `B` per strategy. Alternatives: guarantees
+totalling all backing (which has no measurable burst headroom) or an unbounded adaptive
+guarantee. Evidence: the first benchmark draft correctly rejected cross-guarantee
+spend when aggregate guarantees equalled backing, producing zero burst utilization.
+Reason: make the tested burst policy explicit and measurable without changing the
+contract invariant. Consequence: benchmark results are policy-specific and cannot be
+generalized to every guarantee ratio.
