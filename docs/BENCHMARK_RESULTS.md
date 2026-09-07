@@ -1,95 +1,95 @@
-# A/B/C benchmark results (v1)
+# Local comparative benchmark results (v2)
 
-Historical v1 results below are superseded by D011 methodology corrections. The
-v2 draft has passed recorded-data checks; clean-source evidence and updated tables
-are pending. Do not use these v1 metric labels or ratios for release claims.
+Measured local-EVM evidence, not a market, profitability or solvency claim. The
+[raw report](../benchmarks/raw/a-b-c-v1.json) retains its historical filename but
+declares schema v2. D011 supersedes the old virtual-surplus burst-utilization ratios.
 
-This is measured local-EVM evidence, not a market or solvency claim. The raw source
-is [a-b-c-v1.json](../benchmarks/raw/a-b-c-v1.json); the independent checker is
-`pnpm check:benchmark`.
+## Reproduction and scope
 
-## Reproduction
-
-Run from the repository root:
+From the repository root, with clean source for the generation step:
 
 ```text
 pnpm benchmark:a-b-c
 pnpm check:benchmark
+node --test scripts/check-benchmark.test.mjs
 ```
 
-The clean run recorded runner source commit `65e143234e79636191309eb9967f897006c7d34b`,
-`dirty=false`, Node `22.16.0`, pnpm `11.10.0`, Hardhat `3.8.0`, ethers `6.13.4`,
-solc `0.8.30`, Cancun, viaIR and optimizer runs `700`. Each workload starts from a
-fresh EVM and the exact same demand trace is replayed for A, B and C.
+The clean run records source commit `337beebea7dc785f80039fbdf61b38e342ae2e22`,
+`dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
+solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
+hashes are retained. There are **32 fresh EVM fixtures**, grouped into eight policy/count
+entries: 2/4 strategies x four policies x four workloads. All 216 offered swaps and
+8 push actions are retained with receipts, calldata, states and gas.
 
-## Policy
+Checker passed; 17 checker regression tests passed (valid evidence plus 16 corrupted
+variants). `pnpm test` also passed 24 Solidity tests, including 256 fuzz runs in one
+property. Sandbox benchmark attempts hit a compiler-cache mutex timeout; approved
+host-context generation succeeded. These are local test-token transactions only.
 
-Backing is 10,000 units of each token. A splits virtual depth and backing at `B/N`.
-B advertises `B` per strategy with no guard. C advertises `B` per strategy and
-reserves `B/(2N)` per strategy as guarantee; the remainder is declared burst budget.
-All systems use the same fee-free XYC exact-output program and integer rounding.
+## Policy and results
 
-`success/offered` is successful maker output divided by all offered output. `q` is
-virtual quote rejection, `g` is AquaQoS guard rejection, and `f` is raw settlement
-failure; values are output units, not silently dropped attempts.
+Every fixture starts with 10,000 raw units of each token. A allocates virtual depth
+`B/N`, with one EOA holding the shared real inventory. B advertises `B` per strategy
+without configured guarantees. C (half-backing policy) advertises `B` and sets
+`g=B/(2N)`; C100 uses the same vault/router and sets `g=B/N`, matching A's initial
+virtual allocation. C/C100 custody and quote depth still differ from A.
 
-The raw `capitalUtilization` metric is successful output divided by total initial
-two-token backing plus declared push deposits. `advertisedVirtualDepth` is the sum
-of both virtual token balances across strategies. A false/unsafe-guard-rejection
-counter is intentionally not claimed yet; matched-guard replay is a release-open
-follow-up.
+Cells show successful/offered output, aggregated across synthetic raw token units.
+`q`, `g`, `f` are quote-rejected, guard-rejected and settlement-failed output units.
+No attempted demand is removed after failure.
 
-| Strategies | Workload | A | B | C |
-| ---: | --- | --- | --- | --- |
-| 2 | low contention | 5,117/5,117 | 5,117/5,117 | 5,117/5,117 |
-| 2 | concentrated overload | 6,000/18,000 (q 12,000) | 9,000/18,000 (q 3,000; f 6,000) | 9,000/18,000 (g 9,000) |
-| 2 | replenishment | 7,500/10,000 (q 2,500) | 10,000/10,000 | 10,000/10,000 |
-| 4 | low contention | 2,467/2,467 | 2,467/2,467 | 2,467/2,467 |
-| 4 | concentrated overload | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) |
-| 4 | replenishment | 3,750/5,000 (q 1,250) | 5,000/5,000 | 5,000/5,000 |
+| Strategies | Workload | A | B | C | C100 |
+| ---: | --- | --- | --- | --- | --- |
+| 2 | Low contention | 5,117/5,117 | 5,117/5,117 | 5,117/5,117 | 5,117/5,117 |
+| 2 | Concentrated overload | 6,000/18,000 (q 12,000) | 9,000/18,000 (q 3,000; f 6,000) | 9,000/18,000 (g 9,000) | 6,000/18,000 (g 12,000) |
+| 2 | Reverse overload | 6,000/18,000 (q 12,000) | 9,000/18,000 (f 9,000) | 9,000/18,000 (g 9,000) | 6,000/18,000 (g 12,000) |
+| 2 | Replenishment | 7,500/10,000 (q 2,500) | 10,000/10,000 | 10,000/10,000 | 10,000/10,000 |
+| 4 | Low contention | 2,467/2,467 | 2,467/2,467 | 2,467/2,467 | 2,467/2,467 |
+| 4 | Concentrated overload | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) | 6,000/13,500 (g 7,500) |
+| 4 | Reverse overload | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) | 6,000/13,500 (g 7,500) |
+| 4 | Replenishment | 3,750/5,000 (q 1,250) | 5,000/5,000 | 5,000/5,000 | 5,000/5,000 |
 
-The raw report also includes `adversarialOrder`, the exact concentrated demand
-multiset replayed in reverse order, with the same outcome accounting and checker
-coverage. It is omitted from the compact table above; no scenario is dropped from
-the denominator.
+At equal initial protected allocation, C100 matches A's overload fill volume: 6,000.
+C's 9,000 therefore depends on its smaller configured guarantees; it is not evidence
+that the guard alone improves volume at equal protection. The replenishment difference
+also reflects shallower A pricing: exact-output demand can exhaust A's virtual output
+depth. Per-attempt XYC inputs are retained; price/custody effects are not isolated.
 
-The C **net burst outstanding** ratio is `0.1333` for the two-strategy concentrated
-case, `0.0571` for the four-strategy concentrated case, `0.0833` and `0.0179` for the
-corresponding replenishment cases, and zero in low contention. It is computed from
-initial virtual depth minus final virtual depth, so later replenishment can reduce it;
-it is not a cumulative peak-burst metric. No protected-capacity violation was observed
-in the C runs. Quote input/slippage for every attempt is kept in the raw report because
-A has shallower virtual depth by design.
+No configured-capacity violation was found in recorded C/C100 post-action states.
+Initial unreserved backing across both tokens is 10,000 for C and zero for C100.
+`netBurstOutstanding` is a final virtual-ledger diagnostic, not cumulative physical
+burst utilization. `virtualBackingRatio` measures advertised depth/backing (A: 1;
+B/C/C100: N). `grossOutputTurnover` sums raw output divided by 20,000 plus push deposits;
+it is not economic capital efficiency. See [methodology](BENCHMARK_METHODOLOGY.md).
 
-## Representative swap gas
+## Representative median transaction gas
 
-These are median `gasUsed` values by outcome within this fixture; deployment, mint,
-approval and shipping gas is retained separately as setup gas, while replenishment
-push gas remains attached to its action. They are not a universal gas estimate.
+Setup gas is separate; push gas belongs to its action. These are fixture measurements,
+not universal estimates. All outcome gas samples, including reverse/replenishment,
+remain in the raw report.
 
-| Strategies | Workload | A | B | C |
-| ---: | --- | --- | --- | --- |
-| 2 | low contention | success 113,708 | success 113,708 | success 146,260 |
-| 2 | concentrated overload | success 113,708; quote 36,324 | success 113,708; quote 36,324; settle 126,779 | success 146,159; guard 79,604 |
-| 4 | low contention | success 113,708 | success 113,708 | success 165,471 |
-| 4 | concentrated overload | success 113,708; quote 36,324 | success 113,708; settle 126,779 | success 165,269; guard 101,890 |
+| Strategies | Workload | A | B | C | C100 |
+| ---: | --- | --- | --- | --- | --- |
+| 2 | Low contention | success 113,708 | success 113,708 | success 146,260 | success 146,260 |
+| 2 | Concentrated | success 113,708; quote 36,324 | success 113,708; quote 36,324; settle 126,779 | success 146,159; guard 79,604 | success 146,258; guard 79,774 |
+| 4 | Low contention | success 113,708 | success 113,708 | success 165,475 | success 165,475 |
+| 4 | Concentrated | success 113,708; quote 36,324 | success 113,708; settle 126,779 | success 165,313; guard 101,890 | success 165,481; guard 102,226 |
 
-## Interpretation and limits
+Low contention is a neutral volume case where QoS adds gas. Guarded policies reject
+overload before transfers; raw Aqua instead has actual inventory-shortage settlement
+failures. Rejected trades remain unsuccessful demand in all summaries.
 
-The concentrated workload is the intended failure-discrimination case: raw Aqua can
-quote beyond shared inventory and then rolls back at settlement, while AquaQoS rejects
-before token movement and preserves guarantees. Conservative Aqua rejects earlier when
-its per-strategy virtual depth is exhausted. The low-contention workload is a neutral
-case where QoS adds gas without increasing volume.
+## Review and release-open limits
 
-The result is policy-specific: C uses full shared virtual depth with guarantees of
-`B/(2N)`, while A uses `B/N` depth and `B/N` guarantees. This run therefore does not
-isolate the guard's effect from the chosen guarantee ratio. A matched-guarantee
-sensitivity run remains open before making a broad capital-efficiency claim.
-
-This is only six fixtures, two group sizes, one TokenMock pair, and three fixed local
-workloads. It does not measure hostile ERC-20 behavior, decrementing allowances in the
-benchmark runner, mainnet liquidity, profitability, universal solvency, or every
-ordering/guarantee ratio. The raw report and source pins must be regenerated after any
-code or methodology change; no number here should be copied into marketing without
-the same provenance.
+Separate read-only benchmark review checked the C100 construction and recomputation
+logic; custody wording and optimizer-enabled provenance assertions were corrected.
+The reviewer then independently ran the clean-report checker and all 17 regression
+tests, and verified C100/A volume, guarantee totals and the gas medians above; no
+blocking discrepancy was found. This is internal read-only review, not external audit.
+The checker validates recorded data consistency, not live-chain authentication or an
+independent source implementation. It does not regenerate demand from the seeds or
+decode calldata/receipt logs; raw transaction data is retained for replay/review.
+Counterfactual false-rejection replay remains open: do not claim every guard rejection
+was unsafe. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case gas
+remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
+owns these acceptance gates before broad performance or frontend proof-page claims.

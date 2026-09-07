@@ -58,6 +58,10 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
   capital utilization, unsafe rejections, burst utilization and gas. Define each denominator/unit.
 - [x] Report rejection and failed-fill counts over all attempts; do not reclassify rejection as filled demand.
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
+- [x] Matched-guarantee C100 sensitivity covers the same 32-fixture matrix; reports
+  price/custody limits. Recorded-data checker rejects 16 deliberate corruptions.
+- [ ] Counterfactual replay distinguishes unsafe rejection from conservative false rejection;
+  independently verify seeded workload and transaction calldata/log mapping before broad claims.
 - [x] Findings reproducible; neutral and losing cases are included; no target performance threshold was invented.
 
 ## Frontend, deployment and demo

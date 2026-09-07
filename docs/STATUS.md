@@ -1,13 +1,13 @@
 # AquaQoS handoff
 
 Updated 2026-09-07. Phase: v0 protocol implementation, security review and measurement.
-Guard/router/vault, integration tests and the first fair benchmark work locally; full
+Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
-- Current milestone in validation: C100 matched-guarantee sensitivity and stronger
-  evidence checks. Draft replay passed 32 fresh fixtures and separate recorded-state
-  recomputation; source-commit clean replay and corrupted-report tests are next.
-  Previous v1 results are historical pending replacement. No protocol code changed.
+- Last milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
+  fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
+  including 16 corrupted-report cases. `pnpm test` passed all 24 Solidity tests again.
+  Raw schema v2 replaces historical v1 numbers at the same path. No protocol code changed.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
 - Protocol tests: `pnpm test` passes 24 Solidity tests, including 256 fuzz runs in one
@@ -31,9 +31,10 @@ protocol acceptance remains open.
   numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
-- Benchmark: draft equal-guarantee C100 fills 6,000 output units in each concentrated
+- Benchmark: clean equal-guarantee C100 fills 6,000 output units in each concentrated
   case, matching A; C50 fills 9,000. This is policy/depth evidence, not a general
-  efficiency improvement. Clean-source v2 report remains pending at this source milestone.
+  efficiency improvement. Clean-source v2 evidence and corrected gas tables are in
+  BENCHMARK_RESULTS; source/lock/method/checker hashes match.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
 - Blockers: no protocol-work blocker. Sandbox benchmark attempts hit the compiler-cache
   lock; approved host-context replay passed. Rotate the exposed Context7 key (M7);
@@ -41,6 +42,10 @@ protocol acceptance remains open.
 - Review: separate read-only review found M1 (allowance after permissionless replenishment);
   corrected output floor and follow-up review closed it. SECURITY_REVIEW_V0 records scope
   and limits; this is not an external audit or final security certification.
+- Benchmark review: separate read-only auditor found no blocking C100/checker calculation
+  issue; corrected custody wording and checked optimizer.enabled. Independent raw replay
+  review is recorded in BENCHMARK_RESULTS; seed/calldata/log authentication and
+  counterfactual rejection checks remain explicitly open, not implied by checker success.
 - Local compiled byte sizes (solc 0.8.30, viaIR, optimizer 700, Cancun): router runtime
   21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
   Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
@@ -69,7 +74,7 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Finish clean C100 replay/checker/mutation tests, then explicit false-rejection replay.
+1. Implement explicit false-rejection counterfactual replay without weakening guarantees.
    Root owns release-open seed/calldata/receipt authentication and counts 1/8 coverage.
 2. Close remaining protocol acceptance gaps (fee/callback closure, lifecycle gas,
    fresh install) before frontend work.
