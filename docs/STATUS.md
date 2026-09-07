@@ -83,7 +83,7 @@ protocol acceptance remains open.
 
 Current continuation: implemented standalone rejection replay and checker; draft local
 run recreated all 30 capacity-rejected pre-states plus eight successful controls.
-Clean replay from `39569ca` classified 11 settlement failures, 19 successful capacity
+Clean replay from `77a21d6` classified 11 settlement failures, 19 successful capacity
 breaches and zero safe fills. `node scripts/check-rejections.mjs --self-test` passed,
 rejecting nine corrupted reports. Scope is static fee-free TokenMock with maximum
 allowance; same-transaction and finite-allowance behavior remains open. No production
