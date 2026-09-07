@@ -1,7 +1,7 @@
-# AquaQoS benchmark methodology (v1)
+# AquaQoS benchmark methodology (v2)
 
-This document defines the comparison before benchmark code is written. Numbers are
-not claims until a clean-source run produces the raw report.
+The original method preceded the runner; D011 records the matched-policy and evidence
+corrections. Numbers are not claims until a clean-source run produces the raw report.
 
 ## Question
 
@@ -14,10 +14,12 @@ trade-off visible?
 
 Every system uses the pinned Aqua/SwapVM sources, the same Cancun EVM, compiler,
 optimizer settings, TokenMock pair, fee-free XYC program, exact-output demand, and
-the same maker/taker accounts.
+the same owner/taker accounts. A/B maker custody is an EOA; C/C100 maker custody
+is the AquaQoS vault. This custody difference is not controlled away.
 
-* **A — conservative Aqua:** official Aqua, no guard, virtual balances and real
-  backing split evenly across strategies (`backing / N`). Aggregate virtual depth
+* **A — conservative Aqua:** official Aqua, no guard, virtual balances split evenly
+  across strategies (`backing / N`). One maker holds the shared real backing; there
+  is no separate custody account per strategy. Aggregate virtual depth
   equals initial real backing, so this is the no-overcommit reference.
 * **B — raw overcommitment:** official Aqua, no guard, every strategy advertises the
   full backing as its virtual balance. Real maker inventory is shared and unchanged.
@@ -26,6 +28,10 @@ the same maker/taker accounts.
   and each strategy receives an equal guarantee (`backing / (2N)`). Aggregate
   guarantees reserve half the backing; the other half is measurable burst capacity
   that can be used only while sibling guarantees remain protected.
+* **C100 — matched-guarantee AquaQoS:** identical to C except each guarantee is
+  `backing / N`. Aggregate configured guarantees equal all initial backing, matching
+  A's initial virtual allocation. Initial unreserved backing is zero. This isolates
+  guarantee-ratio sensitivity, not price/depth or custody implementation differences.
 
 The A quotes are intentionally shallower. All systems still use the same XYC
 formula, fee setting, rounding and offered output amounts; input required by each
@@ -39,9 +45,10 @@ For each strategy count `N` (at least 1, 2, 4 and 8), each fixture starts with:
 * one maker pair and equal initial real inventory `B` of each token;
 * zero reservations and the same taker balances, high enough for the largest quote;
 * deterministic strategy salts, registration order and program bytes;
-* A virtual/real per-strategy allocation `B/N`;
-* B and C virtual balance `B` per strategy;
+* A virtual per-strategy allocation `B/N` against the shared maker inventory;
+* B, C and C100 virtual balance `B` per strategy;
 * C guarantees totaling `B/2` per token, with no initial burst consumption;
+* C100 guarantees totaling `B` per token; B has no configured guarantee;
 * the same XYC exact-output quote, token direction, fee and integer rounding rules.
 
 No system receives a different initial inventory, extra replenishment or a different
@@ -98,13 +105,19 @@ Raw per-attempt records are the source of every aggregate:
 
 * **successful output volume:** sum of maker output tokens transferred on `success`;
 * **offered volume:** sum of all requested output amounts, including rejected ones;
-* **shared-liquidity ratio:** successful output volume / offered volume;
+* **fill ratio (`successRatio`):** successful output volume / offered volume;
+* **virtual backing ratio:** aggregate initial virtual depth / initial real backing;
 * **settlement-failure rate:** settlement failures / offered attempts;
 * **guard-rejection rate:** guard rejections / offered attempts;
 * **protected-capacity violations:** count of successful attempts that break the
   configured invariant;
-* **capital utilization:** successful output volume / initial maker output backing;
-* **burst utilization:** output beyond each C guarantee / configured burst capacity;
+* **gross output turnover:** successful output / (initial two-token backing + pushes).
+  This aggregates synthetic raw token units, not prices, economic value or capital efficiency;
+* **initial unreserved backing:** for guarded policies, sum across the two tokens of
+  `B - N*g`; not the sum of unspent virtual balances;
+* **net burst outstanding:** sum of `max(initial virtual - final virtual - g, 0)`.
+  Replenishment reduces it. It is a net ledger diagnostic, not cumulative physical
+  burst use; no burst-utilization ratio is claimed;
 * **quote input:** XYC input required for each offered amount, including rejected
   attempts where a quote exists;
 * **gas:** transaction `gasUsed`, reported separately for success and each rejection
@@ -125,3 +138,21 @@ audit are required before performance claims or frontend proof-page numbers.
 This is a local-EVM protocol benchmark. It measures the tested fixture and cannot by
 itself establish mainnet liquidity, economic profitability, universal solvency or
 real-market value.
+
+## Implemented coverage and open gates
+
+The current runner covers 32 fresh fixtures: 2/4 strategies x A/B/C/C100 x four
+workloads (low contention, concentrated overload, its reverse order, replenishment).
+Counts 1/8, balanced contention, seeded-shuffle order and the counterfactual
+false-rejection replay remain open; the list above is the target, not completed coverage.
+The historical raw path `a-b-c-v1.json` now declares schema `local-a-b-c-benchmark-v2`.
+
+The checker separately recomputes recorded maker/taker/router/Aqua balances, maker
+allowance, every virtual balance, state continuity, XYC inputs, error selectors/arguments,
+guarded entitlement backing and summary metrics. It does not authenticate a JSON file
+against a live chain, independently regenerate seeded demand, decode transaction calldata
+or reconstruct receipt logs. Full receipts/calldata and build identity are retained for
+replay/review. TokenMock funding/approval setup is asserted by the runner; broader token
+and allowance behavior is tested elsewhere, not established by this benchmark.
+Owner: root technical lead. These limits and false-rejection replay remain release-open;
+do not claim every rejected trade was unsafe or publish broad efficiency conclusions.

@@ -132,3 +132,21 @@ spend when aggregate guarantees equalled backing, producing zero burst utilizati
 Reason: make the tested burst policy explicit and measurable without changing the
 contract invariant. Consequence: benchmark results are policy-specific and cannot be
 generalized to every guarantee ratio.
+
+## 2026-09-07 — D011: Matched guarantee sensitivity and evidence corrections
+
+Decision: retain half-backing C and add C100 with `g=B/N`, alongside A and B on
+identical demand. A splits virtual balances, not physical custody. B has zero
+configured guarantees. Alternatives: replace C outright or present its unequal
+policy comparison without sensitivity. Evidence: runner inspection found C's total
+guarantees were half A's initial allocation; its burst denominator summed virtual
+surplus rather than unreserved real backing. Reason: remove unsupported metric names
+and expose the allocation/depth trade-off. Consequences: use fill ratio, virtual
+backing ratio, synthetic gross output turnover and net burst outstanding; no economic
+efficiency or physical burst-utilization claim. No protocol invariant changes.
+
+Retain receipts/calldata and checked build identity, decode failure bytes in the
+checker, recompute complete recorded transitions/entitlements, and add corrupted-report
+regressions. Earlier checker claims overstated state/error independence; old numbers
+remain historical in Git, not current release evidence. False-rejection counterfactual
+replay and broader workload coverage stay open with the root lead as owner.

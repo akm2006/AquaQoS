@@ -1,95 +1,163 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { pathToFileURL } from 'node:url';
+import { Interface } from 'ethers';
 
-const report = JSON.parse(readFileSync(new URL('../benchmarks/raw/a-b-c-v1.json', import.meta.url)));
-assert.equal(report.kind, 'local-a-b-c-benchmark-v1');
-assert.equal(report.dirty, false, 'benchmark evidence must come from a clean commit');
-assert.equal(report.runs.length, 6, 'two group sizes x three systems');
+// Signatures from pinned SafeERC20 and AquaQoSVault; ethers supplies Panic decoding.
+const errors = new Interface(['error InsufficientCapacity(uint256 available,uint256 required)',
+  'error SafeTransferFromFailed()']);
+const systems = ['A', 'B', 'C', 'C100'];
+const names = ['lowContention', 'concentratedOverload', 'adversarialOrder', 'replenishment'];
+const outcomes = ['success', 'quote_rejection', 'guard_rejection', 'settlement_failure'];
+const canonical = a => ({ actionIndex: a.actionIndex, type: a.type, strategy: a.strategy,
+  aToB: a.aToB, token: a.token, amount: String(a.amount) });
+const sum = (items, field) => items.reduce((n, a) => n + BigInt(a[field]), 0n);
+const min = (a, b) => a < b ? a : b;
+const max = (a, b) => a > b ? a : b;
 
-const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
-for (const [path, expected] of Object.entries(report.sourceHashes)) assert.equal(hash(path), expected, path);
-
-const canonical = action => ({ actionIndex: action.actionIndex, type: action.type, strategy: action.strategy,
-  aToB: action.aToB, token: action.token, amount: String(action.amount) });
-const runMap = new Map(report.runs.map(run => [`${run.count}/${run.system}`, run]));
-for (const [countText, trace] of Object.entries(report.demandTrace)) {
-  const count = Number(countText);
-  const traceActions = Object.values({ lowContention: trace.lowContention, concentratedOverload: trace.concentratedOverload,
-    adversarialOrder: trace.adversarialOrder, replenishment: trace.replenishment });
-  for (const actions of traceActions) assert.ok(actions.length > 0);
-  for (const system of ['A', 'B', 'C']) {
+export function checkBenchmark(report) {
+  assert.equal(report.kind, 'local-a-b-c-benchmark-v2');
+  assert.equal(report.dirty, false, 'benchmark evidence must come from a clean commit');
+  assert.match(report.sourceCommit, /^[a-f0-9]{40}$/);
+  assert.equal(report.runs.length, 8, 'two sizes x four policies');
+  assert.deepEqual(Object.keys(report.demandTrace).sort(), ['2', '4']);
+  const runMap = new Map(report.runs.map(r => [`${r.count}/${r.system}`, r]));
+  assert.equal(runMap.size, 8, 'unique system/count pairs');
+  for (const count of [2, 4]) for (const system of systems) {
     const run = runMap.get(`${count}/${system}`);
     assert.ok(run, `${system}/${count} missing`);
-    const expectedVirtual = system === 'A' ? 10_000n / BigInt(count) : 10_000n;
-    const expectedGuarantee = system === 'C' ? 10_000n / (2n * BigInt(count)) : 10_000n / BigInt(count);
+    const guarded = system === 'C' || system === 'C100';
+    const virtual = system === 'A' ? 10_000n / BigInt(count) : 10_000n;
+    const guarantee = system === 'B' ? 0n : 10_000n / ((system === 'C' ? 2n : 1n) * BigInt(count));
     assert.equal(BigInt(run.policy.backing), 10_000n);
-    assert.equal(BigInt(run.policy.virtualDepth), expectedVirtual);
-    assert.equal(BigInt(run.policy.guarantee), expectedGuarantee);
-    assert.equal(run.scenarios.length, 4);
+    assert.equal(BigInt(run.policy.virtualDepth), virtual);
+    assert.equal(BigInt(run.policy.guarantee), guarantee);
+    assert.deepEqual(run.scenarios.map(s => s.name).sort(), [...names].sort());
     for (const scenario of run.scenarios) {
-      const expected = trace[scenario.name];
-      const expectedIndexed = expected.map((action, actionIndex) => ({ ...action, actionIndex }));
-      const observed = [...scenario.attempts, ...scenario.actions].map(canonical).sort((a, b) => a.actionIndex - b.actionIndex);
-      assert.deepEqual(observed, expectedIndexed.map(canonical), `${system}/${count}/${scenario.name} exact trace`);
-      for (const state of [scenario.initialState]) {
-        assert.equal(state.tokens.length, 2);
-        for (const token of state.tokens) {
-          assert.equal(BigInt(token.balance), 10_000n);
-          assert.equal(BigInt(token.allowance), (1n << 256n) - 1n);
-          assert.equal(BigInt(token.takerBalance), 1_000_000n);
-          assert.ok(token.virtual.every(value => BigInt(value) === expectedVirtual));
+      const label = `${system}/${count}/${scenario.name}`;
+      const expected = report.demandTrace[count][scenario.name].map((a, actionIndex) => ({ ...a, actionIndex }));
+      assert.ok(expected.length > 0);
+      const actions = [...scenario.attempts, ...scenario.actions].sort((a, b) => a.actionIndex - b.actionIndex);
+      assert.deepEqual(actions.map(canonical), expected.map(canonical), `${label} exact trace`);
+      assert.ok(scenario.attempts.every(a => a.type === 'swap'));
+      assert.ok(scenario.actions.every(a => a.type === 'push'));
+      assert.equal(scenario.initialState.maker, run.policy.maker);
+      assert.equal(scenario.initialState.tokens.length, 2);
+      for (const token of scenario.initialState.tokens) {
+        assert.equal(BigInt(token.balance), 10_000n);
+        assert.equal(BigInt(token.allowance), (1n << 256n) - 1n);
+        assert.equal(BigInt(token.takerBalance), 1_000_000n);
+        assert.equal(BigInt(token.routerBalance), 0n);
+        assert.equal(BigInt(token.aquaBalance), 0n);
+        assert.deepEqual(token.virtual.map(BigInt), Array(count).fill(virtual));
+      }
+      let previous = scenario.initialState;
+      for (const action of actions) {
+        assert.deepEqual(action.before, previous, `${label} state continuity`);
+        assert.equal(action.gasUsed, Number(BigInt(action.receipt.gasUsed)));
+        assert.ok(action.gasUsed > 0);
+        assert.match(action.receipt.transactionHash, /^0x[a-f0-9]{64}$/i);
+        assert.equal(action.tx.from.toLowerCase(), run.policy.taker.toLowerCase());
+        assert.equal(action.tx.to.toLowerCase(), (action.type === 'push' ? run.addresses.aqua : run.addresses.router).toLowerCase());
+        assert.equal(action.receipt.from.toLowerCase(), action.tx.from.toLowerCase());
+        assert.equal(action.receipt.to.toLowerCase(), action.tx.to.toLowerCase());
+        const after = structuredClone(action.before);
+        const amount = BigInt(action.amount);
+        const move = (index, delta) => {
+          const token = after.tokens[index];
+          token.balance = String(BigInt(token.balance) + delta);
+          token.takerBalance = String(BigInt(token.takerBalance) - delta);
+          token.virtual[action.strategy] = String(BigInt(token.virtual[action.strategy]) + delta);
+        };
+        if (action.type === 'push') {
+          assert.equal(action.receipt.status, '0x1');
+          move(action.token, amount);
+        } else {
+          assert.ok(outcomes.includes(action.outcome));
+          assert.equal(action.status, action.receipt.status);
+          const out = action.aToB ? 1 : 0, input = 1 - out;
+          const availableVirtual = BigInt(action.before.tokens[out].virtual[action.strategy]);
+          const expectedInput = availableVirtual > amount ?
+            (amount * BigInt(action.before.tokens[input].virtual[action.strategy]) + availableVirtual - amount - 1n) / (availableVirtual - amount) : null;
+          if (action.quoteInput !== null) assert.equal(BigInt(action.quoteInput), expectedInput, 'XYC quote');
+          if (action.outcome === 'success') {
+            assert.equal(action.status, '0x1');
+            assert.notEqual(expectedInput, null);
+            assert.equal(action.quoteError, null);
+            assert.equal(BigInt(action.quoteInput), expectedInput);
+            assert.equal(BigInt(action.expectedInput), expectedInput);
+            move(out, -amount);
+            move(input, expectedInput);
+            assert.equal(action.protectedCapacityViolation, false);
+          } else {
+            assert.equal(action.status, '0x0');
+            const parsed = errors.parseError(action.trace.data);
+            assert.ok(parsed, 'known error bytes');
+            assert.equal(action.trace.name, parsed.name, 'error label matches bytes');
+            assert.deepEqual(action.trace.args, parsed.args.toArray().map(String));
+            if (action.outcome === 'guard_rejection') {
+              assert.ok(guarded);
+              assert.equal(parsed.name, 'InsufficientCapacity');
+              assert.ok(parsed.args[0] < parsed.args[1]);
+            } else if (action.outcome === 'settlement_failure') {
+              assert.equal(system, 'B');
+              assert.equal(parsed.name, 'SafeTransferFromFailed');
+              assert.notEqual(action.quoteInput, null);
+              assert.ok(BigInt(action.before.tokens[out].balance) < amount, 'maker inventory shortage');
+              assert.ok(BigInt(action.before.tokens[out].allowance) >= amount);
+              assert.ok(BigInt(action.before.tokens[input].takerBalance) >= expectedInput, 'taker funded');
+            } else {
+              assert.equal(parsed.name, 'Panic');
+              assert.ok([17n, 18n].includes(parsed.args[0]), 'arithmetic overflow/division by zero');
+              assert.ok(availableVirtual <= amount, 'insufficient virtual output');
+              assert.equal(action.quoteError.data, action.trace.data);
+            }
+          }
         }
-      }
-      const swaps = scenario.attempts;
-      const offered = expectedIndexed.filter(a => a.type === 'swap').reduce((sum, action) => sum + BigInt(action.amount), 0n);
-      assert.equal(BigInt(scenario.metrics.attemptedOutput), offered, `${system}/${count}/${scenario.name} denominator`);
-      assert.equal(swaps.length, expectedIndexed.filter(a => a.type === 'swap').length);
-      for (let i = 0; i < swaps.length; i++) {
-        const expectedSwap = expectedIndexed.filter(a => a.type === 'swap')[i];
-        assert.equal(swaps[i].actionIndex, expectedSwap.actionIndex);
-        assert.equal(swaps[i].strategy, expectedSwap.strategy);
-        assert.equal(swaps[i].aToB, expectedSwap.aToB);
-        assert.equal(swaps[i].amount, String(expectedSwap.amount));
-        assert.notEqual(swaps[i].outcome, 'other_revert');
-        if (swaps[i].outcome !== 'success') {
-          assert.deepEqual(swaps[i].before, swaps[i].after, `${system}/${count}/${scenario.name} rollback`);
-          assert.ok(swaps[i].trace, 'failed attempt must retain trace');
-          if (swaps[i].outcome === 'guard_rejection') assert.equal(swaps[i].trace.name, 'InsufficientCapacity');
-          if (swaps[i].outcome === 'settlement_failure') assert.equal(swaps[i].trace.name, 'SafeTransferFromFailed');
-          if (swaps[i].outcome === 'quote_rejection') assert.equal(swaps[i].trace.name, 'Panic');
+        assert.deepEqual(action.after, after, `${label} complete recorded transfer/sibling/rollback state`);
+        for (const token of after.tokens) {
+          assert.ok([token.balance, token.takerBalance, ...token.virtual].every(v => BigInt(v) >= 0n));
+          if (guarded) {
+            const required = token.virtual.reduce((n, v) => n + min(guarantee, max(BigInt(v) - (10_000n - guarantee), 0n)), 0n);
+            assert.ok(BigInt(token.balance) >= required, 'protected backing');
+            assert.ok(BigInt(token.allowance) >= BigInt(count) * guarantee, 'allowance floor');
+          }
         }
+        previous = action.after;
       }
-      for (const outcome of ['success', 'quote_rejection', 'guard_rejection', 'settlement_failure']) {
-        const sum = swaps.filter(a => a.outcome === outcome).reduce((n, a) => n + BigInt(a.amount), 0n);
-        const key = `${outcome === 'success' ? 'successful' : outcome === 'quote_rejection' ? 'quoteRejected' : outcome === 'guard_rejection' ? 'guardRejected' : 'settlementFailed'}Output`;
-        assert.equal(BigInt(scenario.metrics[key]), sum, `${system}/${count}/${scenario.name}/${outcome}`);
+      assert.deepEqual(scenario.finalState, previous, `${label} final state`);
+      const swaps = scenario.attempts, m = scenario.metrics;
+      const offered = sum(swaps, 'amount'), successful = sum(swaps.filter(a => a.outcome === 'success'), 'amount');
+      assert.equal(BigInt(scenario.offeredVolume), offered);
+      assert.equal(BigInt(m.attemptedOutput), offered);
+      for (const [i, key] of ['successfulOutput', 'quoteRejectedOutput', 'guardRejectedOutput', 'settlementFailedOutput'].entries()) {
+        assert.equal(BigInt(m[key]), sum(swaps.filter(a => a.outcome === outcomes[i]), 'amount'));
       }
-      assert.equal(scenario.metrics.quoteCount, swaps.filter(a => a.quoteInput !== null).length);
-      assert.equal(BigInt(scenario.metrics.quoteInputTotal), swaps.filter(a => a.quoteInput !== null).reduce((n, a) => n + BigInt(a.quoteInput), 0n));
-      assert.equal(scenario.metrics.guaranteeViolations, 0);
-      const successful = swaps.filter(a => a.outcome === 'success').reduce((n, a) => n + BigInt(a.amount), 0n);
-      const deposits = scenario.actions.reduce((n, a) => n + BigInt(a.amount), 0n);
-      const ratio = Number(successful) / Number(offered || 1n);
-      assert.ok(Math.abs(scenario.metrics.sharedLiquidityRatio - ratio) < 1e-12);
-      assert.ok(Math.abs(scenario.metrics.capitalUtilization - Number(successful) / Number(20_000n + deposits)) < 1e-12);
-      assert.equal(BigInt(scenario.metrics.advertisedVirtualDepth), 2n * expectedVirtual * BigInt(count));
-      const expectedBurstCapacity = system === 'C' ? 2n * BigInt(count) * (10_000n - expectedGuarantee) : 0n;
-      let expectedBurstUsed = 0n;
-      if (system === 'C') for (const token of scenario.finalState.tokens) for (const value of token.virtual) {
-        const consumed = 10_000n - BigInt(value);
-        if (consumed > expectedGuarantee) expectedBurstUsed += consumed - expectedGuarantee;
-      }
-      assert.equal(BigInt(scenario.metrics.netBurstCapacity), expectedBurstCapacity);
-      assert.equal(BigInt(scenario.metrics.netBurstOutstanding), expectedBurstUsed);
+      assert.equal(m.quoteCount, swaps.filter(a => a.quoteInput !== null).length);
+      assert.equal(BigInt(m.quoteInputTotal), sum(swaps.filter(a => a.quoteInput !== null), 'quoteInput'));
+      assert.equal(m.guaranteeViolations, 0);
+      assert.equal(m.successRatio, Number(successful) / Number(offered || 1n));
+      assert.equal(m.grossOutputTurnover, Number(successful) / Number(20_000n + sum(scenario.actions, 'amount')));
+      assert.equal(m.virtualBackingRatio, Number(virtual * BigInt(count)) / 10_000);
+      assert.equal(BigInt(m.advertisedVirtualDepth), 2n * virtual * BigInt(count));
+      assert.deepEqual(m.gasByOutcome, Object.fromEntries([...new Set(swaps.map(a => a.outcome))].map(k => [k, swaps.filter(a => a.outcome === k).map(a => a.gasUsed)])));
+      assert.equal(m.initialUnreservedBacking, guarded ? String(2n * (10_000n - BigInt(count) * guarantee)) : null);
+      const burst = guarded ? scenario.finalState.tokens.reduce((n, t) => n + t.virtual.reduce((v, x) => v + max(10_000n - BigInt(x) - guarantee, 0n), 0n), 0n) : 0n;
+      assert.equal(BigInt(m.netBurstOutstanding), burst);
     }
   }
 }
 
-for (const count of [2, 4]) {
-  const low = ['A', 'B', 'C'].map(system => runMap.get(`${count}/${system}`).scenarios.find(s => s.name === 'lowContention'));
-  assert.ok(low.every(s => BigInt(s.metrics.successfulOutput) === BigInt(s.metrics.attemptedOutput)), `neutral ${count}`);
-  assert.ok(runMap.get(`${count}/B`).scenarios.find(s => s.name === 'concentratedOverload').metrics.settlementFailedOutput > 0, `raw failure ${count}`);
-  assert.ok(runMap.get(`${count}/C`).scenarios.find(s => s.name === 'concentratedOverload').metrics.guardRejectedOutput > 0, `guard rejection ${count}`);
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const report = JSON.parse(readFileSync(new URL('../benchmarks/raw/a-b-c-v1.json', import.meta.url)));
+  const required = ['contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol', 'hardhat.config.ts',
+    'benchmarks/run-a-b-c.mjs', 'scripts/check-benchmark.mjs', 'sources.lock.json', 'package.json',
+    'pnpm-lock.yaml', 'docs/BENCHMARK_METHODOLOGY.md'];
+  assert.deepEqual(Object.keys(report.sourceHashes).sort(), required.sort());
+  for (const [path, expected] of Object.entries(report.sourceHashes)) {
+    assert.equal(createHash('sha256').update(readFileSync(path)).digest('hex'), expected, path);
+  }
+  checkBenchmark(report);
+  console.log('32 local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.');
 }
-console.log('A/B/C raw evidence independently recomputed: clean provenance, shared traces, outcomes and metrics match.');

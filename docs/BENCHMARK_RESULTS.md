@@ -1,5 +1,9 @@
 # A/B/C benchmark results (v1)
 
+Historical v1 results below are superseded by D011 methodology corrections. The
+v2 draft has passed recorded-data checks; clean-source evidence and updated tables
+are pending. Do not use these v1 metric labels or ratios for release claims.
+
 This is measured local-EVM evidence, not a market or solvency claim. The raw source
 is [a-b-c-v1.json](../benchmarks/raw/a-b-c-v1.json); the independent checker is
 `pnpm check:benchmark`.

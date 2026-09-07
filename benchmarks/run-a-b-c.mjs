@@ -17,7 +17,7 @@ const takerFunding = 1_000_000n;
 const gasLimit = '0xf00000';
 
 const report = {
-  kind: 'local-a-b-c-benchmark-v1',
+  kind: 'local-a-b-c-benchmark-v2',
   sourceCommit: git('rev-parse', 'HEAD'),
   dirty: git('status', '--porcelain') !== '',
   node: process.version, pnpm, hardhat: packageVersion('hardhat'), ethers: packageVersion('ethers'), solc: '0.8.30',
@@ -25,7 +25,8 @@ const report = {
   pins: JSON.parse(readFileSync('sources.lock.json', 'utf8')),
   sourceHashes: Object.fromEntries([
     'contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol', 'hardhat.config.ts',
-    'benchmarks/run-a-b-c.mjs', 'package.json', 'pnpm-lock.yaml', 'docs/BENCHMARK_METHODOLOGY.md',
+    'benchmarks/run-a-b-c.mjs', 'scripts/check-benchmark.mjs', 'sources.lock.json',
+    'package.json', 'pnpm-lock.yaml', 'docs/BENCHMARK_METHODOLOGY.md',
   ].map(p => [p, hashFile(p)])),
   demandTrace: {}, runs: [], limitations: [
     'Local TokenMock pair and pinned XYC exact-output programs only.',
@@ -95,6 +96,7 @@ function makeDemandTrace(count, seed) {
 }
 
 async function runSystemScenario(system, count, trace, name, actions) {
+  const guarded = system === 'C' || system === 'C100';
   const connection = await network.create({ network: 'default', override: {
     hardfork: 'cancun', initialDate: '2026-09-07T00:00:00Z', throwOnTransactionFailures: false,
   } });
@@ -105,6 +107,12 @@ async function runSystemScenario(system, count, trace, name, actions) {
   const interfaces = [];
   const setup = async (name, args = []) => {
     const artifact = await artifacts.readArtifact(name);
+    const build = JSON.parse(readFileSync(await artifacts.getBuildInfoPath(artifact.buildInfoId), 'utf8'));
+    assert.equal(build.solcVersion, report.solc);
+    assert.equal(build.input.settings.evmVersion, report.evm);
+    assert.equal(build.input.settings.optimizer.runs, report.optimizerRuns);
+    assert.equal(build.input.settings.optimizer.enabled, true);
+    assert.equal(build.input.settings.viaIR, report.viaIR);
     const iface = new Interface(artifact.abi);
     const data = artifact.bytecode + iface.encodeDeploy(args).slice(2);
     const hash = await rpc('eth_sendTransaction', [{ from: owner, data, gas: gasLimit }]);
@@ -113,18 +121,20 @@ async function runSystemScenario(system, count, trace, name, actions) {
     systemLog.setupGas += Number(BigInt(receipt.gasUsed));
     const address = receipt.contractAddress;
     const code = await rpc('eth_getCode', [address, 'latest']);
-    const contract = { address, name, transactionHash: receipt.transactionHash, runtimeHash: keccak256(code), runtimeBytes: (code.length - 2) / 2, abi: iface };
+    const contract = { address, name, buildInfoId: artifact.buildInfoId,
+      solcLongVersion: build.solcLongVersion, transactionHash: receipt.transactionHash,
+      runtimeHash: keccak256(code), runtimeBytes: (code.length - 2) / 2, abi: iface };
     deployed.push(contract); interfaces.push(iface);
     return contract;
   };
   const aqua = await setup('Aqua');
-  const router = system === 'C'
+  const router = guarded
     ? await setup('AquaQoSRouter', [aqua.address, owner])
     : await setup('AquaSwapVMRouter', [aqua.address, ZeroAddress, owner, 'AquaQoS benchmark', '0.1']);
   const tokenA0 = await setup('TokenMock', ['Token A', 'A']);
   const tokenB0 = await setup('TokenMock', ['Token B', 'B']);
   const tokens = [tokenA0, tokenB0].sort((a, b) => a.address.toLowerCase().localeCompare(b.address.toLowerCase()));
-  const vault = system === 'C'
+  const vault = guarded
     ? await setup('AquaQoSVault', [aqua.address, router.address, tokens[0].address, tokens[1].address, owner])
     : null;
   const maker = vault?.address ?? owner;
@@ -138,7 +148,7 @@ async function runSystemScenario(system, count, trace, name, actions) {
     const receipt = await rpc('eth_getTransactionReceipt', [txHash]);
     if (setupTx) systemLog.setupGas += Number(BigInt(receipt.gasUsed));
     assert.equal(receipt.status, '0x1', `${system} setup ${method}`);
-    return receipt;
+    return { receipt, tx: { from, to: contract.address, data, gas: gasLimit } };
   };
   for (const token of tokens) {
     await send(token, 'mint', [maker, backing]);
@@ -149,7 +159,7 @@ async function runSystemScenario(system, count, trace, name, actions) {
   }
 
   const virtual = system === 'A' ? backing / BigInt(count) : backing;
-  const guarantee = system === 'C' ? backing / (2n * BigInt(count)) : backing / BigInt(count);
+  const guarantee = system === 'B' ? 0n : backing / ((system === 'C' ? 2n : 1n) * BigInt(count));
   systemLog.policy = { backing, virtualDepth: virtual, guarantee, maker, owner, taker };
   systemLog.addresses = { aqua: aqua.address, router: router.address, vault: vault?.address ?? null, tokens: tokens.map(t => t.address) };
   const orders = [], hashes = [];
@@ -176,20 +186,22 @@ async function runSystemScenario(system, count, trace, name, actions) {
       const [balance] = await call(token, 'balanceOf', [maker]);
       const [allowance] = await call(token, 'allowance', [maker, aqua.address]);
       const [takerBalance] = await call(token, 'balanceOf', [taker]);
+      const [routerBalance] = await call(token, 'balanceOf', [router.address]);
+      const [aquaBalance] = await call(token, 'balanceOf', [aqua.address]);
       const balances = [];
       for (const hash of hashes) balances.push((await call(aqua, 'rawBalances', [maker, router.address, hash, token.address]))[0]);
-      result.tokens.push({ balance, allowance, takerBalance, virtual: balances });
+      result.tokens.push({ balance, allowance, takerBalance, routerBalance, aquaBalance, virtual: balances });
     }
     return result;
   };
   const classify = (parsed, quoteError) => {
-    if (system === 'C' && parsed.name === 'InsufficientCapacity') return 'guard_rejection';
+    if (guarded && parsed.name === 'InsufficientCapacity') return 'guard_rejection';
     if (parsed.name === 'SafeTransferFromFailed') return 'settlement_failure';
-    if (quoteError) return 'quote_rejection';
+    if (quoteError?.data === parsed.data && parsed.name === 'Panic') return 'quote_rejection';
     return 'other_revert';
   };
   const protectedCapacityViolation = state => {
-    if (system !== 'C') return false;
+    if (!guarded) return false;
     for (let tokenIndex = 0; tokenIndex < 2; tokenIndex++) {
       const baseline = backing - guarantee;
       const required = state.tokens[tokenIndex].virtual.reduce((sum, value) => {
@@ -197,17 +209,19 @@ async function runSystemScenario(system, count, trace, name, actions) {
         return sum + (available < guarantee ? available : guarantee);
       }, 0n);
       if (state.tokens[tokenIndex].balance < required || state.tokens[tokenIndex].allowance < required) return true;
+      if (state.tokens[tokenIndex].allowance < BigInt(count) * guarantee) return true;
     }
     return false;
   };
   const attempt = async (scenario, actionIndex, action) => {
     if (action.type === 'push') {
       const before = await snapshot();
-      const receipt = await send(aqua, 'push', [maker, router.address, hashes[action.strategy], tokens[action.token].address, action.amount], taker, false);
+      const { receipt, tx } = await send(aqua, 'push', [maker, router.address, hashes[action.strategy], tokens[action.token].address, action.amount], taker, false);
       const after = await snapshot();
       assert.equal(after.tokens[action.token].balance - before.tokens[action.token].balance, BigInt(action.amount));
       assert.equal(after.tokens[action.token].virtual[action.strategy] - before.tokens[action.token].virtual[action.strategy], BigInt(action.amount));
-      scenario.actions.push({ actionIndex, type: 'push', ...action, before, after, gasUsed: Number(BigInt(receipt.gasUsed)) });
+      assert.equal(protectedCapacityViolation(after), false, 'push capacity');
+      scenario.actions.push({ actionIndex, type: 'push', ...action, before, after, tx, receipt, gasUsed: Number(BigInt(receipt.gasUsed)) });
       return;
     }
     const amount = BigInt(action.amount);
@@ -221,7 +235,8 @@ async function runSystemScenario(system, count, trace, name, actions) {
     const receipt = await rpc('eth_getTransactionReceipt', [txHash]);
     const after = await snapshot();
     const record = { actionIndex, type: 'swap', strategy: action.strategy, aToB: action.aToB, amount, quoteInput,
-      quoteError, status: receipt.status, gasUsed: Number(BigInt(receipt.gasUsed)), before, after };
+      quoteError, status: receipt.status, gasUsed: Number(BigInt(receipt.gasUsed)), before, after,
+      tx: { from: taker, to: router.address, data, gas: gasLimit }, receipt };
     if (receipt.status === '0x1') {
       assert.ok(quoteInput !== null, 'successful swap needs a quote');
       const out = action.aToB ? 1 : 0, input = 1 - out;
@@ -238,6 +253,7 @@ async function runSystemScenario(system, count, trace, name, actions) {
       record.outcome = 'success';
       record.expectedInput = expectedInput;
       record.protectedCapacityViolation = protectedCapacityViolation(after);
+      assert.equal(record.protectedCapacityViolation, false, 'fill capacity');
     } else {
       assert.deepEqual(after, before, 'failed swap must roll back state');
       const trace = await rpc('debug_traceTransaction', [txHash, { disableMemory: true, disableStack: true, disableStorage: true }]);
@@ -261,8 +277,8 @@ async function runSystemScenario(system, count, trace, name, actions) {
   const successfulOutput = sum('success');
   const offeredOutput = scenario.offeredVolume;
   const deposits = scenario.actions.reduce((sum, action) => sum + BigInt(action.amount), 0n);
-  const burstCapacity = system === 'C' ? 2n * BigInt(count) * (backing - guarantee) : 0n;
-  const burstUsed = system === 'C' ? scenario.finalState.tokens.reduce((sum, token, tokenIndex) => sum + token.virtual.reduce((inner, value, i) => {
+  const initialUnreservedBacking = guarded ? 2n * (backing - BigInt(count) * guarantee) : null;
+  const burstUsed = guarded ? scenario.finalState.tokens.reduce((sum, token) => sum + token.virtual.reduce((inner, value) => {
     const consumed = backing - value;
     const used = consumed > guarantee ? consumed - guarantee : 0n;
     return inner + used;
@@ -274,19 +290,18 @@ async function runSystemScenario(system, count, trace, name, actions) {
     guardRejectedOutput: sum('guard_rejection'),
     settlementFailedOutput: sum('settlement_failure'),
     successRatio: Number(successfulOutput) / Number(offeredOutput || 1n),
-    sharedLiquidityRatio: Number(successfulOutput) / Number(offeredOutput || 1n),
+    virtualBackingRatio: Number(virtual * BigInt(count)) / Number(backing),
     advertisedVirtualDepth: 2n * virtual * BigInt(count),
-    capitalUtilization: Number(successfulOutput) / Number(2n * backing + deposits),
+    grossOutputTurnover: Number(successfulOutput) / Number(2n * backing + deposits),
     quoteCount: swaps.filter(a => a.quoteInput !== null).length,
     quoteInputTotal: swaps.filter(a => a.quoteInput !== null).reduce((n, a) => n + BigInt(a.quoteInput), 0n),
-      gasByOutcome: Object.fromEntries([...new Set(swaps.map(a => a.outcome))].map(k => [k, swaps.filter(a => a.outcome === k).map(a => a.gasUsed)])),
+    gasByOutcome: Object.fromEntries([...new Set(swaps.map(a => a.outcome))].map(k => [k, swaps.filter(a => a.outcome === k).map(a => a.gasUsed)])),
     guaranteeViolations: swaps.filter(a => a.protectedCapacityViolation).length,
-    netBurstOutstanding: burstUsed, netBurstCapacity: burstCapacity,
-    netBurstUtilization: burstCapacity ? Number(burstUsed) / Number(burstCapacity) : 0,
-      setupGas: systemLog.setupGas,
+    netBurstOutstanding: burstUsed, initialUnreservedBacking,
+    setupGas: systemLog.setupGas,
   };
   systemLog.scenarios = [scenario];
-  systemLog.deployments = deployed.map(({ abi, ...contract }) => contract);
+  systemLog.deployments = deployed.map(({ abi, ...contract }) => ({ ...contract, scenario: name }));
   await connection.close();
   return systemLog;
 }
@@ -313,7 +328,7 @@ async function runSystem(system, count, trace) {
 for (const count of [2, 4]) {
   const trace = makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401);
   report.demandTrace[count] = trace;
-  for (const system of ['A', 'B', 'C']) report.runs.push(await runSystem(system, count, trace));
+  for (const system of ['A', 'B', 'C', 'C100']) report.runs.push(await runSystem(system, count, trace));
 }
 
 for (const run of report.runs) {
