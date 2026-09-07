@@ -60,8 +60,12 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
 - [x] Matched-guarantee C100 sensitivity covers the same 32-fixture matrix; reports
   price/custody limits. Recorded-data checker rejects 16 deliberate corruptions.
-- [ ] Counterfactual replay distinguishes unsafe rejection from conservative false rejection;
-  independently verify seeded workload and transaction calldata/log mapping before broad claims.
+- [ ] Replay independently regenerates seeded workload and authenticates transaction
+  calldata/log mapping before broad claims; same-transaction and finite-allowance cases
+  are not covered by the static replay below.
+- [x] Static fee-free maximum-allowance replay rebuilt all 30 C/C100 rejected pre-states;
+  11 settlement failures, 19 capacity breaches and 0 safe fills; eight controls passed.
+  Same-transaction and finite-allowance conservatism remain separate gates.
 - [x] Findings reproducible; neutral and losing cases are included; no target performance threshold was invented.
 
 ## Frontend, deployment and demo

@@ -90,6 +90,17 @@ The checker validates recorded data consistency, not live-chain authentication o
 independent source implementation. It does not regenerate demand from the seeds or
 decode calldata/receipt logs; raw transaction data is retained for replay/review.
 Counterfactual false-rejection replay remains open: do not claim every guard rejection
-was unsafe. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case gas
-remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
+was unsafe. The bounded replay is now complete for this report: all 30 C/C100 guard
+rejections were rebuilt from their saved pre-state using the official unguarded router.
+It found 11 actual settlement failures, 19 successful swaps that breached the configured
+capacity invariant, and zero safe fills. Eight successful controls (both directions for
+each guarded policy/count) reproduced their original after-state. This confirms the
+static, fee-free, maximum-allowance TokenMock integration for these cases; it does not
+measure same-transaction or finite-allowance conservatism.
+
+Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
+from source commit `39569ca97721673295bf627635cbaf261bd18f47` with `dirty=false`.
+`node scripts/check-rejections.mjs --self-test` passed, rejecting nine deliberately
+corrupted reports. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case
+gas remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
 owns these acceptance gates before broad performance or frontend proof-page claims.

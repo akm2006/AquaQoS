@@ -22,7 +22,10 @@ Original brief SHA-256:
 2026-09-07 rejection replay: root implemented benchmarks/replay-rejections.mjs,
 scripts/check-rejections.mjs and REJECTION_REPLAY/D012 from the STATUS next task.
 Read-only benchmark reviewer challenged reconstruction, baseline preservation, controls
-and scope; actual execution/review evidence is recorded in STATUS and BENCHMARK_RESULTS.
+and scope; the reviewer then exhausted its usage limit before final rerun. Root reran
+cleanly from `39569ca`: 30 candidates, 8 controls, 11 settlement failures, 19 capacity
+breaches, zero safe fills, and 9 corrupted-report tests rejected. Evidence is recorded
+in STATUS and BENCHMARK_RESULTS.
 Owner authorized continuation; no additional human technical contribution is inferred.
 
 Original brief SHA-256:

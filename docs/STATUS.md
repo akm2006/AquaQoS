@@ -74,8 +74,8 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Implement explicit false-rejection counterfactual replay without weakening guarantees.
-   Root owns release-open seed/calldata/receipt authentication and counts 1/8 coverage.
+1. Extend rejection replay to same-transaction reservations and finite-allowance cases;
+   the static fee-free maximum-allowance replay is now complete.
 2. Close remaining protocol acceptance gaps (fee/callback closure, lifecycle gas,
    fresh install) before frontend work.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
@@ -83,9 +83,11 @@ protocol acceptance remains open.
 
 Current continuation: implemented standalone rejection replay and checker; draft local
 run recreated all 30 capacity-rejected pre-states plus eight successful controls.
-Observed draft classifications: 11 settlement failures, 19 successful capacity breaches,
-zero safe fills. These are not clean-source release evidence yet; clean replay, checker
-corruption tests and final independent review pending. No production contract edits.
+Clean replay from `39569ca` classified 11 settlement failures, 19 successful capacity
+breaches and zero safe fills. `node scripts/check-rejections.mjs --self-test` passed,
+rejecting nine corrupted reports. Scope is static fee-free TokenMock with maximum
+allowance; same-transaction and finite-allowance behavior remains open. No production
+contract edits.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.
