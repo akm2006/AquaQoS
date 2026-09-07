@@ -81,5 +81,11 @@ protocol acceptance remains open.
 3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
    Frontend remains downstream of protocol/benchmark acceptance.
 
+Current continuation: implemented standalone rejection replay and checker; draft local
+run recreated all 30 capacity-rejected pre-states plus eight successful controls.
+Observed draft classifications: 11 settlement failures, 19 successful capacity breaches,
+zero safe fills. These are not clean-source release evidence yet; clean replay, checker
+corruption tests and final independent review pending. No production contract edits.
+
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

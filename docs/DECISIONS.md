@@ -150,3 +150,22 @@ checker, recompute complete recorded transitions/entitlements, and add corrupted
 regressions. Earlier checker claims overstated state/error independence; old numbers
 remain historical in Git, not current release evidence. False-rejection counterfactual
 replay and broader workload coverage stay open with the root lead as owner.
+
+## 2026-09-07 — D012: Replay each rejected pre-state using official settlement
+
+Decision: rebuild each C/C100 rejected benchmark pre-state in a fresh local official
+Aqua/SwapVM fixture; retain the original baselines and guarantees for post-state
+checks. Compare successful controls in both directions. Alternatives: compare with
+aggregate B outcomes (different histories), rely only on admission algebra, or add a
+guard bypass to production contracts. Evidence: pinned Aqua ships arbitrary virtual
+balances without moving tokens, making exact balance-state reconstruction possible;
+the recipe is fee-free, static XYC with honest TokenMocks and no maker callbacks.
+Reason: measure real settlement outcomes from each rejected state without changing
+protected contracts. Consequences: reference maker/token/router/order identities differ;
+only normalized static state equivalence is claimed. Check both token entitlements,
+full configured allowance floor and transfer/rollback deltas. Top-level/max-allowance
+results cannot quantify same-transaction or finite-allowance conservatism.
+
+REJECTION_REPLAY supplements the historical v2 benchmark method without altering its
+pinned input report or source hashes. Raw results bind input file hash and source
+commit; controls are excluded from rejected-attempt and rejected-output denominators.
