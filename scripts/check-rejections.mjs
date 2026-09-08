@@ -9,7 +9,7 @@ const key = r => `${r.system}/${r.count}/${r.scenario}/${r.actionIndex}`;
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const sum = rows => rows.reduce((n, r) => n + BigInt(r.amount), 0n);
 const swapInterface = new Interface(['function swap((address maker,uint256 traits,bytes data) order,uint256 amount,bytes takerTraitsAndData)']);
-const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion', 'runtimeHash'];
+const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion'];
 
 function expectedDeployments(input, run) {
   const reference = input.runs.find(candidate => candidate.system === 'A' && candidate.count === run.count);
@@ -23,8 +23,14 @@ function expectedDeployments(input, run) {
 }
 
 function checkReplayIdentity(record, input, run, action) {
-  assert.deepEqual(record.deployments.map(d => Object.fromEntries(deploymentFields.map(field => [field, d[field]]))),
-    expectedDeployments(input, run), 'replay deployment identity');
+  const expected = expectedDeployments(input, run);
+  assert.equal(record.deployments.length, expected.length, 'replay deployment count');
+  for (const [actual, clean] of record.deployments.map((d, i) => [d, expected[i]])) {
+    assert.deepEqual(Object.fromEntries(deploymentFields.map(field => [field, actual[field]])),
+      Object.fromEntries(deploymentFields.map(field => [field, clean[field]])), 'replay deployment identity');
+    if (actual.name !== 'AquaSwapVMRouter') assert.equal(actual.runtimeHash, clean.runtimeHash, 'replay executable identity');
+    assert.match(actual.runtimeHash, /^0x[a-f0-9]{64}$/i, 'runtime hash');
+  }
   assert.equal(record.tx.to.toLowerCase(), run.addresses.router.toLowerCase(), 'replay target');
   assert.equal(record.tx.from.toLowerCase(), run.policy.taker.toLowerCase(), 'replay sender');
   assert.equal(record.receipt.to.toLowerCase(), record.tx.to.toLowerCase(), 'receipt target');
@@ -46,6 +52,8 @@ export function checkRejections(report, input) {
   assert.equal(report.dirty, false);
   assert.match(report.sourceCommit, /^[a-f0-9]{40}$/);
   assert.equal(report.inputSourceCommit, input.sourceCommit);
+  const routerRuntimeHash = report.records[0]?.deployments.find(d => d.name === 'AquaSwapVMRouter')?.runtimeHash;
+  assert.match(routerRuntimeHash ?? '', /^0x[a-f0-9]{64}$/i, 'replay router runtime hash');
   const expected = new Map();
   for (const run of input.runs.filter(r => ['C', 'C100'].includes(r.system))) {
     const low = run.scenarios.find(s => s.name === 'lowContention');
@@ -69,6 +77,8 @@ export function checkRejections(report, input) {
     assert.equal(r.control, control);
     for (const field of ['amount', 'strategy', 'aToB']) assert.equal(r[field], action[field]);
     checkReplayIdentity(r, input, run, action);
+    assert.equal(r.deployments.find(d => d.name === 'AquaSwapVMRouter').runtimeHash, routerRuntimeHash,
+      'replay router runtime consistency');
     assert.deepEqual(r.before, action.before.tokens, 'recreated original state');
     assert.equal(r.guarantee, run.policy.guarantee);
     const g = BigInt(r.guarantee), baseline = 10_000n - g;
