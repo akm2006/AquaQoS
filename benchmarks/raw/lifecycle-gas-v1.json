@@ -1,7 +1,7 @@
 {
   "kind": "local-eight-strategy-lifecycle-gas-v1",
-  "sourceCommit": "96809b1906f5c80ade4a910e78a77bd3539d1314",
-  "dirty": true,
+  "sourceCommit": "10a63e522cf4b4c158547785044b2a3d92fd8409",
+  "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
   "hardhat": "3.8.0",
@@ -70,7 +70,7 @@
     "contracts/AquaQoSRouter.sol": "9037de4f5c0f5b6c5d30eb8c27c7e56cf0d4c28f627c4d43bec8efab7b3b0e03",
     "hardhat.config.ts": "77703f0405416ae97e2ecdfdff5306562bd78ee12c0edfea4df10b1f2a9fd803",
     "sources.lock.json": "1f389b853521db63c4a1ae67700d22cd826936e52d5638cfcd1c248febd0322a",
-    "package.json": "68063c763fd5d504f4e577ff0f0369c21fd2af1a6a7065e00c9930ca63b7fd70",
+    "package.json": "03bc456585ebec253be031e6a5f08426fb4d5e351dfcfd6d0a3d60df575c869a",
     "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1"
   },
   "fixtures": [
