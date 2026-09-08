@@ -1,6 +1,6 @@
 {
   "kind": "local-transaction-validation-and-gas-v1",
-  "sourceCommit": "c234f8259e9470f3d7fc220a9deb4b72194f1c22",
+  "sourceCommit": "ae23fb92112b7fdc353967ca922ad0f68f527c49",
   "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
