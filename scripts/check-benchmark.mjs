@@ -15,6 +15,26 @@ const canonical = a => ({ actionIndex: a.actionIndex, type: a.type, strategy: a.
 const sum = (items, field) => items.reduce((n, a) => n + BigInt(a[field]), 0n);
 const min = (a, b) => a < b ? a : b;
 const max = (a, b) => a > b ? a : b;
+const makeDemandTrace = (count, seed) => {
+  let value = seed >>> 0;
+  const random = () => { value ^= value << 13; value ^= value >>> 17; value ^= value << 5; return value >>> 0; };
+  const per = Math.floor(10_000 / count), low = [];
+  for (let i = 0; i < 8; i++) low.push({ type: 'swap', strategy: random() % count,
+    aToB: (random() & 1) === 1, amount: Math.max(1, Math.floor(per / 10) + (random() % Math.max(1, Math.floor(per / 20)))) });
+  const overloadAmount = Math.max(1, Math.floor(per * 0.6)), concentrated = [];
+  for (let i = 0; i < Math.ceil(10_000 / overloadAmount) + 2; i++) concentrated.push({
+    type: 'swap', strategy: i < 2 ? 0 : i % count, aToB: true, amount: overloadAmount });
+  const replenishAmount = Math.max(1, Math.floor(per / 2));
+  const replenishment = [
+    { type: 'swap', strategy: 0, aToB: true, amount: replenishAmount },
+    { type: 'swap', strategy: Math.min(1, count - 1), aToB: true, amount: replenishAmount },
+    { type: 'push', strategy: 0, token: 1, amount: replenishAmount },
+    { type: 'swap', strategy: Math.min(1, count - 1), aToB: true, amount: replenishAmount },
+    { type: 'swap', strategy: 0, aToB: true, amount: replenishAmount },
+  ];
+  return { seed, count, lowContention: low, concentratedOverload: concentrated,
+    adversarialOrder: [...concentrated].reverse(), replenishment };
+};
 
 export function checkBenchmark(report) {
   assert.equal(report.kind, 'local-a-b-c-benchmark-v2');
@@ -147,6 +167,7 @@ export function checkBenchmark(report) {
       assert.equal(BigInt(m.netBurstOutstanding), burst);
     }
   }
+  assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401), `${count} seeded demand trace`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
