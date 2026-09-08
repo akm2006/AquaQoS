@@ -48,4 +48,4 @@ the total 1inch sponsor listing is $7,000.
 Inspected Classic rules require repository evidence/access but did not establish a universal
 public-source mandate. Public GitHub is our delivery target, subject to owner permission.
 Upstream derivative-source/license obligations are a separate release gate; see
-[third-party provenance](THIRD_PARTY.md). Do not label public-source policy as a quoted rule.
+[third-party provenance](../../THIRD_PARTY.md). Do not label public-source policy as a quoted rule.

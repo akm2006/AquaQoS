@@ -15,20 +15,20 @@ access can improve the allocation trade-off for a maker running multiple strateg
 The intended innovation is execution-enforced sibling-capacity policy, not a claim that
 overcommitment creates real capital, guaranteed fills, profitability or solvency.
 
-## User and necessity of Aqua
+## User and technical foundation
 
 Primary user: a maker operating a small set of overlapping token strategies who wants
 explicit capacity priorities. Aqua is necessary to this experiment: it provides the real
 shared-inventory accounting and settlement path being constrained. SwapVM provides pricing,
 program execution and an extension point; replacing these with an unrelated escrow AMM
-would fail the project thesis and sponsor integration gate.
+would change the problem being measured.
 
-## Hackathon scope
+## Initial implementation scope
 
 One token capacity group with a bounded number of strategies; official Aqua settlement;
 one minimal CAPACITY_GUARD implementation after specification; deterministic raw failure;
 adversarial and fuzz tests; three-baseline benchmark; simple maker/demo/proof UI; repeatable
-local-fork token-transfer demonstration; documentation and judge package.
+local token-transfer demonstration and technical documentation.
 Registry and maker Vault are candidates, not mandated contracts. Retain only the state and
 control boundary proven necessary. Initially assume ordinary non-rebasing, non-fee-on-transfer
 ERC-20s; unsupported behaviors must be rejected or explicitly outside the tested property.

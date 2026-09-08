@@ -94,5 +94,5 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [ ] Technical claims map to source/test/receipt; third-party notices and AI/provenance complete.
 - [ ] Paper 5–7 pages if time permits, generated from the same evidence; optional, never blocks hard gates.
 - [ ] Human-reviewed contribution record, compliant 2–4 minute narrated video, sponsor mapping and repo access.
-- [ ] All [hackathon gates](HACKATHON_REQUIREMENTS.md) checked with evidence; dashboard submission receipt saved.
+- [ ] All [event gates](archive/ethonline-2026/HACKATHON_REQUIREMENTS.md) checked with evidence; dashboard submission receipt saved.
 - [ ] Final audit checks secrets, license notices, coherent history, reproducible commands and all public links.

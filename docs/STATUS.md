@@ -47,7 +47,8 @@ protocol acceptance remains open.
 - Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
 - Blockers: no protocol-work blocker. Sandbox benchmark attempts hit the compiler-cache
   lock; approved host-context replay passed. Rotate the exposed Context7 key (M7);
-  eligibility/provenance and publication actions remain in MANUAL_ACTIONS.
+  eligibility/provenance and publication actions remain in
+  archive/ethonline-2026/MANUAL_ACTIONS.
 - Review: separate read-only review found M1 (allowance after permissionless replenishment);
   corrected output floor and follow-up review closed it. SECURITY_REVIEW_V0 records scope
   and limits; this is not an external audit or final security certification.
@@ -150,5 +151,6 @@ The lifecycle enumeration helper was tightened to reject RPC/ABI errors and now 
 fresh fault-injection self-checks. A clean rerun after committing that helper now
 records source `57a37a7` with `dirty=false`; gas and state results are unchanged.
 
-See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
+See EXECUTION_PLAN for later work, archive/ethonline-2026/HACKATHON_REQUIREMENTS for
+deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

@@ -1,17 +1,30 @@
 # AquaQoS
 
-An ETHOnline 2026 research/build project investigating protected capacity and burst access
-for strategies sharing maker inventory through 1inch Aqua and SwapVM.
+AquaQoS is an experimental capacity scheduler for makers running multiple strategies on
+1inch Aqua. It protects configured capacity for registered strategies while allowing
+controlled burst access to shared maker inventory.
 
-Current state: a local Solidity prototype with a custom SwapVM capacity guard, a
-restricted maker vault, reproducible transaction evidence and a local judge-proof page.
-The remaining release work is the usable application/demo, deployment choice and final
-submission packaging. See the status file for current results and unresolved gates.
+## Why it exists
 
-Resume with [AGENTS.md](AGENTS.md) and [project status](docs/STATUS.md).
-See [charter](docs/PROJECT_CHARTER.md), [protocol findings](docs/PROTOCOL_BASELINE.md),
-[execution plan](docs/EXECUTION_PLAN.md), [acceptance gates](docs/ACCEPTANCE_CRITERIA.md)
-and [verified event requirements](docs/HACKATHON_REQUIREMENTS.md).
+Aqua keeps virtual balances independently accounted for each maker, app, strategy and
+token, while the maker's real ERC-20 inventory remains shared. Independent strategies can
+therefore appear funded at the virtual layer and still compete for the same final token
+transfer. AquaQoS tests an execution-enforced policy for that boundary.
+
+The v0 implementation adds a `CAPACITY_GUARD` SwapVM instruction and a restricted maker
+vault. The guard checks the configured capacity before canonical Aqua settlement, records
+transaction-scoped reservations, and leaves the official Aqua accounting and settlement
+path load-bearing.
+
+## Current state
+
+This is a local Solidity prototype with reproducible transaction receipts, state checks,
+benchmarks and a dependency-free verification page. The supported domain is deliberately
+small: one immutable token pair, up to eight fee-free XYC strategies, standard ERC-20
+behavior and pinned Aqua/SwapVM code. It does not claim general solvency, profitability,
+hostile-token coverage or an external audit.
+
+## Reproduce it
 
 Exact source identities are in [sources.lock.json](sources.lock.json) and the dependency
 lockfile. With Node 22.16.0 and pnpm 11.10.0:
@@ -24,13 +37,9 @@ node scripts/check-capacity-model.mjs
 node scripts/check-bootstrap.mjs
 ```
 
-Commands have run in the working tree; fresh-checkout rehearsal remains open.
-The [guard specification](docs/CAPACITY_GUARD_SPEC.md) defines the supported domain:
-one immutable pair, up to eight fee-free XYC strategies, standard tokens, and
-authenticated pinned Aqua/router code. Reservations last until transaction end,
-which can reject otherwise safe sequential fills in the same transaction.
-
-The local judge-facing proof page is served with `pnpm proof:serve` and opens at
+The [guard specification](docs/CAPACITY_GUARD_SPEC.md) defines the supported domain and
+invariants. Reservations last until transaction end, which can reject otherwise safe
+sequential fills in the same transaction. The local verification page is served with
 `http://127.0.0.1:4173/proof/`. It reports only committed evidence; no public deployment
 or wallet connection is implied.
 
@@ -38,19 +47,23 @@ or wallet connection is implied.
 
 - `contracts/`, `test/`: protocol implementation and Solidity tests.
 - `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
-- `proof/`: dependency-free judge verification page.
+- `proof/`: dependency-free local verification page.
 - `docs/`: protocol, benchmark, security, requirements and release documentation.
 - `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence
   retained for ETHOnline transparency; they are not runtime dependencies.
 - `.agents/`, `.codex/`: optional project-local Codex skills and read-only reviewer roles;
   they do not affect `pnpm build` or `pnpm test`.
 
-The public technical path is the README, `docs/STATUS.md`, the proof page and the
-reproduction/benchmark commands above. Maintainer and AI-process material is retained
-separately so it remains auditable without obscuring the protocol path.
+The public technical path is this README, `docs/STATUS.md`, the verification page and the
+reproduction/benchmark commands above. Maintainer and AI-process material is retained in
+the documentation tree so it remains auditable without obscuring the protocol path.
 
-The original winning package is preserved as planning provenance, not a specification.
-See [AI provenance](docs/AI_PROVENANCE.md) and [third-party notices](docs/THIRD_PARTY.md).
+See [AI provenance](docs/AI_PROVENANCE.md) and
+[third-party notices](docs/THIRD_PARTY.md) for development and licensing records.
+
+The project was started during ETHOnline 2026. Event requirements and submission records
+are archived under [docs/archive/ethonline-2026/](docs/archive/ethonline-2026/) and do not
+define the protocol itself.
 
 Powered by Aqua — © Degensoft Ltd 2025.
 Powered by SwapVM — © Degensoft Ltd 2025.

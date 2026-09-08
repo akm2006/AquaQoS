@@ -4,7 +4,7 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 
 | Date | Artifact scope | Origin / contribution |
 | --- | --- | --- |
-| 2026-09-05 takeover | Winning-package markdown | Supplied by owner, pre-existing at takeover; original authorship/time not yet established |
+| 2026-09-05 takeover | Initial owner-supplied planning material | Used as unvalidated starting context; it is not part of the public repository |
 | 2026-09-05 bootstrap | AGENTS, README, docs, source lock, local Codex roles/config/skills, bootstrap check | Codex generated from owner's detailed operating requirements; official-source research assisted by one read-only agent |
 | 2026-09-05 human input | Project direction and bootstrap requirements | Owner supplied the thesis, priorities, source hierarchy, acceptance requirements and authorization boundaries; further substantive human review/contributions must be recorded |
 | 2026-09-06 protocol baseline | Hardhat setup, shared-inventory/allowance tests, reproduction documentation | Codex implemented against pinned official sources; read-only protocol and security agents reviewed source paths, assertions and claims |
@@ -64,11 +64,6 @@ requires failed swaps to emit none; broader workload diversity remains open.
 `scripts/serve-proof.mjs`, using only committed measurements and links. Browser checks
 covered desktop and 390px layouts; no wallet, deployment or external publication is inferred.
 
-Original brief SHA-256:
-`afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
-Filesystem timestamp observed September 5 is not proof of original creation time or
-Classic eligibility. Preserve it unchanged; annotate disagreements elsewhere.
-
 The exact owner bootstrap request is retained in
 `docs/prompts/2026-09-05-owner-bootstrap.md`, recovered from this session's user message.
 Retain sanitized project prompts in `docs/prompts/`; omit credentials/private runtime
@@ -76,6 +71,10 @@ context, not substantive project direction. Update this ledger with precise file
 scope and actual human decisions/test contributions every milestone. Before submission,
 reconcile the ledger with Git history and retained prompts. Never fabricate human activity
 to satisfy the official meaningful-contribution requirement.
+
+The initial owner-supplied planning material is intentionally excluded from the public
+repository. Current technical claims are derived from the pinned sources, executable tests,
+retained raw evidence and the decisions recorded in this repository.
 
 ## Public-release policy
 
