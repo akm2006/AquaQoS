@@ -51,8 +51,7 @@ const expectedTransfers = (action, run) => {
   return [
     { token: run.addresses.tokens[input].toLowerCase(), from: taker, to: run.addresses.router.toLowerCase(), amount: quote },
     { token: run.addresses.tokens[input].toLowerCase(), from: run.addresses.router.toLowerCase(), to: maker, amount: quote },
-    { token: run.addresses.tokens[out].toLowerCase(), from: maker, to: run.addresses.router.toLowerCase(), amount },
-    { token: run.addresses.tokens[out].toLowerCase(), from: run.addresses.router.toLowerCase(), to: taker, amount },
+    { token: run.addresses.tokens[out].toLowerCase(), from: maker, to: taker, amount },
   ].sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
 };
 
