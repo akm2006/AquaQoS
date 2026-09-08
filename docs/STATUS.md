@@ -93,7 +93,7 @@ protocol acceptance remains open.
 3. Connect the proof page to a reproducible local transfer demo; keep wallet/UI scope minimal.
 
 Current continuation: standalone rejection replay and checker recreate all 30
-capacity-rejected pre-states plus eight successful controls. Clean replay from `d62d32a`
+capacity-rejected pre-states plus eight successful controls. Clean replay from `9d77eda`
 classified 11 settlement failures, 19 successful capacity breaches and zero safe fills.
 `node scripts/check-rejections.mjs --self-test` passed, rejecting 12 corrupted reports;
 it now binds deployment layout/build identity and exact maker/program/amount/direction

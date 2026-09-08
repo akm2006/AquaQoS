@@ -14,7 +14,7 @@ pnpm check:benchmark
 node --test scripts/check-benchmark.test.mjs
 ```
 
-The clean run records source commit `f03433799ab3dd0425d7d626e70864b6f8219c1e`,
+The clean run records source commit `379fe286043b7d56f2b1e9c0beb218d546f43d48`,
 `dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
 solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
 hashes are retained. There are **32 fresh EVM fixtures**, grouped into eight policy/count
@@ -101,7 +101,7 @@ static, fee-free, maximum-allowance TokenMock integration for these cases; it do
 measure same-transaction or finite-allowance conservatism.
 
 Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
-from source commit `d62d32a243745a7cb71a3d520e3755227141b39d` with `dirty=false`.
+from source commit `9d77eda8a43dda0e03a3d82c5179e5ce75e262ce` with `dirty=false`.
 `node scripts/check-rejections.mjs --self-test` passed, rejecting 12 deliberately
 corrupted reports. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case
 gas remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
