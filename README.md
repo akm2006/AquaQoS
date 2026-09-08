@@ -3,10 +3,10 @@
 An ETHOnline 2026 research/build project investigating protected capacity and burst access
 for strategies sharing maker inventory through 1inch Aqua and SwapVM.
 
-Current state: a local Solidity prototype. Tests reproduce shared-inventory settlement
-failure and exercise a custom SwapVM capacity guard with a restricted maker vault.
-Benchmark, application and deployment work remain open. See the status file for
-current test results and unresolved acceptance gates.
+Current state: a local Solidity prototype with a custom SwapVM capacity guard, a
+restricted maker vault, reproducible transaction evidence and a local judge-proof page.
+The remaining release work is the usable application/demo, deployment choice and final
+submission packaging. See the status file for current results and unresolved gates.
 
 Resume with [AGENTS.md](AGENTS.md) and [project status](docs/STATUS.md).
 See [charter](docs/PROJECT_CHARTER.md), [protocol findings](docs/PROTOCOL_BASELINE.md),
@@ -33,6 +33,21 @@ which can reject otherwise safe sequential fills in the same transaction.
 The local judge-facing proof page is served with `pnpm proof:serve` and opens at
 `http://127.0.0.1:4173/proof/`. It reports only committed evidence; no public deployment
 or wallet connection is implied.
+
+## Repository map
+
+- `contracts/`, `test/`: protocol implementation and Solidity tests.
+- `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
+- `proof/`: dependency-free judge verification page.
+- `docs/`: protocol, benchmark, security, requirements and release documentation.
+- `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence
+  retained for ETHOnline transparency; they are not runtime dependencies.
+- `.agents/`, `.codex/`: optional project-local Codex skills and read-only reviewer roles;
+  they do not affect `pnpm build` or `pnpm test`.
+
+The public technical path is the README, `docs/STATUS.md`, the proof page and the
+reproduction/benchmark commands above. Maintainer and AI-process material is retained
+separately so it remains auditable without obscuring the protocol path.
 
 The original winning package is preserved as planning provenance, not a specification.
 See [AI provenance](docs/AI_PROVENANCE.md) and [third-party notices](docs/THIRD_PARTY.md).

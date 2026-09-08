@@ -8,7 +8,7 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 | 2026-09-05 bootstrap | AGENTS, README, docs, source lock, local Codex roles/config/skills, bootstrap check | Codex generated from owner's detailed operating requirements; official-source research assisted by one read-only agent |
 | 2026-09-05 human input | Project direction and bootstrap requirements | Owner supplied the thesis, priorities, source hierarchy, acceptance requirements and authorization boundaries; further substantive human review/contributions must be recorded |
 | 2026-09-06 protocol baseline | Hardhat setup, shared-inventory/allowance tests, reproduction documentation | Codex implemented against pinned official sources; read-only protocol and security agents reviewed source paths, assertions and claims |
-| 2026-09-06 guard specification | CAPACITY_GUARD invariant, wrapper/vault boundary and D007 | Codex drafted and corrected the design through independent read-only source and security review; no production contract exists yet |
+| 2026-09-06 guard specification | CAPACITY_GUARD invariant, wrapper/vault boundary and D007 | Codex drafted and corrected the design through independent read-only source and security review; the resulting v0 contract boundary is explicitly limited in `docs/CAPACITY_GUARD_SPEC.md` |
 | 2026-09-06 specification checks | scripts/check-capacity-model.mjs, strengthened reproduction snapshots | Codex authored bounded exhaustive arithmetic checks and real-token rollback assertions; model outcomes are not performance benchmarks |
 | 2026-09-06 guard implementation | contracts/AquaQoSRouter.sol, contracts/AquaQoSVault.sol, test/AquaQoS.t.sol, supporting docs | Codex root implemented router/vault and regression corrections; a bounded worker wrote initial integration tests; separate read-only reviewers found and checked the allowance-floor correction. Owner requested continued implementation and plain-language progress updates. |
 | 2026-09-06 transaction replay | scripts/check-transactions.mjs, build roots/direct ethers pin, benchmarks/raw/transactions-v1.json, TRANSACTION_VALIDATION | Root implemented separate-transaction checks and generated EVM receipts/gas/state; a read-only benchmark auditor challenged assertions and provenance. This is a group-size micro-measurement, not the full benchmark. |
@@ -76,3 +76,12 @@ context, not substantive project direction. Update this ledger with precise file
 scope and actual human decisions/test contributions every milestone. Before submission,
 reconcile the ledger with Git history and retained prompts. Never fabricate human activity
 to satisfy the official meaningful-contribution requirement.
+
+## Public-release policy
+
+The provenance and prompt files are intentionally retained. ETHOnline permits AI-assisted
+development but asks teams to identify where AI was used; its current submission guidance
+also asks spec-driven projects to include the relevant prompts and planning artifacts.
+The Codex configuration is optional development tooling, not part of the protocol runtime.
+No claim of unaided authorship is made, and owner contributions must be recorded here as
+they occur rather than inferred from the commit author name.
