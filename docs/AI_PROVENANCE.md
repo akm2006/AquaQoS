@@ -33,6 +33,12 @@ controls. Test harness split fixed a compiler assembly-size failure; no producti
 contracts/compiler flags changed. Independent reviewer hit usage limit; root fallback
 review completed, independent implementation review explicitly pending.
 
+2026-09-08 callback continuation: root authored AquaQoSCallbacks.t.sol and the fee/
+callback path matrix in SECURITY_REVIEW_V0, using pinned official builders and
+settlement source. Four tests cover callback nesting/rollback, canonical traits and
+fee-recipe exclusion; no production edits. Root fallback review, not independent
+audit closure. Owner authorized continuation; no human contribution is inferred.
+
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
 Filesystem timestamp observed September 5 is not proof of original creation time or

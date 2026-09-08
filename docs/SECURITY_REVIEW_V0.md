@@ -85,3 +85,31 @@ no general optimality or market rejection rate is claimed.
 The read-only reviewer could not run because of its usage limit. Root inspected the
 actual test paths and arithmetic as fallback. Independent implementation review of
 these cases and the earlier rejection replay remains a release gate.
+
+## Sep 8: fee and callback path trace (root fallback review)
+
+Pinned SwapVM `f09a41e689240adc645934f965c8061749397cd2` initializes fee state
+to zero in quote and swap. Canonical XYC changes only amount registers; salt is a
+no-op. The wrapper checks empty fee state after the inner program finishes. No
+owner/global fee setter is present in this router. Settlement then validates traits
+and runs the two transfer helpers in taker-selected order. Scope below is the
+registered vault, canonical fee-free recipe and supported honest ERC-20 tokens.
+
+| Path after or around the guard | Enforcement and evidence |
+| --- | --- |
+| Input/output protocol, surplus and provider fees; LP flat fees | Vault cannot ship these recipes. Eight official fee builders inserted inside the wrapper are rejected by quote and swap with `InvalidGuardProgram`, before fee execution; balances and virtual state stay unchanged. Existing malformed-program tests cover trailing/duplicate instructions. |
+| Nonempty fee registers | Wrapper rejects them defensively. They are unreachable through canonical XYC/salt; no synthetic register injection is presented as a production-path test. With zero metadata, every input/output fee resolver returns zero before any fee transfer. |
+| Four maker hooks, maker receiver and maker unwrap | Vault constructs fixed traits; new test checks every hook disabled, receiver is vault, unwrap disabled and exact registered hash. Changing order data/traits changes the Aqua key. |
+| Taker pre-input and pre-output callbacks | Both run after reservation. New boolean-parameter tests sample both directions, both transfer orders and router payment versus callback `Aqua.push`. Quotes invoke neither callback and create no reservation. |
+| Reentrant same-order/sibling swap from pre-output callback | Same order returns upstream `UnexpectedLock`. Sibling output 501 rejects with available 1000/required 1001 and unchanged state; output 500 succeeds while the outer 500 remains pending. Final real/virtual balances, both reservations and allowance floors are checked. |
+| Owner callback lifecycle/configuration | Actual owner callback attempts pause, activate, dock-all, guarantee change, registration and withdrawal. All fail with `TransactionInProgress`, not merely an authorization failure. |
+| Missing callback payment after nested success | Maker-first outer fill and nested sibling output execute, then missing input fails with exact `AquaBalanceInsufficientAfterTakerPush`. All recorded balances, allowances, virtual markers, reservations and callback state roll back; pause/activate and retry of the same order succeed. |
+| Native currency/output unwrap and token callbacks | Router WETH is zero and vault tokens are nonzero; nonzero native payment is rejected for supported tokens and the unwrap branch cannot match them. Callback-bearing tokens remain unsupported, not newly validated by taker callback tests. |
+
+`test/AquaQoSCallbacks.t.sol` adds four tests; the full suite now passes 30 tests,
+including 256 runs each in three parameterized properties. These examples do not
+prove arbitrary callback code, every nested direction/sequence or hostile tokens.
+Root inspected the final test paths as the documented fallback; independent final
+implementation review remains open. No production code or invariant changed.
+The initial rollback test hit nested `expectRevert` bookkeeping; normal try/catch
+now checks the exact outer error without overlapping callback expectations.

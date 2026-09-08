@@ -72,3 +72,23 @@ Interface encoding/decoding; pinned ethers 6.13.4 was already installed transiti
 and is now a direct dependency. No new Hardhat plugin is needed. Pinned TakerTraits.sol
 build packs ten uint16 indexes and uint16 flags; script encodes only its empty-slice
 exact-output recipe. Compiled XYC source validates independent ceil input arithmetic.
+
+## 2026-09-08 pinned fee/callback verification
+
+Checked installed source at SwapVM `f09a41e689240adc645934f965c8061749397cd2`
+(S1; no latest-main or new-release claim):
+
+- [SwapVM settlement](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/SwapVM.sol):
+  fee initialization, two transfer orders, maker hooks, taker callbacks, native/unwrap
+  conditions and original-input virtual-balance validation after callback push.
+- [Protocol fee resolution](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/libs/ProtocolFee.sol):
+  empty fee metadata exits before transfers; output fees otherwise add Aqua pulls.
+- [Maker traits](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/libs/MakerTraits.sol)
+  and [taker traits](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/libs/TakerTraits.sol):
+  hook enablement, receiver, callback and payment flags used in the new tests.
+- [XYC](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/instructions/XYCSwap.sol)
+  and [controls](https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/instructions/Controls.sol):
+  canonical inner instructions do not populate fees or make external calls.
+
+The path matrix and new real-transfer tests are recorded in SECURITY_REVIEW_V0.
+This is pinned implementation verification, not a change to protocol dependencies.

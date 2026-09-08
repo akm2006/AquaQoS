@@ -16,7 +16,9 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 
 - [x] Written units, reserve, guarantee-consumption/replenishment semantics and exact invariant.
 - [x] Compare native Extruction versus dispatcher extension using pinned current interfaces.
-- [ ] Trace quote/swap and all fee/callback paths; check final total maker debit, not a provisional register.
+- [x] Trace quote/swap and fee/callback paths within the canonical fee-free supported
+  domain; final maker output debit is `amountOut`. SECURITY_REVIEW_V0 maps excluded
+  fee/hook routes and tested callbacks. Arbitrary recipes/tokens are not covered.
 - [x] Guard cannot be omitted, jumped over, invalidated by later instructions or bypassed through another route
   within the claimed protected domain. Test the selected program-validation/enforcement mechanism.
 - [x] Exact-in/out, both token directions, same-state quote/swap agreement and stale-quote recheck tested.

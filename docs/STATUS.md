@@ -4,9 +4,11 @@ Updated 2026-09-08. Phase: v0 protocol implementation, security review and measu
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
-- Last milestone: `pnpm test` passes 26 tests after splitting the two conservatism
-  regressions into a smaller harness. Bootstrap, benchmark and rejection evidence
-  checks pass; nine rejection-report corruptions are rejected. No test failures remain.
+- Last milestone: `pnpm test` passes 30 tests, adding callback/nested rollback,
+  canonical maker-trait and fee-recipe regressions. Supported fee/callback source
+  paths are mapped in SECURITY_REVIEW_V0. No production contract changes.
+  Bootstrap and both benchmark/rejection evidence checkers also pass; nine corrupted
+  rejection reports are rejected. No test failures remain.
 
 - Previous benchmark milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
   fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
@@ -14,10 +16,9 @@ protocol acceptance remains open.
   Raw schema v2 replaces historical v1 numbers at the same path. No protocol code changed.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: two additional conservatism regressions in AquaQoSConservatism.t.sol
-  bring the suite to 26 tests, including 256 fuzz runs in one property. Three reproduce
-  raw Aqua failures, twenty-one exercise v0 and two compare rejected fills with actual
-  unguarded reference settlement. The strengthened-assertion rerun passed on Sep 8.
+- Protocol tests: 30 passing, including 256 fuzz runs each in three properties.
+  Three reproduce raw Aqua failures, twenty-one exercise v0, two compare guarded
+  rejections with reference settlement and four cover fee/callback boundaries.
 - `pnpm test:transactions`: passed; exact failure bytes, full fill accounting, sibling
   isolation, aggregate backing, reservation events and transaction clearing asserted.
 - Seeded sequences: seeds 1/42/12648430 on 2/4/8 strategies, 64 attempts each;
@@ -31,7 +32,7 @@ protocol acceptance remains open.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
   Uncached downloads failed with error 23; network-only install remains unverified.
-  Nine newer tests pass in main checkout (24 total). See TRANSACTION_VALIDATION.
+  Fifteen newer tests pass in main checkout (30 total). See TRANSACTION_VALIDATION.
 - Known risks: same-transaction conservatism; worst-case group gas unmeasured;
   numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
@@ -79,9 +80,10 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Close fee/callback path coverage and worst-case eight-strategy lifecycle gas.
-2. Obtain independent implementation review of rejection replay and the new conservatism
-   regressions when reviewer capacity returns; source method review alone is insufficient.
+1. Measure worst-case eight-strategy lifecycle gas with reproducible receipt evidence.
+2. Obtain independent implementation review of rejection replay and the new
+   conservatism/callback regressions when reviewer capacity returns; source method
+   review alone is insufficient.
 3. Verify a fresh uncached install/build/test; then address broader workload and
    seed/calldata/log verification gates. Frontend remains downstream of acceptance.
 
@@ -102,6 +104,16 @@ usage limit; root fallback review performed and independent closure stays open.
 Adding tests to the large existing harness hit solc's "Tag too large for reserved space"
 internal error. A separate test contract resolved compilation without compiler/config
 or production contract changes. Only test harnesses carry oversized-initcode warnings.
+
+Sep 8 callback continuation: both taker callbacks tested with direction, payment-route
+and transfer-order parameters; same-order reentry and all six owner lifecycle calls
+reject. A nested sibling 501-unit output rejects, 500 succeeds, and missing outer
+payment rolls back both fills. Eight fee-recipe insertions fail before execution;
+canonical maker hooks/receiver and empty-fee settlement are source-mapped. Full suite
+passes 30 tests after fixing a test-only nested expectRevert conflict. Root fallback
+review completed; independent final review, broader adversarial sequences and token
+coverage remain open. The new test-only initcode warning does not change deployment
+bytecode. No benchmark regeneration or production/compiler changes were necessary.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.
