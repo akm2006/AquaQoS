@@ -182,3 +182,14 @@ Reason: the v0 bound is a protocol design choice and needs measured lifecycle co
 before release. Consequence: 518,103 successful activation gas and 518,883 late-failure
 gas are useful judge-facing engineering evidence, but callback code, token behavior,
 finite allowance writes, calldata and future EVM rules remain outside the claim.
+
+## 2026-09-08 — D014: Authenticate rejection replay identity
+
+Decision: make the rejection checker compare replay deployment identity against the clean
+benchmark fixture and decode each saved swap transaction before accepting the arithmetic
+replay. Alternatives: trust report fields, or rerun only the state model. Evidence: the
+prior checker accepted mutated calldata and deleted deployment entries in memory. Reason:
+state recomputation is not enough if retained transactions can refer to another order or
+runtime. Consequence: this bounded replay authenticates local deployment layout,
+runtime/build identity and exact maker/program/amount/direction calldata, while independent
+seed regeneration, receipt-log reconstruction and live-chain authentication remain open.

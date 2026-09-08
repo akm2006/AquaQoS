@@ -86,9 +86,11 @@ logic; custody wording and optimizer-enabled provenance assertions were correcte
 The reviewer then independently ran the clean-report checker and all 17 regression
 tests, and verified C100/A volume, guarantee totals and the gas medians above; no
 blocking discrepancy was found. This is internal read-only review, not external audit.
-The checker validates recorded data consistency, not live-chain authentication or an
-independent source implementation. It does not regenerate demand from the seeds or
-decode calldata/receipt logs; raw transaction data is retained for replay/review.
+The checker validates recorded data consistency and now authenticates each replay
+deployment against the clean benchmark fixture and decodes every saved swap calldata
+record. It is still not live-chain authentication or an independent source
+implementation: it does not regenerate demand from seeds or independently reconstruct
+receipt logs. Raw transaction data and receipts remain retained for review.
 Counterfactual false-rejection replay remains open: do not claim every guard rejection
 was unsafe outside the defined scope. The bounded replay is complete for this report: all 30 C/C100 guard
 rejections were rebuilt from their saved pre-state using the official unguarded router.

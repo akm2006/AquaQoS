@@ -37,8 +37,12 @@ Require complete recorded transfer deltas, unchanged sibling balances and rollba
 
 Use one successful low-contention C/C100 attempt in each direction per policy/group
 as positive controls (eight total), also matching original successful after-state.
-Controls are excluded from rejection denominators. Corrupted-evidence
-checks must reject changed state, missing candidates, fake outcomes and altered summary.
+Controls are excluded from rejection denominators. Corrupted-evidence checks must reject
+changed state, missing candidates, fake outcomes and altered summary. The checker also
+compares every replay deployment's name/address/build identity/runtime hash with the clean
+input fixture and decodes saved `swap` calldata to reconstruct maker, program, salt, amount
+and direction. This prevents result-only evidence from silently substituting another local
+deployment or demand.
 The retained evidence contains every rejected attempt; no adaptive selection.
 
 Denominators are total rejected attempts and total rejected output units, with counts

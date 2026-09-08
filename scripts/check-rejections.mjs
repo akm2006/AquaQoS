@@ -8,6 +8,34 @@ import { checkBenchmark } from './check-benchmark.mjs';
 const key = r => `${r.system}/${r.count}/${r.scenario}/${r.actionIndex}`;
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const sum = rows => rows.reduce((n, r) => n + BigInt(r.amount), 0n);
+const swapInterface = new Interface(['function swap((address maker,uint256 traits,bytes data) order,uint256 amount,bytes takerTraitsAndData)']);
+const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion', 'runtimeHash', 'runtimeBytes'];
+
+function expectedDeployments(run) {
+  const find = (name, address) => run.deployments.find(d => d.name === name && d.address.toLowerCase() === address.toLowerCase());
+  return [find('Aqua', run.addresses.aqua), find('AquaSwapVMRouter', run.addresses.router),
+    ...run.addresses.tokens.map(address => find('TokenMock', address))].map(d => {
+      assert.ok(d, 'clean benchmark deployment identity');
+      return Object.fromEntries(deploymentFields.map(field => [field, d[field]]));
+    });
+}
+
+function checkReplayIdentity(record, run, action) {
+  assert.deepEqual(record.deployments.map(d => Object.fromEntries(deploymentFields.map(field => [field, d[field]]))),
+    expectedDeployments(run), 'replay deployment identity');
+  assert.equal(record.tx.to.toLowerCase(), run.addresses.router.toLowerCase(), 'replay target');
+  assert.equal(record.receipt.to.toLowerCase(), record.tx.to.toLowerCase(), 'receipt target');
+  assert.equal(record.receipt.from.toLowerCase(), record.tx.from.toLowerCase(), 'receipt sender');
+  const decoded = swapInterface.decodeFunctionData('swap', record.tx.data);
+  const order = decoded[0];
+  assert.equal(order.maker.toLowerCase(), run.policy.owner.toLowerCase(), 'order maker');
+  assert.equal(order.traits, (1n << 254n) | (0x0028002800280028n << 160n), 'order traits');
+  const tokens = run.addresses.tokens.map(address => address.slice(2).toLowerCase());
+  const expectedData = `0x${tokens[0]}${tokens[1]}50000208${BigInt(action.strategy + 1).toString(16).padStart(16, '0')}`;
+  assert.equal(order.data.toLowerCase(), expectedData, 'order program and salt');
+  assert.equal(decoded[1], BigInt(action.amount), 'calldata amount');
+  assert.equal(decoded[2].toLowerCase(), `0x${'00'.repeat(20)}${action.aToB ? '00e0' : '0060'}`, 'taker direction');
+}
 
 export function checkRejections(report, input) {
   checkBenchmark(input);
@@ -37,6 +65,7 @@ export function checkRejections(report, input) {
     const { run, action, control } = source;
     assert.equal(r.control, control);
     for (const field of ['amount', 'strategy', 'aToB']) assert.equal(r[field], action[field]);
+    checkReplayIdentity(r, run, action);
     assert.deepEqual(r.before, action.before.tokens, 'recreated original state');
     assert.equal(r.guarantee, run.policy.guarantee);
     const g = BigInt(r.guarantee), baseline = 10_000n - g;
@@ -112,6 +141,9 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       r => { r.records.find(x => x.outcome === 'capacity_breach').protection.forEach(t => { t.preserved = true; }); },
       r => { r.summary.rejectedAttempts++; },
       r => { r.records[0].baseline = '0'; },
+      r => { r.records[0].tx.data = `${r.records[0].tx.data.slice(0, -2)}01`; },
+      r => { r.records[0].deployments.pop(); },
+      r => { r.records[0].deployments[0].runtimeHash = `0x${'00'.repeat(32)}`; },
     ];
     for (const mutate of corruptions) {
       const changed = structuredClone(report);
