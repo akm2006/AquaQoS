@@ -1,6 +1,6 @@
 # AquaQoS handoff
 
-Updated 2026-09-08. Phase: v0 protocol implementation, security review and measurement.
+Updated 2026-09-09. Phase: v0 protocol implementation, security review and measurement.
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
@@ -10,13 +10,18 @@ protocol acceptance remains open.
   Bootstrap and both benchmark/rejection evidence checkers also pass; the rejection
   checker rejects 12 corrupted reports and the benchmark checker regenerates both seeds.
   No test failures remain.
+- Public presentation cleanup: protocol-first README and verification page, event records
+  archived under `docs/archive/ethonline-2026/`, and the original owner planning brief
+  removed from the current tree and all reachable Git history. Main is pushed to the
+  private `akm2006/AquaQoS` repository at rewritten commit `083c8b9`.
 
 - Previous benchmark milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
   fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
   including 16 corrupted-report cases. `pnpm test` passed all 24 Solidity tests again.
   Raw schema v2 replaces historical v1 numbers at the same path. No protocol code changed.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
-  three domain skills and three read-only reviewer roles written. No public repository/remote.
+  three domain skills and three read-only reviewer roles written. GitHub remote is configured
+  and currently private; no public deployment exists.
 - Protocol tests: 30 passing, including 256 fuzz runs each in three properties.
   Three reproduce raw Aqua failures, twenty-one exercise v0, two compare guarded
   rejections with reference settlement and four cover fee/callback boundaries.
@@ -68,7 +73,8 @@ protocol acceptance remains open.
 
 ## Bootstrap verification
 
-- `node scripts/check-bootstrap.mjs`: passed; brief byte hash, source identities and local links.
+- `node scripts/check-bootstrap.mjs`: passed; source identities, recursive documentation links
+  and local skills.
 - Bundled skill-creator `quick_validate.py`: all three skills passed (WSL Python/PyYAML).
 - Python `tomllib`: config and three role files parsed; required fields inspected.
 - Installed CLI `codex debug prompt-input`: three project skills discovered. Agent tool schema
@@ -77,7 +83,7 @@ protocol acceptance remains open.
   config loaded; disk/thread warnings. Sandbox-context runs can report provisioning failure.
 - `.gitignore` checks: env, dependencies, artifacts and research/uv scratch excluded.
 - Root inspected staged role/skill/script/pin diffs; path/credential-pattern screening passed.
-  New-file whitespace check passed; the preserved brief retains its original Markdown hard break.
+  New-file whitespace check passed after the public documentation cleanup.
 - Independent `sol_auditor` review: status/diagnostic-context findings corrected; no remaining
   material bootstrap findings. This was operating-file review, not a protocol security audit.
 - Dependency install/build/test: current pinned candidate pair resolves in the pnpm lockfile; peer-check reports only upstream optional Hardhat 2 / ethers 5 mismatches inside solidity-utils.
@@ -103,7 +109,7 @@ same-transaction and finite-allowance controls follow below, while broader workl
 diversity remains open. No production contract edits.
 
 Sep 8 proof continuation: `proof/index.html` and `scripts/serve-proof.mjs` provide a
-dependency-free local judge page linking measured tests, raw benchmark/replay evidence and
+dependency-free local verification page linking measured tests, raw benchmark/replay evidence and
 reproduction commands. Desktop and 390px browser screenshots passed; it intentionally
 does not claim a wallet flow or public deployment. Those remain release gates.
 
