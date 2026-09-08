@@ -87,17 +87,18 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Address broader workload and persistent calldata/deployment authentication gates.
+1. Expand the benchmark workload and add independent seed/log reconstruction.
 2. Complete release-wide security review and document remaining supported-token limits.
 3. Build the minimal frontend/proof page, then rehearse the local transfer demo.
 
-Current continuation: implemented standalone rejection replay and checker; draft local
-run recreated all 30 capacity-rejected pre-states plus eight successful controls.
-Clean replay from `77a21d6` classified 11 settlement failures, 19 successful capacity
-breaches and zero safe fills. `node scripts/check-rejections.mjs --self-test` passed,
-rejecting nine corrupted reports. Scope is static fee-free TokenMock with maximum
-allowance; focused same-transaction and finite-allowance controls follow below, while
-broader workload measurement remains open. No production contract edits.
+Current continuation: standalone rejection replay and checker recreate all 30
+capacity-rejected pre-states plus eight successful controls. Clean replay from `d62d32a`
+classified 11 settlement failures, 19 successful capacity breaches and zero safe fills.
+`node scripts/check-rejections.mjs --self-test` passed, rejecting 12 corrupted reports;
+it now binds deployment layout/build identity and exact maker/program/amount/direction
+calldata. Scope is static fee-free TokenMock with maximum allowance; focused
+same-transaction and finite-allowance controls follow below, while broader workload and
+independent seed/log reconstruction remain open. No production contract edits.
 
 Sep 8 continuation: focused tests establish one safe sequential same-transaction
 rejection (500 output units blocked by a settled 500-unit reservation) and a finite
@@ -137,7 +138,8 @@ caches, built nine Solidity entry files, passed 30 tests and replayed all 239 re
 transactions. Before/after states and gas matched; executable runtime/ABI matched,
 while compiler metadata differed because the fresh checkout included newer tests and
 an extra project remapping. Independent security review closed the recent callback/
-conservatism tests; benchmark review closed rejection arithmetic/calldata inspection.
+conservatism tests; benchmark review closed rejection arithmetic, deployment identity and
+calldata inspection.
 The lifecycle enumeration helper was tightened to reject RPC/ABI errors and now has
 fresh fault-injection self-checks. A clean rerun after committing that helper now
 records source `57a37a7` with `dirty=false`; gas and state results are unchanged.

@@ -101,8 +101,8 @@ static, fee-free, maximum-allowance TokenMock integration for these cases; it do
 measure same-transaction or finite-allowance conservatism.
 
 Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
-from source commit `77a21d60ff6a348e4cfe71e16c0034ea43861c29` with `dirty=false`.
-`node scripts/check-rejections.mjs --self-test` passed, rejecting nine deliberately
+from source commit `d62d32a243745a7cb71a3d520e3755227141b39d` with `dirty=false`.
+`node scripts/check-rejections.mjs --self-test` passed, rejecting 12 deliberately
 corrupted reports. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case
 gas remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
 owns these acceptance gates before broad performance or frontend proof-page claims.

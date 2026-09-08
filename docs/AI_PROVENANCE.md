@@ -51,6 +51,12 @@ gaps and found a lifecycle enumeration evidence weakness. Root implemented its
 minimal fix and startup fault regressions; benchmark reviewer approved the diff.
 Fresh receipts/verification manifest and sanitized continuation scope are retained.
 
+2026-09-08 rejection identity closure: root strengthened scripts/check-rejections.mjs to
+bind replay deployment layout/build identity and decode exact maker/program/salt/amount/
+direction calldata. The clean report was regenerated from source d62d32a; the checker
+passed 12 deliberate corruptions with unchanged 30/11/19/0 results. Independent seed
+regeneration and receipt-log reconstruction remain unclaimed.
+
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
 Filesystem timestamp observed September 5 is not proof of original creation time or
