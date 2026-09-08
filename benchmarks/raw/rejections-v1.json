@@ -1,10 +1,10 @@
 {
   "kind": "local-rejection-replay-v1",
-  "sourceCommit": "9d77eda8a43dda0e03a3d82c5179e5ce75e262ce",
-  "dirty": false,
+  "sourceCommit": "462d8bea1eb6d7b377c4870e0b589dd96b6141e0",
+  "dirty": true,
   "inputPath": "benchmarks/raw/a-b-c-v1.json",
-  "inputHash": "9d80279799c866cf6bed6f4f1306583c666304b523b8cc4b50584f215ed82fab",
-  "inputSourceCommit": "379fe286043b7d56f2b1e9c0beb218d546f43d48",
+  "inputHash": "87c2deea2355d00d003adf6b50c70cddeef850ceebecb1b3f068f4fa493fc3ff",
+  "inputSourceCommit": "d41895f0cf8a9a072a8f253177f6c69ab56325bf",
   "sourceHashes": {
     "benchmarks/replay-rejections.mjs": "c1bd6f769f60b166d50bb87176fd7f628359502457f2639447bd50f7ccff86fa",
     "scripts/check-rejections.mjs": "12c70c6b1980f75662e59f2bccc92a61455e82c4d7871b6b1bea6f6190c8467f",
