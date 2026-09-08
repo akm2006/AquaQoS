@@ -1,7 +1,7 @@
 {
   "kind": "local-a-b-c-benchmark-v2",
-  "sourceCommit": "019ff3a3fc1ea8f7662f11168a9cc35f74669844",
-  "dirty": true,
+  "sourceCommit": "22258aac11e660403f66fd54ef68ad44862cab49",
+  "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
   "hardhat": "3.8.0",
