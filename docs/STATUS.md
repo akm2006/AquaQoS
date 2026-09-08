@@ -31,8 +31,10 @@ protocol acceptance remains open.
   overstated checker scope and virtual-surplus burst denominator. See method for limits.
 - Clean-source replay at eeee95a: frozen offline install of 528 cached packages,
   build, 15 committed tests and replay passed; source/runtime hashes and gas match.
-  Uncached downloads failed with error 23; network-only install remains unverified.
-  Fifteen newer tests pass in main checkout (30 total). See TRANSACTION_VALIDATION.
+  The Sep 8 isolated uncached-download replay also installed all 528 packages,
+  downloaded both compiler forms, built and passed 30 tests plus 239-transaction
+  replay; executable code/ABI match, while full metadata differs as documented.
+  See TRANSACTION_VALIDATION.
 - Known risks: same-transaction conservatism; worst-case group gas unmeasured;
   numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
@@ -50,8 +52,9 @@ protocol acceptance remains open.
   and limits; this is not an external audit or final security certification.
 - Benchmark review: separate read-only auditor found no blocking C100/checker calculation
   issue; corrected custody wording and checked optimizer.enabled. Independent raw replay
-  review is recorded in BENCHMARK_RESULTS; seed/calldata/log authentication and
-  counterfactual rejection checks remain explicitly open, not implied by checker success.
+  implementation review is now closed for retained receipts/calldata/logs and
+  counterfactual classification. Persistent checker authentication of calldata and
+  deployment identity remains a publication gate, not implied by checker success.
 - Local compiled byte sizes (solc 0.8.30, viaIR, optimizer 700, Cancun): router runtime
   21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
   Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
@@ -84,12 +87,9 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Verify a fresh uncached install/build/test with the committed lifecycle evidence.
-2. Obtain independent implementation review of rejection replay and the new
-   conservatism/callback regressions when reviewer capacity returns; source method
-   review alone is insufficient.
-3. Verify a fresh uncached install/build/test; then address broader workload and
-   seed/calldata/log verification gates. Frontend remains downstream of acceptance.
+1. Address broader workload and persistent calldata/deployment authentication gates.
+2. Complete release-wide security review and document remaining supported-token limits.
+3. Build the minimal frontend/proof page, then rehearse the local transfer demo.
 
 Current continuation: implemented standalone rejection replay and checker; draft local
 run recreated all 30 capacity-rejected pre-states plus eight successful controls.
@@ -130,6 +130,17 @@ no blocking issue; clean committed replay now records source `10a63e5` with
 `dirty=false`. Maxima are charged receipt
 gas within the declared matrix and exclude setup/deployment; swap/callback worst cases
 and finite-allowance token writes remain outside its claim.
+
+Sep 8 fresh verification: an isolated clone at source `0bf3447` downloaded all 528
+packages into an empty local store, downloaded native/WASM solc into isolated Hardhat
+caches, built nine Solidity entry files, passed 30 tests and replayed all 239 retained
+transactions. Before/after states and gas matched; executable runtime/ABI matched,
+while compiler metadata differed because the fresh checkout included newer tests and
+an extra project remapping. Independent security review closed the recent callback/
+conservatism tests; benchmark review closed rejection arithmetic/calldata inspection.
+The lifecycle enumeration helper was tightened to reject RPC/ABI errors and now has
+fresh fault-injection self-checks. A clean rerun after committing that helper remains
+the next evidence refresh.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

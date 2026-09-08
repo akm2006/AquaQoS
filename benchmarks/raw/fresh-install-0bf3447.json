@@ -1,0 +1,49 @@
+{
+  "kind": "fresh-install-verification-v1",
+  "checkedAt": "2026-09-08",
+  "sourceCommit": "0bf3447ab315bbf3db7326d9877f6dccfd31561d",
+  "checkout": ".tmp/uncached-replay-0bf3447",
+  "node": "v22.16.0",
+  "pnpm": "11.10.0",
+  "hardhat": "3.8.0",
+  "solc": "0.8.30+commit.73712a01",
+  "install": {
+    "command": "pnpm install --frozen-lockfile --ignore-scripts --store-dir <checkout>/.pnpm-store --cache-dir <checkout>/.tmp/pnpm-cache",
+    "exitCode": 0,
+    "packagesDownloaded": 528,
+    "packagesReused": 0,
+    "packagesAdded": 528,
+    "elapsedReported": "1m 36.1s",
+    "initialProjectDependenciesAndArtifactsAbsent": true,
+    "note": "Slow-download warnings and error-23 retries recovered; no cached-package fallback. Existing Node, pnpm, Windows and network/proxy infrastructure reused."
+  },
+  "compilerIsolation": {
+    "processLOCALAPPDATA": "<checkout>/.tmp/hardhat-local",
+    "processAPPDATA": "<checkout>/.tmp/hardhat-roaming",
+    "cacheInitiallyAbsent": true,
+    "nativeSha256": "ccbd3ed44d5fbd26fe039702d403421f1212d2e8752e3cbe3bfd074986911586",
+    "wasmSha256": "81475c98b6d2094a821fd9d7b6278556d8095ccc23e0b8a1029b1c08a89cd4b2",
+    "note": "Both compiler distributions downloaded. Overrides scoped to child shell processes; no global configuration changed."
+  },
+  "build": {"command": "pnpm build", "exitCode": 0, "solidityEntryFilesCompiled": 9},
+  "test": {"command": "pnpm test", "exitCode": 0, "passing": 30, "fuzzProperties": 3, "runsPerProperty": 256},
+  "replay": {
+    "command": "pnpm test:transactions",
+    "exitCode": 0,
+    "report": "benchmarks/raw/fresh-transactions-0bf3447.json",
+    "sha256": "1d62aa0465e1ac975ea56dfbae678b7217b558e08c8fcdd549497eeec07f7423",
+    "dirtyAtStart": false,
+    "scenarioCount": 8,
+    "retainedTransactions": 239,
+    "allRecordedBeforeAfterStatesMatchHistoricalReport": true,
+    "allReceiptGasMatchesHistoricalReport": true
+  },
+  "buildIdentity": {
+    "historicalBuildInfo": "solc-0_8_30-d43f0ca0e7449ea3fde3ed1b07c60bcdedf4bd17",
+    "freshBuildInfo": "solc-0_8_30-c3e68beb9287b1eccbbf79ba6947fef0a4ee51e9",
+    "fullRuntimeHashesEqual": false,
+    "executableCodeAndAbiEqual": ["Aqua", "AquaQoSRouter", "AquaQoSVault", "TokenMock"],
+    "cause": "Fresh full compilation includes newer test sources and an additional project OpenZeppelin import remapping. Trailing Solidity CBOR/IPFS metadata changes; runtime before that metadata and ABIs compare equal.",
+    "releaseRule": "Always verify deployed full runtime against the exact release build artifact. Do not substitute metadata-stripped equality for deployment authentication."
+  }
+}

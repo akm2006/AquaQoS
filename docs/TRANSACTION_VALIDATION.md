@@ -125,3 +125,47 @@ The original group-size gas microcases remain separate and unchanged.
 Solidity fuzzing uses Hardhat 3.8.0's fixed default seed, verified in installed
 `solidity-test/config.ts`: `0x7727ea51af0441c20da14dcd68a15dac8c9ebd589c5be8fa8c87c1d3720450bc`.
 It runs 256 cases. No extra seed configuration is needed with the pinned runner.
+
+## September 8: fresh downloads and independent review
+
+A fresh local clone of `0bf3447ab315bbf3db7326d9877f6dccfd31561d` at
+`.tmp/uncached-replay-0bf3447` began without node_modules, artifacts or package/compiler
+caches. This time all 528 packages downloaded and installed (zero reused), including
+recovery from transient error-23 retries. No cached fallback was used. Commands:
+
+```powershell
+pnpm install --frozen-lockfile --ignore-scripts --store-dir <checkout>/.pnpm-store --cache-dir <checkout>/.tmp/pnpm-cache
+$env:LOCALAPPDATA = '<checkout>/.tmp/hardhat-local'
+$env:APPDATA = '<checkout>/.tmp/hardhat-roaming'
+pnpm build
+pnpm test
+pnpm test:transactions
+```
+
+Replace `<checkout>` with the absolute scratch clone path. Environment changes apply
+only to that shell. Pinned Hardhat uses env-paths and these Windows variables for
+its compiler cache; both native and WASM solc distributions were downloaded there.
+Node/pnpm and the host OS were reused: this is isolated-cache verification on this
+Windows machine, not a second-machine or cross-platform claim.
+
+All four commands exited zero: nine Solidity entry files compiled, 30 tests passed
+(three properties at 256 runs), and all eight transaction scenarios passed. The
+[fresh replay](../benchmarks/raw/fresh-transactions-0bf3447.json) retains 239 transactions
+and records `dirty=false`; every before/after state and receipt gas value matches
+the historical transaction report. The [verification record](../benchmarks/raw/fresh-install-0bf3447.json)
+retains command outcomes, versions, hashes and limitations.
+
+Full runtime hashes differ from historical artifacts: fresh compilation includes
+new tests and an additional `project/:@openzeppelin/contracts/` remapping. The
+trailing compiler CBOR/IPFS metadata changes, while executable runtime before the
+metadata and ABIs compare equal for Aqua, AquaQoSRouter, AquaQoSVault and TokenMock.
+Both builds use the same compiler/optimizer/EVM settings. This difference must remain
+visible; actual deployment authentication uses full code from the exact release
+build, not a historical hash or metadata-stripped comparison.
+
+Separately, [LIFECYCLE_GAS.md](LIFECYCLE_GAS.md) measures eight-strategy storage-cost
+paths. Reviewer found the array-enumeration catch-all could hide RPC/decoding failures.
+The corrected runner admits only the pinned empty execution revert as array end,
+checks every live array against active membership, and rejects injected transport,
+decoding, nonempty-revert and ninth-entry cases. Independent focused review approved
+the fix; all lifecycle state/gas results remain unchanged.

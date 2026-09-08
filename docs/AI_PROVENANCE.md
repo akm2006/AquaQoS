@@ -44,6 +44,13 @@ settlement source. Four tests cover callback nesting/rollback, canonical traits 
 fee-recipe exclusion; no production edits. Root fallback review, not independent
 audit closure. Owner authorized continuation; no human contribution is inferred.
 
+2026-09-08 fresh verification: root performed isolated package/compiler downloads,
+build, tests and replay from source 0bf3447; documented metadata-only build drift.
+Independent security and benchmark reviewers closed the recent test/rejection-review
+gaps and found a lifecycle enumeration evidence weakness. Root implemented its
+minimal fix and startup fault regressions; benchmark reviewer approved the diff.
+Fresh receipts/verification manifest and sanitized continuation scope are retained.
+
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
 Filesystem timestamp observed September 5 is not proof of original creation time or

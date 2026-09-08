@@ -10,7 +10,9 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Sibling quote/virtual capacity remains sufficient but actual settlement fails for inventory shortage.
 - [x] Assert failure cause and complete rollback of real/virtual balances; separately reproduce allowance shortage.
 - [x] Use real ERC-20 transfer calls on a local EVM; preserve deterministic test command in PROBLEM_REPRODUCTION.
-- [ ] Verify a fresh checkout install/build/test and retain an execution trace.
+- [x] Fresh checkout with empty package/compiler caches installs, builds and passes
+  30 tests plus transaction replay. See TRANSACTION_VALIDATION, source `0bf3447`.
+- [ ] Retain a detailed baseline-problem execution trace for the final proof package.
 
 ## CAPACITY_GUARD
 
@@ -48,7 +50,8 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Unit/integration/fuzz/property tests cover the current material paths; fixed seeds and
   failures are retained. Broader token-behavior and exhaustive-state coverage remain open.
 - [ ] No high/critical unresolved findings at release; other accepted risks identify owner and justification.
-- [ ] Fresh install/build/test commands and runtime/tool versions verified.
+- [x] Fresh install/build/test commands and runtime/tool versions verified on Windows;
+  full-runtime metadata drift is explained and deployment artifact matching remains required.
 
 ## Benchmark
 

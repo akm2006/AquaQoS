@@ -9,6 +9,32 @@ import { Interface, keccak256 } from 'ethers';
 const fileHash = p => createHash('sha256').update(readFileSync(p)).digest('hex');
 const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cwd().replaceAll('\\', '/')}`, ...args], { encoding: 'utf8' }).trim();
 const version = p => JSON.parse(readFileSync(`node_modules/${p}/package.json`)).version;
+async function readListedHashes(readHash) {
+  const listed = [];
+  for (let i = 0; i <= 8; i++) {
+    let hash;
+    try { hash = await readHash(i); }
+    catch (error) {
+      // The pinned getter reverts without data at its bound. Never swallow RPC/ABI errors.
+      assert.equal(error.data, '0x', 'expected empty array-bound revert');
+      assert.match(error.message, /revert/i, 'expected execution revert');
+      break;
+    }
+    assert.ok(i < 8, 'onchain group must remain bounded');
+    listed.push(hash);
+  }
+  return listed;
+}
+// Fault-injection regressions: infrastructure/decoding errors cannot impersonate array end.
+assert.deepEqual(await readListedHashes(async i => {
+  if (i === 0) return 'registered';
+  throw Object.assign(new Error('execution reverted'), { data: '0x' });
+}), ['registered']);
+for (const error of [new Error('RPC disconnected'), new Error('ABI decoding failed'),
+  Object.assign(new Error('execution reverted'), { data: '0xdeadbeef' })]) {
+  await assert.rejects(readListedHashes(async () => { throw error; }));
+}
+await assert.rejects(readListedHashes(async () => 'ninth strategy'));
 const report = {
   kind: 'local-eight-strategy-lifecycle-gas-v1',
   sourceCommit: git('rev-parse', 'HEAD'), dirty: git('status', '--porcelain') !== '',
@@ -77,18 +103,9 @@ async function run(initialGuarantee) {
     log.addresses = { aqua: aqua.address, router: router.address, vault: vault.address, owner, recipient, tokens: tokens.map(t => t.address) };
     const hashes = [];
     const state = async () => {
-      const result = { paused: (await read(vault, 'paused'))[0], listedHashes: [], strategies: [], tokens: [] };
-      for (let i = 0; i <= 8; i++) {
-        let hash;
-        try { [hash] = await read(vault, 'hashes', [i]); }
-        catch (error) {
-          // Hardhat's local eth_call may expose an empty revert payload for an
-          // out-of-bounds public-array getter; either form is an array-bound stop.
-          break;
-        }
-        assert.ok(i < 8, 'onchain group must remain bounded');
-        result.listedHashes.push(hash);
-      }
+      const result = { paused: (await read(vault, 'paused'))[0],
+        listedHashes: await readListedHashes(async i => (await read(vault, 'hashes', [i]))[0]),
+        strategies: [], tokens: [] };
       for (const hash of hashes) {
         const values = await read(vault, 'strategies', [hash]);
         const virtual = [], reservations = [];
@@ -99,6 +116,8 @@ async function run(initialGuarantee) {
         }
         result.strategies.push({ hash, values: values.toArray(), virtual, reservations });
       }
+      assert.deepEqual(result.listedHashes, result.strategies.filter(s => s.values[4]).map(s => s.hash),
+        'live array must exactly match active registered strategies in every snapshot');
       for (const token of tokens) {
         const accounts = [];
         for (const address of [vault.address, owner, recipient, router.address, aqua.address]) {
@@ -127,7 +146,6 @@ async function run(initialGuarantee) {
         assert.equal((await read(vault, 'hashes', [i]))[0], strategy.hash);
       }
       assert.equal(s.strategies.length, 8);
-      await assert.rejects(read(vault, 'hashes', [8]));
       return s;
     };
     await write(tokens[0], 'mint', [vault.address, 8000]);
@@ -173,7 +191,7 @@ async function run(initialGuarantee) {
       assert.deepEqual(s.virtual, [[0n, 255n], [0n, 255n]]);
     }
     assert.deepEqual(dock.after.tokens, dock.before.tokens, 'docking does not transfer inventory');
-    await assert.rejects(read(vault, 'hashes', [0]));
+    assert.deepEqual(dock.after.listedHashes, []);
     await write(vault, 'dockAll', [], 'dock empty group', 'dockAll');
     for (const token of tokens) {
       for (const amount of [1, 7999]) {

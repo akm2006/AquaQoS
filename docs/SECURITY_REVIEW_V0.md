@@ -113,3 +113,19 @@ Root inspected the final test paths as the documented fallback; independent fina
 implementation review remains open. No production code or invariant changed.
 The initial rollback test hit nested `expectRevert` bookkeeping; normal try/catch
 now checks the exact outer error without overlapping callback expectations.
+
+## Sep 8: independent implementation review closed for recent tests
+
+A separate read-only security-reviewer inspected source `0bf3447`, the six tests
+added in `d5db8f1`/`96809b1`, full router/vault paths and pinned upstream execution.
+No new production defect or blocking test defect was found. The review confirmed
+state-equivalent reference construction, allowance replenishment, exact callback
+errors, actual owner lifecycle checks, rollback of touched/order locks and fee/trait
+exclusion. Root's fresh checkout subsequently built and passed all 30 tests.
+The independent-review gap for these tests is closed; this remains an internal review.
+
+Residual coverage: mixed-direction/deeper nesting, successful nesting after outer
+debit, combined finite-allowance/payment-route combinations, explicit zero-output
+rollback, unsupported tokens and universal gas bounds. No unconditional security or
+future-fill claim follows. Final deployment must authenticate immutable dependency
+code; release-wide review and final demo verification remain open.
