@@ -7,6 +7,7 @@ import { Interface } from 'ethers';
 // Signatures from pinned SafeERC20 and AquaQoSVault; ethers supplies Panic decoding.
 const errors = new Interface(['error InsufficientCapacity(uint256 available,uint256 required)',
   'error SafeTransferFromFailed()']);
+const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 const systems = ['A', 'B', 'C', 'C100'];
 const names = ['lowContention', 'concentratedOverload', 'adversarialOrder', 'replenishment'];
 const outcomes = ['success', 'quote_rejection', 'guard_rejection', 'settlement_failure'];
@@ -34,6 +35,25 @@ const makeDemandTrace = (count, seed) => {
   ];
   return { seed, count, lowContention: low, concentratedOverload: concentrated,
     adversarialOrder: [...concentrated].reverse(), replenishment };
+};
+const transferRows = action => (action.receipt.logs ?? []).filter(log =>
+  log.topics?.[0]?.toLowerCase() === transferTopic).map(log => {
+    assert.equal(log.transactionHash.toLowerCase(), action.receipt.transactionHash.toLowerCase(), 'transfer log transaction');
+    return { token: log.address.toLowerCase(), from: `0x${log.topics[1].slice(-40)}`.toLowerCase(),
+      to: `0x${log.topics[2].slice(-40)}`.toLowerCase(), amount: String(BigInt(log.data)) };
+  }).sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
+const expectedTransfers = (action, run) => {
+  const maker = run.policy.maker.toLowerCase(), taker = run.policy.taker.toLowerCase();
+  if (action.type === 'push') return [{ token: run.addresses.tokens[action.token].toLowerCase(), from: taker,
+    to: maker, amount: String(action.amount) }];
+  if (action.status !== '0x1') return [];
+  const out = action.aToB ? 1 : 0, input = 1 - out, amount = String(action.amount), quote = String(action.quoteInput);
+  return [
+    { token: run.addresses.tokens[input].toLowerCase(), from: taker, to: run.addresses.router.toLowerCase(), amount: quote },
+    { token: run.addresses.tokens[input].toLowerCase(), from: run.addresses.router.toLowerCase(), to: maker, amount: quote },
+    { token: run.addresses.tokens[out].toLowerCase(), from: maker, to: run.addresses.router.toLowerCase(), amount },
+    { token: run.addresses.tokens[out].toLowerCase(), from: run.addresses.router.toLowerCase(), to: taker, amount },
+  ].sort((a, b) => JSON.stringify(a).localeCompare(JSON.stringify(b)));
 };
 
 export function checkBenchmark(report) {
@@ -78,6 +98,7 @@ export function checkBenchmark(report) {
         assert.deepEqual(action.before, previous, `${label} state continuity`);
         assert.equal(action.gasUsed, Number(BigInt(action.receipt.gasUsed)));
         assert.ok(action.gasUsed > 0);
+        assert.deepEqual(transferRows(action), expectedTransfers(action, run), `${label} transfer logs`);
         assert.match(action.receipt.transactionHash, /^0x[a-f0-9]{64}$/i);
         assert.equal(action.tx.from.toLowerCase(), run.policy.taker.toLowerCase());
         assert.equal(action.tx.to.toLowerCase(), (action.type === 'push' ? run.addresses.aqua : run.addresses.router).toLowerCase());
