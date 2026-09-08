@@ -1,7 +1,7 @@
 {
   "kind": "local-eight-strategy-lifecycle-gas-v1",
-  "sourceCommit": "10a63e522cf4b4c158547785044b2a3d92fd8409",
-  "dirty": false,
+  "sourceCommit": "65d850e79ef509865ad9730a6c4ca3c8c7293083",
+  "dirty": true,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
   "hardhat": "3.8.0",
@@ -64,7 +64,7 @@
     }
   },
   "sourceHashes": {
-    "scripts/check-lifecycle-gas.mjs": "36523fc43f9d2910167d3cdff5de1183e7afd2fdde63640b516aba124198098a",
+    "scripts/check-lifecycle-gas.mjs": "624d62cdee4f76e279e70b3ef800633d34644b198c469546b31c6046f563b202",
     "docs/LIFECYCLE_GAS.md": "11f79f5abe072c0aeb0cc53eee15695252c5919ae9df728474c3f933163d04c0",
     "contracts/AquaQoSVault.sol": "2c286d38a19255f1ea0b525ddb5ce97aab02c7dbe55b4a92224215509fc8cae2",
     "contracts/AquaQoSRouter.sol": "9037de4f5c0f5b6c5d30eb8c27c7e56cf0d4c28f627c4d43bec8efab7b3b0e03",
