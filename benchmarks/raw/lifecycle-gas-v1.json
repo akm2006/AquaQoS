@@ -1,7 +1,7 @@
 {
   "kind": "local-eight-strategy-lifecycle-gas-v1",
-  "sourceCommit": "65d850e79ef509865ad9730a6c4ca3c8c7293083",
-  "dirty": true,
+  "sourceCommit": "57a37a7c3ba9d2d0bdcf5d0351de01c9dbfcb5d5",
+  "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
   "hardhat": "3.8.0",
