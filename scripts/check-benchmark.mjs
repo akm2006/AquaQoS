@@ -167,6 +167,7 @@ export function checkBenchmark(report) {
       const burst = guarded ? scenario.finalState.tokens.reduce((n, t) => n + t.virtual.reduce((v, x) => v + max(10_000n - BigInt(x) - guarantee, 0n), 0n), 0n) : 0n;
       assert.equal(BigInt(m.netBurstOutstanding), burst);
     }
+    }
     assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401), `${count} seeded demand trace`);
   }
 }
