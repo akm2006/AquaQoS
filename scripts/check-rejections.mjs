@@ -18,7 +18,7 @@ function expectedDeployments(input, run) {
   return [find('Aqua', run.addresses.aqua), find('AquaSwapVMRouter', run.addresses.router),
     ...run.addresses.tokens.map(address => find('TokenMock', address))].map(d => {
       assert.ok(d, 'clean benchmark deployment identity');
-      return Object.fromEntries(deploymentFields.map(field => [field, d[field]]));
+      return Object.fromEntries([...deploymentFields, 'runtimeHash'].map(field => [field, d[field]]));
     });
 }
 
