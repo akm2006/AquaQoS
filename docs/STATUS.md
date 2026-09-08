@@ -88,7 +88,7 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Expand the benchmark workload and add independent receipt-log reconstruction.
+1. Expand the benchmark workload beyond the current 2/4-strategy TokenMock matrix.
 2. Complete release-wide security review and document remaining supported-token limits.
 3. Build the minimal frontend/proof page, then rehearse the local transfer demo.
 
@@ -98,8 +98,8 @@ classified 11 settlement failures, 19 successful capacity breaches and zero safe
 `node scripts/check-rejections.mjs --self-test` passed, rejecting 12 corrupted reports;
 it now binds deployment layout/build identity and exact maker/program/amount/direction
 calldata. Scope is static fee-free TokenMock with maximum allowance; focused
-same-transaction and finite-allowance controls follow below, while broader workload and
-independent receipt-log reconstruction remain open. No production contract edits.
+same-transaction and finite-allowance controls follow below, while broader workload
+diversity remains open. No production contract edits.
 
 Sep 8 continuation: focused tests establish one safe sequential same-transaction
 rejection (500 output units blocked by a settled 500-unit reservation) and a finite
@@ -139,8 +139,8 @@ caches, built nine Solidity entry files, passed 30 tests and replayed all 239 re
 transactions. Before/after states and gas matched; executable runtime/ABI matched,
 while compiler metadata differed because the fresh checkout included newer tests and
 an extra project remapping. Independent security review closed the recent callback/
-conservatism tests; benchmark review closed rejection arithmetic, deployment identity and
-calldata inspection.
+conservatism tests; benchmark review closed rejection arithmetic, deployment identity,
+calldata and retained Transfer-log inspection.
 The lifecycle enumeration helper was tightened to reject RPC/ABI errors and now has
 fresh fault-injection self-checks. A clean rerun after committing that helper now
 records source `57a37a7` with `dirty=false`; gas and state results are unchanged.

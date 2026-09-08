@@ -14,7 +14,7 @@ pnpm check:benchmark
 node --test scripts/check-benchmark.test.mjs
 ```
 
-The clean run records source commit `22258aac11e660403f66fd54ef68ad44862cab49`,
+The clean run records source commit `f03433799ab3dd0425d7d626e70864b6f8219c1e`,
 `dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
 solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
 hashes are retained. There are **32 fresh EVM fixtures**, grouped into eight policy/count
@@ -87,11 +87,10 @@ The reviewer then independently ran the clean-report checker and all 17 regressi
 tests, and verified C100/A volume, guarantee totals and the gas medians above; no
 blocking discrepancy was found. This is internal read-only review, not external audit.
 The checker validates recorded data consistency, regenerates the two seeded demand traces,
-and now authenticates each replay
+reconstructs retained ERC-20 `Transfer` logs, and now authenticates each replay
 deployment against the clean benchmark fixture and decodes every saved swap calldata
 record. It is still not live-chain authentication or an independent source
-implementation: receipt logs are retained but not independently reconstructed. Raw
-transaction data and receipts remain retained for review.
+implementation. Raw transaction data and receipts remain retained for review.
 Counterfactual false-rejection replay remains open: do not claim every guard rejection
 was unsafe outside the defined scope. The bounded replay is complete for this report: all 30 C/C100 guard
 rejections were rebuilt from their saved pre-state using the official unguarded router.

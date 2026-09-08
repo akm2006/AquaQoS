@@ -55,8 +55,9 @@ Fresh receipts/verification manifest and sanitized continuation scope are retain
 bind replay deployment layout/build identity and decode exact maker/program/salt/amount/
 direction calldata. The clean report was regenerated from source d62d32a; the checker
 passed 12 deliberate corruptions with unchanged 30/11/19/0 results. Independent seed
-regeneration now recomputes both A/B/C/C100 demand traces; independent receipt-log
-reconstruction remains unclaimed.
+regeneration now recomputes both A/B/C/C100 demand traces. The benchmark checker also
+reconstructs the retained ERC-20 Transfer-log multiset for every push/successful swap and
+requires failed swaps to emit none; broader workload diversity remains open.
 
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.

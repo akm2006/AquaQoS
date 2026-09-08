@@ -203,3 +203,14 @@ runner already defines a small deterministic generator and records seeds `0xa201
 `0xa401`. Reason: prevent a report from changing offered demand while preserving its
 state arithmetic. Consequence: seed provenance is checked; independent receipt-log
 reconstruction and broader workload diversity remain open.
+
+## 2026-09-08 — D016: Reconstruct retained benchmark transfer logs
+
+Decision: validate every retained push/successful-swap receipt's ERC-20 `Transfer` event
+multiset against the recorded participants and amount deltas, and require failed swaps to
+emit no transfer events. Alternatives: trust receipt status/state snapshots or parse only
+router events. Evidence: the pinned TokenMock emits standard indexed `Transfer` events;
+the local fixtures retain complete logs. Reason: the judging proof needs real token
+movement, not only virtual/accounting state. Consequence: bounded A/B/C evidence now
+checks seed, calldata, state and token-transfer logs; hostile-token behavior and broader
+workloads remain outside scope.
