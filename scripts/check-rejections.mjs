@@ -154,7 +154,7 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       r => { r.records.find(x => x.outcome === 'capacity_breach').protection.forEach(t => { t.preserved = true; }); },
       r => { r.summary.rejectedAttempts++; },
       r => { r.records[0].baseline = '0'; },
-      r => { r.records[0].tx.data = `${r.records[0].tx.data.slice(0, -2)}01`; },
+      r => { r.records[0].tx.data = `0xdeadbeef${r.records[0].tx.data.slice(10)}`; },
       r => { r.records[0].deployments.pop(); },
       r => { r.records[0].deployments[0].runtimeHash = `0x${'00'.repeat(32)}`; },
     ];
