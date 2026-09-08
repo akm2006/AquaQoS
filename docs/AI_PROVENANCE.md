@@ -18,7 +18,6 @@ This is an AI-assisted project, not a claim of unaided human authorship.
 | 2026-09-07 comparative benchmark | benchmarks/run-a-b-c.mjs, scripts/check-benchmark.mjs, raw report, method/results and D009/D010 | Root implemented fixed shared workloads and local A/B/C replay; earlier audit prompted trace and outcome checks. Earlier checker scope and metric labels are corrected in D011. |
 | 2026-09-07 matched-policy validation | C100 runner/checker changes, scripts/check-benchmark.test.mjs, D011 and updated evidence/docs | Root added matched guarantees, receipt/build retention, state/error recomputation and corrupted-report regressions. Separate read-only benchmark reviewer checked code, reran checker/17 tests and verified raw metrics; custody wording and optimizer-enabled check corrected. Clean replay from 337beeb and all 24 Solidity tests passed. No smart-contract changes or new human contribution inferred. |
 
-Original brief SHA-256:
 2026-09-07 rejection replay: root implemented benchmarks/replay-rejections.mjs,
 scripts/check-rejections.mjs and REJECTION_REPLAY/D012 from the STATUS next task.
 Read-only benchmark reviewer challenged reconstruction, baseline preservation, controls
@@ -27,6 +26,12 @@ cleanly from `39569ca`: 30 candidates, 8 controls, 11 settlement failures, 19 ca
 breaches, zero safe fills, and 9 corrupted-report tests rejected. Evidence is recorded
 in STATUS and BENCHMARK_RESULTS.
 Owner authorized continuation; no additional human technical contribution is inferred.
+
+2026-09-08 conservatism regressions: root authored AquaQoSConservatism.t.sol, reused
+existing mock/token/strategy helpers, and recorded settled-reservation and finite-allowance
+controls. Test harness split fixed a compiler assembly-size failure; no production
+contracts/compiler flags changed. Independent reviewer hit usage limit; root fallback
+review completed, independent implementation review explicitly pending.
 
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.

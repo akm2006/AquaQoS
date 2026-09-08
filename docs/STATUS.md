@@ -1,18 +1,23 @@
 # AquaQoS handoff
 
-Updated 2026-09-07. Phase: v0 protocol implementation, security review and measurement.
+Updated 2026-09-08. Phase: v0 protocol implementation, security review and measurement.
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
-- Last milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
+- Last milestone: `pnpm test` passes 26 tests after splitting the two conservatism
+  regressions into a smaller harness. Bootstrap, benchmark and rejection evidence
+  checks pass; nine rejection-report corruptions are rejected. No test failures remain.
+
+- Previous benchmark milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
   fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
   including 16 corrupted-report cases. `pnpm test` passed all 24 Solidity tests again.
   Raw schema v2 replaces historical v1 numbers at the same path. No protocol code changed.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. No public repository/remote.
-- Protocol tests: `pnpm test` passes 24 Solidity tests, including 256 fuzz runs in one
-  property test. Three tests reproduce raw Aqua failures; twenty-one exercise v0.
-  No currently failing tests. Test inventory: test/AquaQoS.t.sol and PROBLEM_REPRODUCTION.
+- Protocol tests: two additional conservatism regressions in AquaQoSConservatism.t.sol
+  bring the suite to 26 tests, including 256 fuzz runs in one property. Three reproduce
+  raw Aqua failures, twenty-one exercise v0 and two compare rejected fills with actual
+  unguarded reference settlement. The strengthened-assertion rerun passed on Sep 8.
 - `pnpm test:transactions`: passed; exact failure bytes, full fill accounting, sibling
   isolation, aggregate backing, reservation events and transaction clearing asserted.
 - Seeded sequences: seeds 1/42/12648430 on 2/4/8 strategies, 64 attempts each;
@@ -74,20 +79,29 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Extend rejection replay to same-transaction reservations and finite-allowance cases;
-   the static fee-free maximum-allowance replay is now complete.
-2. Close remaining protocol acceptance gaps (fee/callback closure, lifecycle gas,
-   fresh install) before frontend work.
-3. Retry uncached install when downloads work and resolve remaining acceptance gaps.
-   Frontend remains downstream of protocol/benchmark acceptance.
+1. Close fee/callback path coverage and worst-case eight-strategy lifecycle gas.
+2. Obtain independent implementation review of rejection replay and the new conservatism
+   regressions when reviewer capacity returns; source method review alone is insufficient.
+3. Verify a fresh uncached install/build/test; then address broader workload and
+   seed/calldata/log verification gates. Frontend remains downstream of acceptance.
 
 Current continuation: implemented standalone rejection replay and checker; draft local
 run recreated all 30 capacity-rejected pre-states plus eight successful controls.
 Clean replay from `77a21d6` classified 11 settlement failures, 19 successful capacity
 breaches and zero safe fills. `node scripts/check-rejections.mjs --self-test` passed,
 rejecting nine corrupted reports. Scope is static fee-free TokenMock with maximum
-allowance; same-transaction and finite-allowance behavior remains open. No production
-contract edits.
+allowance; focused same-transaction and finite-allowance controls follow below, while
+broader workload measurement remains open. No production contract edits.
+
+Sep 8 continuation: focused tests establish one safe sequential same-transaction
+rejection (500 output units blocked by a settled 500-unit reservation) and a finite
+allowance trade-off: an unguarded 500-unit fill leaves 999 allowance; a subsequent
+500-unit push restores 1000 entitlement without replenishing that allowance. These are
+deterministic examples, not generalized rejection rates. Independent reviewer hit its
+usage limit; root fallback review performed and independent closure stays open.
+Adding tests to the large existing harness hit solc's "Tag too large for reserved space"
+internal error. A separate test contract resolved compilation without compiler/config
+or production contract changes. Only test harnesses carry oversized-initcode warnings.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

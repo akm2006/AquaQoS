@@ -69,3 +69,19 @@ ordering around test cheatcodes, and added explicit quote/input/allowance rollba
 assertions. A quote at the maximum input ledger can succeed while the actual push
 overflows; this preserves atomicity but limits fill availability. No production
 contract or acceptance invariant was weakened to accommodate it.
+
+## Sep 8: conservatism controls (root fallback review)
+
+AquaQoSConservatism.t.sol compares rejected guarded execution with normalized
+unguarded reference orders. Before-state real inventory, maker allowance and all
+strategy virtual balances are explicitly matched. Quote/swap rejection snapshots
+cover maker/taker/router/Aqua balances/allowances, virtual markers and reservations.
+Successful reference fills assert real transfer and virtual changes; the same-tx case
+also checks unchanged siblings and both allowance floors. The finite-allowance case
+restores entitlement via actual Aqua.push and shows allowance remains underfunded.
+No production contract or invariant changes. One safe sequential rejection is proven;
+no general optimality or market rejection rate is claimed.
+
+The read-only reviewer could not run because of its usage limit. Root inspected the
+actual test paths and arithmetic as fallback. Independent implementation review of
+these cases and the earlier rejection replay remains a release gate.

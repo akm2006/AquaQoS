@@ -66,6 +66,9 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Static fee-free maximum-allowance replay rebuilt all 30 C/C100 rejected pre-states;
   11 settlement failures, 19 capacity breaches and 0 safe fills; eight controls passed.
   Same-transaction and finite-allowance conservatism remain separate gates.
+- [x] Focused real-settlement controls reproduce one safely backed sequential fill
+  blocked by a settled reservation, and finite allowance followed by direct push
+  demonstrates why the full guarantee allowance floor matters. Broad rates/review remain open.
 - [x] Findings reproducible; neutral and losing cases are included; no target performance threshold was invented.
 
 ## Frontend, deployment and demo

@@ -90,7 +90,7 @@ The checker validates recorded data consistency, not live-chain authentication o
 independent source implementation. It does not regenerate demand from the seeds or
 decode calldata/receipt logs; raw transaction data is retained for replay/review.
 Counterfactual false-rejection replay remains open: do not claim every guard rejection
-was unsafe. The bounded replay is now complete for this report: all 30 C/C100 guard
+was unsafe outside the defined scope. The bounded replay is complete for this report: all 30 C/C100 guard
 rejections were rebuilt from their saved pre-state using the official unguarded router.
 It found 11 actual settlement failures, 19 successful swaps that breached the configured
 capacity invariant, and zero safe fills. Eight successful controls (both directions for
@@ -104,3 +104,27 @@ from source commit `77a21d60ff6a348e4cfe71e16c0034ea43861c29` with `dirty=false`
 corrupted reports. Counts 1/8, seeded-shuffle/balanced workloads and lifecycle worst-case
 gas remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
 owns these acceptance gates before broad performance or frontend proof-page claims.
+
+## Sep 8: focused conservatism regressions
+
+`test/AquaQoSConservatism.t.sol` adds actual-settlement controls outside the comparative
+report. With two g=500 strategies and 1000 real output tokens, a first 500-unit fill
+leaves 500 real tokens and a 500-unit transient reservation. Another 500-unit fill
+is rejected with available=500, required=1000 in the same test transaction. A normalized
+unguarded reference at the same settled real/virtual state completes the second fill
+and covers both tokens' remaining entitlements and full allowance floors. This is
+one observed safe sequential fill blocked by conservative reservation accounting.
+
+With a decrementing-approval token and allowance=1499, the guard rejects a 500-unit
+fill because it requires 1500. Unguarded settlement succeeds and covers immediately
+remaining entitlement, but leaves allowance=999. A permissionless push of 500 restores
+the full 1000 entitlement while allowance remains 999. This justifies the stronger
+future-replenishment floor; it is not a safe fill under the full v0 specification.
+Allowance depletion is injected with a test prank, not a production vault API.
+
+The reference recipes use the existing router's inherited official XYC/settlement
+path, ordinary makers and matching virtual/real balances. Maker/order identities differ;
+these are bounded fee-free test controls, not proof of a vault bypass or market rates.
+The comparative 30-rejection denominator and raw benchmark report are unchanged.
+Root reviewed the test controls; independent implementation review remains open after
+the reviewer hit its usage limit.
