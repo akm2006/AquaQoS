@@ -13,7 +13,7 @@ const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion', '
 
 function expectedDeployments(run) {
   const find = (name, address) => run.deployments.find(d => d.name === name && d.address.toLowerCase() === address.toLowerCase());
-  return [find('Aqua', run.addresses.aqua), find('AquaSwapVMRouter', run.addresses.router),
+  return [find('Aqua', run.addresses.aqua), find('AquaQoSRouter', run.addresses.router),
     ...run.addresses.tokens.map(address => find('TokenMock', address))].map(d => {
       assert.ok(d, 'clean benchmark deployment identity');
       return Object.fromEntries(deploymentFields.map(field => [field, d[field]]));
