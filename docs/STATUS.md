@@ -35,7 +35,7 @@ protocol acceptance remains open.
   downloaded both compiler forms, built and passed 30 tests plus 239-transaction
   replay; executable code/ABI match, while full metadata differs as documented.
   See TRANSACTION_VALIDATION.
-- Known risks: same-transaction conservatism; worst-case group gas unmeasured;
+- Known risks: same-transaction conservatism; universal gas worst case unmeasured;
   numeric input-ledger saturation can permit a quote then revert settlement atomically;
   unsupported token behavior; docs/ABI drift;
   limited prior-art search; source license mapping and human/provenance eligibility gates.
@@ -126,7 +126,7 @@ cycles, pause, dock-all, empty dock and partial/full withdrawals assert exact fa
 bytes or state deltas. Raw `benchmarks/raw/lifecycle-gas-v1.json` records 68 and 59
 transactions, source/config/lock hashes, build settings, runtime hashes, calldata,
 receipts and live `hashes[]` snapshots. Independent benchmark-auditor review found
-no blocking issue; clean committed replay now records source `10a63e5` with
+no blocking issue; clean committed replay now records source `57a37a7` with
 `dirty=false`. Maxima are charged receipt
 gas within the declared matrix and exclude setup/deployment; swap/callback worst cases
 and finite-allowance token writes remain outside its claim.
@@ -139,8 +139,8 @@ while compiler metadata differed because the fresh checkout included newer tests
 an extra project remapping. Independent security review closed the recent callback/
 conservatism tests; benchmark review closed rejection arithmetic/calldata inspection.
 The lifecycle enumeration helper was tightened to reject RPC/ABI errors and now has
-fresh fault-injection self-checks. A clean rerun after committing that helper remains
-the next evidence refresh.
+fresh fault-injection self-checks. A clean rerun after committing that helper now
+records source `57a37a7` with `dirty=false`; gas and state results are unchanged.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.
