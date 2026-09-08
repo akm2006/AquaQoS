@@ -44,7 +44,8 @@ export function checkBenchmark(report) {
   assert.deepEqual(Object.keys(report.demandTrace).sort(), ['2', '4']);
   const runMap = new Map(report.runs.map(r => [`${r.count}/${r.system}`, r]));
   assert.equal(runMap.size, 8, 'unique system/count pairs');
-  for (const count of [2, 4]) for (const system of systems) {
+  for (const count of [2, 4]) {
+    for (const system of systems) {
     const run = runMap.get(`${count}/${system}`);
     assert.ok(run, `${system}/${count} missing`);
     const guarded = system === 'C' || system === 'C100';
@@ -166,8 +167,8 @@ export function checkBenchmark(report) {
       const burst = guarded ? scenario.finalState.tokens.reduce((n, t) => n + t.virtual.reduce((v, x) => v + max(10_000n - BigInt(x) - guarantee, 0n), 0n), 0n) : 0n;
       assert.equal(BigInt(m.netBurstOutstanding), burst);
     }
+    assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401), `${count} seeded demand trace`);
   }
-  assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401), `${count} seeded demand trace`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
