@@ -68,10 +68,9 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
 - [x] Matched-guarantee C100 sensitivity covers the same 32-fixture matrix; reports
   price/custody limits. Recorded-data checker rejects 16 deliberate corruptions.
-- [ ] Replay independently regenerates the seeded workload and reconstructs receipt-log
-  mapping before broad claims; the bounded checker now authenticates deployment identity
-  and exact saved calldata. Same-transaction and finite-allowance cases are not covered
-  by the static replay below.
+- [ ] Replay independently reconstructs receipt-log mapping before broad claims; seeded
+  demand regeneration, deployment identity and exact saved calldata are now checked.
+  Same-transaction and finite-allowance cases are not covered by the static replay below.
 - [x] Static fee-free maximum-allowance replay rebuilt all 30 C/C100 rejected pre-states;
   11 settlement failures, 19 capacity breaches and 0 safe fills; eight controls passed.
   Same-transaction and finite-allowance conservatism remain separate gates.

@@ -193,3 +193,13 @@ state recomputation is not enough if retained transactions can refer to another 
 runtime. Consequence: this bounded replay authenticates local deployment layout,
 runtime/build identity and exact maker/program/amount/direction calldata, while independent
 seed regeneration, receipt-log reconstruction and live-chain authentication remain open.
+
+## 2026-09-08 — D015: Regenerate benchmark demand from recorded seeds
+
+Decision: have the benchmark checker recompute both fixed xorshift demand traces from the
+published seeds and compare them with the raw report before checking per-attempt state.
+Alternatives: trust the serialized trace or add a second workload generator. Evidence: the
+runner already defines a small deterministic generator and records seeds `0xa201` and
+`0xa401`. Reason: prevent a report from changing offered demand while preserving its
+state arithmetic. Consequence: seed provenance is checked; independent receipt-log
+reconstruction and broader workload diversity remain open.

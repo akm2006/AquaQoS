@@ -7,8 +7,9 @@ protocol acceptance remains open.
 - Last milestone: `pnpm test` passes 30 tests, adding callback/nested rollback,
   canonical maker-trait and fee-recipe regressions. Supported fee/callback source
   paths are mapped in SECURITY_REVIEW_V0. No production contract changes.
-  Bootstrap and both benchmark/rejection evidence checkers also pass; nine corrupted
-  rejection reports are rejected. No test failures remain.
+  Bootstrap and both benchmark/rejection evidence checkers also pass; the rejection
+  checker rejects 12 corrupted reports and the benchmark checker regenerates both seeds.
+  No test failures remain.
 
 - Previous benchmark milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
   fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
@@ -53,8 +54,8 @@ protocol acceptance remains open.
 - Benchmark review: separate read-only auditor found no blocking C100/checker calculation
   issue; corrected custody wording and checked optimizer.enabled. Independent raw replay
   implementation review is now closed for retained receipts/calldata/logs and
-  counterfactual classification. Persistent checker authentication of calldata and
-  deployment identity remains a publication gate, not implied by checker success.
+  counterfactual classification. The checker now binds replay deployment identity and
+  exact calldata; independent receipt-log reconstruction remains open.
 - Local compiled byte sizes (solc 0.8.30, viaIR, optimizer 700, Cancun): router runtime
   21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
   Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
@@ -87,7 +88,7 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Expand the benchmark workload and add independent seed/log reconstruction.
+1. Expand the benchmark workload and add independent receipt-log reconstruction.
 2. Complete release-wide security review and document remaining supported-token limits.
 3. Build the minimal frontend/proof page, then rehearse the local transfer demo.
 
@@ -98,7 +99,7 @@ classified 11 settlement failures, 19 successful capacity breaches and zero safe
 it now binds deployment layout/build identity and exact maker/program/amount/direction
 calldata. Scope is static fee-free TokenMock with maximum allowance; focused
 same-transaction and finite-allowance controls follow below, while broader workload and
-independent seed/log reconstruction remain open. No production contract edits.
+independent receipt-log reconstruction remain open. No production contract edits.
 
 Sep 8 continuation: focused tests establish one safe sequential same-transaction
 rejection (500 output units blocked by a settled 500-unit reservation) and a finite
