@@ -84,7 +84,7 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Replay lifecycle gas from a clean committed source and retain the final raw hash.
+1. Verify a fresh uncached install/build/test with the committed lifecycle evidence.
 2. Obtain independent implementation review of rejection replay and the new
    conservatism/callback regressions when reviewer capacity returns; source method
    review alone is insufficient.
@@ -126,7 +126,8 @@ cycles, pause, dock-all, empty dock and partial/full withdrawals assert exact fa
 bytes or state deltas. Raw `benchmarks/raw/lifecycle-gas-v1.json` records 68 and 59
 transactions, source/config/lock hashes, build settings, runtime hashes, calldata,
 receipts and live `hashes[]` snapshots. Independent benchmark-auditor review found
-no blocking issue; clean committed replay remains required. Maxima are charged receipt
+no blocking issue; clean committed replay now records source `10a63e5` with
+`dirty=false`. Maxima are charged receipt
 gas within the declared matrix and exclude setup/deployment; swap/callback worst cases
 and finite-allowance token writes remain outside its claim.
 
