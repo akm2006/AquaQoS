@@ -169,3 +169,16 @@ results cannot quantify same-transaction or finite-allowance conservatism.
 REJECTION_REPLAY supplements the historical v2 benchmark method without altering its
 pinned input report or source hashes. Raw results bind input file hash and source
 commit; controls are excluded from rejected-attempt and rejected-output denominators.
+
+## 2026-09-08 — D013: Bounded eight-strategy lifecycle gas evidence
+
+Decision: retain a standalone lifecycle receipt matrix for the fixed `MAX_STRATEGIES`
+bound and report only observed charged gas within that matrix. Alternatives: infer gas
+from the arithmetic model, reuse swap-only microcases, or call the result a universal
+worst case. Evidence: two isolated Cancun EVM fixtures exercise registration,
+activation, failure rollback, guarantee cycles, pause, docking and withdrawals while
+retaining calldata, receipts, live strategy arrays and compiler/runtime identities.
+Reason: the v0 bound is a protocol design choice and needs measured lifecycle cost
+before release. Consequence: 518,103 successful activation gas and 518,883 late-failure
+gas are useful judge-facing engineering evidence, but callback code, token behavior,
+finite allowance writes, calldata and future EVM rules remain outside the claim.

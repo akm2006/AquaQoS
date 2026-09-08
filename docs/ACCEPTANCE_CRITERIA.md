@@ -33,7 +33,10 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] ADR establishes necessity and trust boundary; omit unused abstractions.
 - [x] Only authorized maker configures; full maker/app/hash/token identity, no duplicate/unknown entries.
 - [x] Atomic ship/dock registration, active-state validation, stale sibling removal and reship identity tested.
-- [ ] Reject reserve/guarantee overconfiguration; bound enumeration with measured worst-case gas.
+- [x] Reject reserve/guarantee overconfiguration; eight-strategy lifecycle enumeration,
+  activation, docking and withdrawal receipt maxima are measured in
+  [LIFECYCLE_GAS.md](LIFECYCLE_GAS.md). The matrix is bounded and does not claim a
+  universal worst-case across token/callback implementations.
 - [ ] Withdrawals, approvals, arbitrary calls, other apps and upgrades cannot silently bypass claimed protection.
 - [x] Document maker escape/pause behavior and the point at which guarantees cease.
 

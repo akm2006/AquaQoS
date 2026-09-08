@@ -56,6 +56,10 @@ protocol acceptance remains open.
   21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
   Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
   transient-state composability warning corresponds to the documented v0 limitation.
+- Eight-strategy lifecycle matrix passes in two isolated local EVMs. Highest observed
+  charged gas: activation 518,103; late failed activation 518,883; registration
+  248,911; guarantee update 80,388; pause 44,761; dock-all 182,846; partial
+  withdrawal 59,748. These are matrix maxima, not universal upper bounds.
 
 ## Bootstrap verification
 
@@ -80,7 +84,7 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-1. Measure worst-case eight-strategy lifecycle gas with reproducible receipt evidence.
+1. Replay lifecycle gas from a clean committed source and retain the final raw hash.
 2. Obtain independent implementation review of rejection replay and the new
    conservatism/callback regressions when reviewer capacity returns; source method
    review alone is insufficient.
@@ -114,6 +118,17 @@ passes 30 tests after fixing a test-only nested expectRevert conflict. Root fall
 review completed; independent final review, broader adversarial sequences and token
 coverage remain open. The new test-only initcode warning does not change deployment
 bytecode. No benchmark regeneration or production/compiler changes were necessary.
+
+Sep 8 lifecycle continuation: `pnpm exec hardhat run scripts/check-lifecycle-gas.mjs`
+passed two eight-strategy fixtures (initial guarantees 1000 and 500). Registration,
+ninth rejection, late token-B activation failure after all baseline writes, guarantee
+cycles, pause, dock-all, empty dock and partial/full withdrawals assert exact failure
+bytes or state deltas. Raw `benchmarks/raw/lifecycle-gas-v1.json` records 68 and 59
+transactions, source/config/lock hashes, build settings, runtime hashes, calldata,
+receipts and live `hashes[]` snapshots. Independent benchmark-auditor review found
+no blocking issue; clean committed replay remains required. Maxima are charged receipt
+gas within the declared matrix and exclude setup/deployment; swap/callback worst cases
+and finite-allowance token writes remain outside its claim.
 
 See EXECUTION_PLAN for later work, HACKATHON_REQUIREMENTS for deadline and hard gates,
 CODEX_SETUP for relaunch/fallback. Next milestones must update this handoff and create real commits.

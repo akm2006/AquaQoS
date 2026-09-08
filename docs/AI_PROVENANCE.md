@@ -33,6 +33,11 @@ controls. Test harness split fixed a compiler assembly-size failure; no producti
 contracts/compiler flags changed. Independent reviewer hit usage limit; root fallback
 review completed, independent implementation review explicitly pending.
 
+2026-09-08 lifecycle continuation: root authored scripts/check-lifecycle-gas.mjs and
+docs/LIFECYCLE_GAS.md, adding a bounded eight-strategy receipt matrix with exact
+rollback and live-array assertions. A read-only benchmark-auditor reviewed the draft
+and reported no blocking issue; no production contracts changed.
+
 2026-09-08 callback continuation: root authored AquaQoSCallbacks.t.sol and the fee/
 callback path matrix in SECURITY_REVIEW_V0, using pinned official builders and
 settlement source. Four tests cover callback nesting/rollback, canonical traits and
