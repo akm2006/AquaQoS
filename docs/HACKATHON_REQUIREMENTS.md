@@ -1,6 +1,6 @@
 # ETHOnline 2026 qualification gates
 
-Checked 2026-09-05. Recheck before submission; private dashboard state has not been inspected.
+Checked 2026-09-08 against the live official pages. Private dashboard state has not been inspected.
 Verified means the requirement was found, not that AquaQoS has satisfied it.
 
 ## 1inch main Aqua track
@@ -34,6 +34,14 @@ Sources: [details](https://ethglobal.com/events/ethonline2026/info/details),
 Written organizer disclosure of pre-existing work is required by global rules. The brief
 existed at takeover; its filesystem timestamp does not establish original creation time.
 Eligibility is not certified until provenance and participant state are confirmed.
+
+The September 8 recheck confirms the public deadline remains **September 13, 2026 at
+12:00 pm EDT / 16:00 UTC**, the demo video must be 2–4 minutes and at least 720p with
+human narration, and the Classic track requires work to begin after the hackathon start.
+See the [official event details](https://ethglobal.com/events/ethonline2026/info/details)
+and [start guide](https://ethglobal.com/events/ethonline2026/info/start). The 1inch page
+still lists the main Aqua App pool as $5,000 and the separate Continuity pool as $2,000;
+the total 1inch sponsor listing is $7,000.
 
 ## Source-access distinction
 
