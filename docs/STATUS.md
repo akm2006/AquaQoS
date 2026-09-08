@@ -90,7 +90,7 @@ protocol acceptance remains open.
 
 1. Expand the benchmark workload beyond the current 2/4-strategy TokenMock matrix.
 2. Complete release-wide security review and document remaining supported-token limits.
-3. Build the minimal frontend/proof page, then rehearse the local transfer demo.
+3. Connect the proof page to a reproducible local transfer demo; keep wallet/UI scope minimal.
 
 Current continuation: standalone rejection replay and checker recreate all 30
 capacity-rejected pre-states plus eight successful controls. Clean replay from `d62d32a`
@@ -100,6 +100,11 @@ it now binds deployment layout/build identity and exact maker/program/amount/dir
 calldata. Scope is static fee-free TokenMock with maximum allowance; focused
 same-transaction and finite-allowance controls follow below, while broader workload
 diversity remains open. No production contract edits.
+
+Sep 8 proof continuation: `proof/index.html` and `scripts/serve-proof.mjs` provide a
+dependency-free local judge page linking measured tests, raw benchmark/replay evidence and
+reproduction commands. Desktop and 390px browser screenshots passed; it intentionally
+does not claim a wallet flow or public deployment. Those remain release gates.
 
 Sep 8 continuation: focused tests establish one safe sequential same-transaction
 rejection (500 output units blocked by a settled 500-unit reservation) and a finite

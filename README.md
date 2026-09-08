@@ -30,6 +30,10 @@ one immutable pair, up to eight fee-free XYC strategies, standard tokens, and
 authenticated pinned Aqua/router code. Reservations last until transaction end,
 which can reject otherwise safe sequential fills in the same transaction.
 
+The local judge-facing proof page is served with `pnpm proof:serve` and opens at
+`http://127.0.0.1:4173/proof/`. It reports only committed evidence; no public deployment
+or wallet connection is implied.
+
 The original winning package is preserved as planning provenance, not a specification.
 See [AI provenance](docs/AI_PROVENANCE.md) and [third-party notices](docs/THIRD_PARTY.md).
 

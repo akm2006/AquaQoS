@@ -59,6 +59,10 @@ regeneration now recomputes both A/B/C/C100 demand traces. The benchmark checker
 reconstructs the retained ERC-20 Transfer-log multiset for every push/successful swap and
 requires failed swaps to emit none; broader workload diversity remains open.
 
+2026-09-08 proof page: root authored the dependency-free `proof/index.html` and
+`scripts/serve-proof.mjs`, using only committed measurements and links. Browser checks
+covered desktop and 390px layouts; no wallet, deployment or external publication is inferred.
+
 Original brief SHA-256:
 `afe4a87cc791e00b1ed926337f1f7413202beb3c7f4d0834941723473d4a66ee`.
 Filesystem timestamp observed September 5 is not proof of original creation time or

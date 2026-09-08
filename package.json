@@ -11,6 +11,7 @@
     "build": "hardhat build",
     "test": "hardhat test solidity",
     "test:transactions": "hardhat run scripts/check-transactions.mjs",
+    "proof:serve": "node scripts/serve-proof.mjs",
     "benchmark:a-b-c": "hardhat run benchmarks/run-a-b-c.mjs",
     "check:benchmark": "node scripts/check-benchmark.mjs",
     "check:bootstrap": "node scripts/check-bootstrap.mjs"

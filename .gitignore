@@ -21,6 +21,7 @@ dist/
 build/
 .next/
 test-results/
+output/
 playwright-report/
 *.log
 __pycache__/

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AquaQoS proof</title>
+  <style>
+    :root { color-scheme: dark; font: 16px/1.5 system-ui, sans-serif; background: #101419; color: #e8eef2; }
+    body { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
+    h1 { margin-bottom: 4px; } h2 { margin-top: 32px; }
+    .muted { color: #9eabb3; } .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+    .card { border: 1px solid #31404a; border-radius: 10px; padding: 16px; background: #171e24; }
+    .value { display: block; font-size: 1.8rem; font-weight: 700; color: #7ee2b8; }
+    code, pre { background: #0a0e11; border-radius: 6px; padding: 3px 5px; } pre { overflow: auto; padding: 12px; }
+    a { color: #8bc7ff; } li { margin: 7px 0; }
+  </style>
+</head>
+<body>
+  <p class="muted">ETHOnline 2026 · 1inch Build an Aqua App</p>
+  <h1>AquaQoS proof</h1>
+  <p>Protected capacity scheduling for multiple Aqua strategies sharing maker inventory.</p>
+
+  <h2>Measured local evidence</h2>
+  <div class="grid">
+    <div class="card"><span class="value">30</span>Solidity tests passing<br><span class="muted">256-run fuzz properties included</span></div>
+    <div class="card"><span class="value">32</span>A/B/C/C100 EVM fixtures<br><span class="muted">216 swaps + 8 pushes</span></div>
+    <div class="card"><span class="value">30</span>rejected candidates replayed<br><span class="muted">11 settlement failures · 19 capacity breaches</span></div>
+    <div class="card"><span class="value">0</span>safe fills among rejected candidates<br><span class="muted">8 successful controls reproduced</span></div>
+  </div>
+
+  <h2>What is actually demonstrated</h2>
+  <ul>
+    <li>Official Aqua virtual balances remain independently accounted while real maker inventory is shared.</li>
+    <li><code>CAPACITY_GUARD</code> rejects fills that would cross configured protected capacity.</li>
+    <li>Receipts, state deltas, calldata, seeded demand and ERC-20 transfer logs are checked from raw evidence.</li>
+    <li>All current addresses are ephemeral local-EVM addresses; no public deployment has been made.</li>
+  </ul>
+
+  <h2>Judge verification</h2>
+  <pre>pnpm install --frozen-lockfile --ignore-scripts
+pnpm build
+pnpm test
+pnpm benchmark:a-b-c
+node scripts/check-benchmark.mjs
+node scripts/check-rejections.mjs --self-test
+pnpm test:transactions</pre>
+  <ul>
+    <li><a href="../docs/PROBLEM_REPRODUCTION.md">Problem reproduction</a></li>
+    <li><a href="../docs/CAPACITY_GUARD_SPEC.md">Guard specification and invariants</a></li>
+    <li><a href="../docs/BENCHMARK_RESULTS.md">Benchmark methodology and limitations</a></li>
+    <li><a href="../benchmarks/raw/a-b-c-v1.json">Raw A/B/C evidence</a></li>
+    <li><a href="../benchmarks/raw/rejections-v1.json">Raw rejection replay</a></li>
+  </ul>
+  <p class="muted">Scope: pinned fee-free XYC and TokenMock fixtures. This page does not claim solvency, market value, hostile-token coverage or an external audit.</p>
+</body>
+</html>
