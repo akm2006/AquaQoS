@@ -9,26 +9,29 @@ const key = r => `${r.system}/${r.count}/${r.scenario}/${r.actionIndex}`;
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
 const sum = rows => rows.reduce((n, r) => n + BigInt(r.amount), 0n);
 const swapInterface = new Interface(['function swap((address maker,uint256 traits,bytes data) order,uint256 amount,bytes takerTraitsAndData)']);
-const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion', 'runtimeHash', 'runtimeBytes'];
+const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion', 'runtimeHash'];
 
-function expectedDeployments(run) {
-  const find = (name, address) => run.deployments.find(d => d.name === name && d.address.toLowerCase() === address.toLowerCase());
-  return [find('Aqua', run.addresses.aqua), find('AquaQoSRouter', run.addresses.router),
+function expectedDeployments(input, run) {
+  const reference = input.runs.find(candidate => candidate.system === 'A' && candidate.count === run.count);
+  assert.ok(reference, 'unguarded deployment reference');
+  const find = (name, address) => reference.deployments.find(d => d.name === name && d.address.toLowerCase() === address.toLowerCase());
+  return [find('Aqua', run.addresses.aqua), find('AquaSwapVMRouter', run.addresses.router),
     ...run.addresses.tokens.map(address => find('TokenMock', address))].map(d => {
       assert.ok(d, 'clean benchmark deployment identity');
       return Object.fromEntries(deploymentFields.map(field => [field, d[field]]));
     });
 }
 
-function checkReplayIdentity(record, run, action) {
+function checkReplayIdentity(record, input, run, action) {
   assert.deepEqual(record.deployments.map(d => Object.fromEntries(deploymentFields.map(field => [field, d[field]]))),
-    expectedDeployments(run), 'replay deployment identity');
+    expectedDeployments(input, run), 'replay deployment identity');
   assert.equal(record.tx.to.toLowerCase(), run.addresses.router.toLowerCase(), 'replay target');
+  assert.equal(record.tx.from.toLowerCase(), run.policy.taker.toLowerCase(), 'replay sender');
   assert.equal(record.receipt.to.toLowerCase(), record.tx.to.toLowerCase(), 'receipt target');
   assert.equal(record.receipt.from.toLowerCase(), record.tx.from.toLowerCase(), 'receipt sender');
   const decoded = swapInterface.decodeFunctionData('swap', record.tx.data);
   const order = decoded[0];
-  assert.equal(order.maker.toLowerCase(), run.policy.owner.toLowerCase(), 'order maker');
+  assert.equal(order.maker.toLowerCase(), record.deployments[0].receipt.from.toLowerCase(), 'order maker');
   assert.equal(order.traits, (1n << 254n) | (0x0028002800280028n << 160n), 'order traits');
   const tokens = run.addresses.tokens.map(address => address.slice(2).toLowerCase());
   const expectedData = `0x${tokens[0]}${tokens[1]}50000208${BigInt(action.strategy + 1).toString(16).padStart(16, '0')}`;
@@ -65,7 +68,7 @@ export function checkRejections(report, input) {
     const { run, action, control } = source;
     assert.equal(r.control, control);
     for (const field of ['amount', 'strategy', 'aToB']) assert.equal(r[field], action[field]);
-    checkReplayIdentity(r, run, action);
+    checkReplayIdentity(r, input, run, action);
     assert.deepEqual(r.before, action.before.tokens, 'recreated original state');
     assert.equal(r.guarantee, run.policy.guarantee);
     const g = BigInt(r.guarantee), baseline = 10_000n - g;
