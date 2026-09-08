@@ -1,6 +1,6 @@
 {
   "kind": "local-a-b-c-benchmark-v2",
-  "sourceCommit": "22258aac11e660403f66fd54ef68ad44862cab49",
+  "sourceCommit": "ccc473dd83d51dc2af17386396d1f54005282b77",
   "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
@@ -72,7 +72,7 @@
     "contracts/AquaQoSVault.sol": "2c286d38a19255f1ea0b525ddb5ce97aab02c7dbe55b4a92224215509fc8cae2",
     "hardhat.config.ts": "77703f0405416ae97e2ecdfdff5306562bd78ee12c0edfea4df10b1f2a9fd803",
     "benchmarks/run-a-b-c.mjs": "a78f619ee1e0e70f2e15034b05e9d403617f0f029e508e61af4dbf464ff92180",
-    "scripts/check-benchmark.mjs": "ee7aadfb9c818315cc561440cb21bda5abc228fb7cb3974a18c45757d9397f8d",
+    "scripts/check-benchmark.mjs": "86eb67e19ab6b574f9bbe5576d08086b45983787b8bac012dd4f32009f2e90a3",
     "sources.lock.json": "1f389b853521db63c4a1ae67700d22cd826936e52d5638cfcd1c248febd0322a",
     "package.json": "03bc456585ebec253be031e6a5f08426fb4d5e351dfcfd6d0a3d60df575c869a",
     "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1",
