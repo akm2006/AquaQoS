@@ -10,6 +10,10 @@ protocol acceptance remains open.
   `Transfer` logs. Browser checks passed at desktop and 390px mobile sizes; the first run
   exposed a missing `.mjs` MIME type in the local proof server, which is corrected. This is
   evidence replay, not a wallet flow or live deployment.
+- Release review: root completed a focused read-only pass over router/vault authorization,
+  canonical program enforcement, allowance floors, transient reservations and lifecycle
+  exits. No new v0-scope blocker was found; `docs/SECURITY_REVIEW_RELEASE.md` records the
+  conditions and explicitly leaves independent review and deployment verification open.
 
 - Last milestone: D017 eight-strategy comparative measurement and separate read-only
   benchmark audit passed. Clean source `0ae94ec` generated 48 fixtures with 392 swaps
