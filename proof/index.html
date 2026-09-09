@@ -36,6 +36,7 @@
     <li>Original benchmark Transfer logs, seeded demand and state deltas are checked; the separate rejection replay checks calldata, deployment identity and state deltas.</li>
     <li>All current addresses are ephemeral local-EVM addresses; no public deployment has been made.</li>
   </ul>
+  <p><a href="demo.html">Open the step-by-step transaction replay</a> to inspect retained receipts, real balance changes, virtual strategy balances and ERC-20 Transfer logs.</p>
 
   <h2>Reproduce the evidence</h2>
   <p>Trade-off: at eight strategies, low-contention swaps cost a median 210,099 gas with AquaQoS versus 113,715 without it. Guard rejections also cost more than raw settlement failures in the concentrated workload. These measurements use test tokens and fixed workloads.</p>

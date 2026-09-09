@@ -4,6 +4,13 @@ Updated 2026-09-09. Phase: v0 protocol implementation, security review and measu
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
+- Current milestone: a dependency-free transaction replay is now linked from `proof/index.html`
+  at `proof/demo.html`. It reads the retained clean A/B/C/C100 report and steps through
+  actual local-EVM receipts, maker/taker balances, independent virtual balances and ERC-20
+  `Transfer` logs. Browser checks passed at desktop and 390px mobile sizes; the first run
+  exposed a missing `.mjs` MIME type in the local proof server, which is corrected. This is
+  evidence replay, not a wallet flow or live deployment.
+
 - Last milestone: D017 eight-strategy comparative measurement and separate read-only
   benchmark audit passed. Clean source `0ae94ec` generated 48 fixtures with 392 swaps
   and 12 pushes; replay source `7a972af` covers 52 rejected candidates and 12 controls:
@@ -103,10 +110,11 @@ Sep 9 eight-strategy milestone is complete. Historical evidence outside the comp
 reports still references pre-cleanup commit IDs; do not treat those IDs as checkoutable
 source without reconciling the history rewrite or generating fresh evidence.
 
-1. Address remaining benchmark gaps: balanced/shuffled demand and replay receipt-log
-   validation; the eight-strategy extension alone does not close workload diversity.
-2. Complete release-wide security review and document remaining supported-token limits.
-3. Connect the proof page to a reproducible local transfer demo; keep wallet/UI scope minimal.
+1. Complete the release-wide security review and document supported-token limits.
+2. Add the smallest repeatable local transfer-demo script/fork instructions around the
+   existing receipt replay; keep wallet/UI scope minimal.
+3. Run a fresh-checkout release rehearsal, reconcile provenance, then prepare the human
+   narrated video and owner-controlled submission actions.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

@@ -227,3 +227,18 @@ reproducible runner. Consequences: 48 fixtures are required by the checker; miss
 eight-strategy data, altered seeds and eighth-sibling mutations must fail. This
 extends group-size coverage only; balanced/shuffled workloads and token diversity
 remain open. Per-strategy offered amounts decrease with group size by construction.
+
+## 2026-09-09 — D018: Make retained receipts step-through evidence
+
+Decision: add a dependency-free browser replay at `proof/demo.html` that reads the
+committed A/B/C/C100 report and exposes recorded receipt status, state deltas and
+standard ERC-20 `Transfer` logs. Keep it read-only and local; do not add wallet/RPC
+connections or invent a live deployment.
+
+Alternatives: leave judges with terminal-only commands, add a frontend framework, or
+re-execute transactions from the browser. Evidence: the report already retains clean
+local receipts, deployment identity, calldata and reconstructed state; the proof server
+already serves committed JSON. Reason: shorten verification time without creating a
+second execution path or implying testnet availability. Consequence: this improves
+judge usability but does not satisfy the separate live/fork deployment gate, maker
+configuration UI, or human demo-video gate.

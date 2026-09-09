@@ -4,7 +4,7 @@ import { resolve, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(fileURLToPath(new URL('..', import.meta.url)));
-const contentTypes = { '.html': 'text/html; charset=utf-8', '.json': 'application/json; charset=utf-8', '.md': 'text/plain; charset=utf-8' };
+const contentTypes = { '.html': 'text/html; charset=utf-8', '.mjs': 'text/javascript; charset=utf-8', '.json': 'application/json; charset=utf-8', '.md': 'text/plain; charset=utf-8' };
 const server = createServer(async (req, res) => {
   const requestPath = decodeURIComponent((req.url ?? '/').split('?')[0]);
   const relativePath = requestPath === '/' || requestPath === '/proof/' ? 'proof/index.html' : requestPath.slice(1);
