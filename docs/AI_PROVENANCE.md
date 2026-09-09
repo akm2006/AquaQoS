@@ -78,6 +78,11 @@ retained raw evidence and the decisions recorded in this repository.
 
 ## Public-release policy
 
+2026-09-09 continuation: Codex extended the existing benchmark and checker to eight
+strategies, added three corrupted-evidence regressions, and corrected stale method
+coverage and the README proof-server command. Owner requested continued project work.
+Measurements and separate benchmark review are recorded after execution in STATUS.
+
 The provenance and prompt files are intentionally retained. ETHOnline permits AI-assisted
 development but asks teams to identify where AI was used; its current submission guidance
 also asks spec-driven projects to include the relevant prompts and planning artifacts.

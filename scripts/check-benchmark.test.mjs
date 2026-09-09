@@ -25,6 +25,9 @@ const mutations = {
   'wrong volume': r => { r.runs[0].scenarios[0].metrics.successfulOutput = '0'; },
   'wrong guarantee policy': r => { r.runs.find(x => x.system === 'C100').policy.guarantee = '1'; },
   'hidden capacity violation flag': r => { r.runs.find(x => x.system === 'C').scenarios[0].attempts[0].protectedCapacityViolation = true; },
+  'missing eight-strategy group': r => { r.runs = r.runs.filter(x => x.count !== 8); delete r.demandTrace[8]; },
+  'altered eight-strategy seed': r => { r.demandTrace[8].seed++; },
+  'eighth sibling mutation': r => { r.runs.find(x => x.count === 8 && x.system === 'C').scenarios[0].attempts[0].after.tokens[0].virtual[7] = '999'; },
 };
 for (const [name, mutate] of Object.entries(mutations)) test(`rejects ${name}`, () => {
   const changed = structuredClone(report);

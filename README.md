@@ -39,7 +39,7 @@ node scripts/check-bootstrap.mjs
 
 The [guard specification](docs/CAPACITY_GUARD_SPEC.md) defines the supported domain and
 invariants. Reservations last until transaction end, which can reject otherwise safe
-sequential fills in the same transaction. The local verification page is served with
+sequential fills in the same transaction. Run `pnpm proof:serve` and open
 `http://127.0.0.1:4173/proof/`. It reports only committed evidence; no public deployment
 or wallet connection is implied.
 

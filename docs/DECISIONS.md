@@ -214,3 +214,16 @@ the local fixtures retain complete logs. Reason: the judging proof needs real to
 movement, not only virtual/accounting state. Consequence: bounded A/B/C evidence now
 checks seed, calldata, state and token-transfer logs; hostile-token behavior and broader
 workloads remain outside scope.
+
+## 2026-09-09 — D017: Compare policies at the eight-strategy bound
+
+Decision: extend the existing four-policy, four-workload matrix to eight strategies
+using seed `0xa801`. Keep the earlier seeds, 10,000 units of backing per token,
+funding, pricing and guarantee formulas unchanged. Alternatives: infer swap gas from
+the lifecycle matrix or build a separate benchmark. Evidence: the v0 specification
+bounds groups at eight; the current comparative runner only exercises two and four.
+Reason: measure actual fills and swap costs at the supported bound with the same
+reproducible runner. Consequences: 48 fixtures are required by the checker; missing
+eight-strategy data, altered seeds and eighth-sibling mutations must fail. This
+extends group-size coverage only; balanced/shuffled workloads and token diversity
+remain open. Per-strategy offered amounts decrease with group size by construction.

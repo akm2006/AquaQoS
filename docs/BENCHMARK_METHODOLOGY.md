@@ -141,18 +141,25 @@ real-market value.
 
 ## Implemented coverage and open gates
 
-The current runner covers 32 fresh fixtures: 2/4 strategies x A/B/C/C100 x four
+The current runner defines 48 fresh fixtures: 2/4/8 strategies x A/B/C/C100 x four
 workloads (low contention, concentrated overload, its reverse order, replenishment).
-Counts 1/8, balanced contention, seeded-shuffle order and the counterfactual
-false-rejection replay remain open; the list above is the target, not completed coverage.
+Seeds are `0xa201`, `0xa401`, and `0xa801` respectively. The eight-strategy group uses
+the same 10,000 backing per token and existing demand generator, at the vault's fixed
+maximum group size. Per-strategy demand scales with group size, so this measures the
+declared workload at each size rather than holding trade amounts constant across sizes.
+Count 1, balanced contention and seeded-shuffle order remain open. Counterfactual
+replay covers every guard rejection in the retained report plus both-direction controls.
+Completed measurements and review status are recorded in BENCHMARK_RESULTS.md.
 The historical raw path `a-b-c-v1.json` now declares schema `local-a-b-c-benchmark-v2`.
 
 The checker separately recomputes recorded maker/taker/router/Aqua balances, maker
 allowance, every virtual balance, state continuity, XYC inputs, error selectors/arguments,
 guarded entitlement backing and summary metrics. It does not authenticate a JSON file
-against a live chain, independently regenerate seeded demand, decode transaction calldata
-or reconstruct receipt logs. Full receipts/calldata and build identity are retained for
-replay/review. TokenMock funding/approval setup is asserted by the runner; broader token
+against a live chain. It regenerates seeded demand and reconstructs retained Transfer
+logs. Exact saved swap calldata and reference deployment identity are checked by the
+separate rejection-replay checker, not for every original benchmark transaction.
+Full receipts/calldata and build identity are retained for replay/review.
+TokenMock funding/approval setup is asserted by the runner; broader token
 and allowance behavior is tested elsewhere, not established by this benchmark.
 Owner: root technical lead. These limits and false-rejection replay remain release-open;
 do not claim every rejected trade was unsafe or publish broad efficiency conclusions.

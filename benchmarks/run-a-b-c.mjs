@@ -30,7 +30,7 @@ const report = {
   ].map(p => [p, hashFile(p)])),
   demandTrace: {}, runs: [], limitations: [
     'Local TokenMock pair and pinned XYC exact-output programs only.',
-    'Two and four strategy groups; no mainnet or economic-value claim.',
+    'Two, four and eight strategy groups; no mainnet or economic-value claim.',
     'Conservative depth is shallower, so quote input/slippage is reported separately.',
   ],
 };
@@ -325,8 +325,8 @@ async function runSystem(system, count, trace) {
   };
 }
 
-for (const count of [2, 4]) {
-  const trace = makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401);
+for (const count of [2, 4, 8]) {
+  const trace = makeDemandTrace(count, { 2: 0xa201, 4: 0xa401, 8: 0xa801 }[count]);
   report.demandTrace[count] = trace;
   for (const system of ['A', 'B', 'C', 'C100']) report.runs.push(await runSystem(system, count, trace));
 }

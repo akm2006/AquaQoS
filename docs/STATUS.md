@@ -95,6 +95,13 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
+Sep 9 active milestone: eight-strategy comparative extension (D017) is implemented;
+clean generation, counterfactual replay and read-only benchmark review are pending.
+The earlier 2/4 report is temporarily incompatible with the expanded checker until
+regenerated. No Solidity changes. Historical evidence outside the comparative/rejection
+reports still references pre-cleanup commit IDs; do not treat those IDs as checkoutable
+source without reconciling the history rewrite or generating fresh evidence.
+
 1. Expand the benchmark workload beyond the current 2/4-strategy TokenMock matrix.
 2. Complete release-wide security review and document remaining supported-token limits.
 3. Connect the proof page to a reproducible local transfer demo; keep wallet/UI scope minimal.

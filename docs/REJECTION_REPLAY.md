@@ -36,7 +36,7 @@ Track failed trades separately: an atomic rollback preserving backing is not a s
 Require complete recorded transfer deltas, unchanged sibling balances and rollback.
 
 Use one successful low-contention C/C100 attempt in each direction per policy/group
-as positive controls (eight total), also matching original successful after-state.
+as positive controls (twelve for the 2/4/8-strategy matrix), also matching original successful after-state.
 Controls are excluded from rejection denominators. Corrupted-evidence checks must reject
 changed state, missing candidates, fake outcomes and altered summary. The checker also
 compares every replay deployment's name/address/build identity/runtime hash with the clean

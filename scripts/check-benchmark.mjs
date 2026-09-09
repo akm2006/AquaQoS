@@ -59,11 +59,11 @@ export function checkBenchmark(report) {
   assert.equal(report.kind, 'local-a-b-c-benchmark-v2');
   assert.equal(report.dirty, false, 'benchmark evidence must come from a clean commit');
   assert.match(report.sourceCommit, /^[a-f0-9]{40}$/);
-  assert.equal(report.runs.length, 8, 'two sizes x four policies');
-  assert.deepEqual(Object.keys(report.demandTrace).sort(), ['2', '4']);
+  assert.equal(report.runs.length, 12, 'three sizes x four policies');
+  assert.deepEqual(Object.keys(report.demandTrace).sort(), ['2', '4', '8']);
   const runMap = new Map(report.runs.map(r => [`${r.count}/${r.system}`, r]));
-  assert.equal(runMap.size, 8, 'unique system/count pairs');
-  for (const count of [2, 4]) {
+  assert.equal(runMap.size, 12, 'unique system/count pairs');
+  for (const count of [2, 4, 8]) {
     for (const system of systems) {
     const run = runMap.get(`${count}/${system}`);
     assert.ok(run, `${system}/${count} missing`);
@@ -188,7 +188,7 @@ export function checkBenchmark(report) {
       assert.equal(BigInt(m.netBurstOutstanding), burst);
     }
     }
-    assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, count === 2 ? 0xa201 : 0xa401), `${count} seeded demand trace`);
+    assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, { 2: 0xa201, 4: 0xa401, 8: 0xa801 }[count]), `${count} seeded demand trace`);
   }
 }
 
@@ -202,5 +202,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     assert.equal(createHash('sha256').update(readFileSync(path)).digest('hex'), expected, path);
   }
   checkBenchmark(report);
-  console.log('32 local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.');
+  console.log('48 local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.');
 }
