@@ -28,7 +28,7 @@ protocol acceptance remains open.
 - Public presentation cleanup: protocol-first README and verification page, event records
   archived under `docs/archive/ethonline-2026/`, and the original owner planning brief
   removed from the current tree and all reachable Git history. Main is pushed to the
-  private `akm2006/AquaQoS` repository at rewritten commit `083c8b9`.
+  private `akm2006/AquaQoS` repository; latest local milestone is `508f2d6`.
 
 - Previous benchmark milestone: clean C100 matched-guarantee replay from `337beeb` passed 32 fresh
   fixtures (216 swaps, 8 pushes). `pnpm check:benchmark` and 17 checker tests passed,
