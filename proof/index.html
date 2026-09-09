@@ -3,7 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AquaQoS proof</title>
+  <title>AquaQoS verification</title>
+  <link rel="icon" href="data:,">
   <style>
     :root { color-scheme: dark; font: 16px/1.5 system-ui, sans-serif; background: #101419; color: #e8eef2; }
     body { max-width: 980px; margin: 0 auto; padding: 32px 20px 64px; }
@@ -23,27 +24,28 @@
   <h2>Measured local evidence</h2>
   <div class="grid">
     <div class="card"><span class="value">30</span>Solidity tests passing<br><span class="muted">256-run fuzz properties included</span></div>
-    <div class="card"><span class="value">32</span>A/B/C/C100 EVM fixtures<br><span class="muted">216 swaps + 8 pushes</span></div>
-    <div class="card"><span class="value">30</span>rejected candidates replayed<br><span class="muted">11 settlement failures · 19 capacity breaches</span></div>
-    <div class="card"><span class="value">0</span>safe fills among rejected candidates<br><span class="muted">8 successful controls reproduced</span></div>
+    <div class="card"><span class="value">48</span>A/B/C/C100 EVM fixtures<br><span class="muted">2/4/8 strategies · 392 swaps + 12 pushes</span></div>
+    <div class="card"><span class="value">52</span>rejected candidates replayed<br><span class="muted">17 settlement failures · 35 capacity breaches</span></div>
+    <div class="card"><span class="value">0</span>safe fills among rejected candidates<br><span class="muted">12 successful controls reproduced</span></div>
   </div>
 
   <h2>What is actually demonstrated</h2>
   <ul>
     <li>Official Aqua virtual balances remain independently accounted while real maker inventory is shared.</li>
     <li><code>CAPACITY_GUARD</code> rejects fills that would cross configured protected capacity.</li>
-    <li>Receipts, state deltas, calldata, seeded demand and ERC-20 transfer logs are checked from raw evidence.</li>
+    <li>Original benchmark Transfer logs, seeded demand and state deltas are checked; the separate rejection replay checks calldata, deployment identity and state deltas.</li>
     <li>All current addresses are ephemeral local-EVM addresses; no public deployment has been made.</li>
   </ul>
 
   <h2>Reproduce the evidence</h2>
+  <p>Trade-off: at eight strategies, low-contention swaps cost a median 210,099 gas with AquaQoS versus 113,715 without it. Guard rejections also cost more than raw settlement failures in the concentrated workload. These measurements use test tokens and fixed workloads.</p>
   <pre>pnpm install --frozen-lockfile --ignore-scripts
 pnpm build
 pnpm test
-pnpm benchmark:a-b-c
 node scripts/check-benchmark.mjs
 node scripts/check-rejections.mjs --self-test
 pnpm test:transactions</pre>
+  <p>These commands check retained benchmark evidence and execute the transaction checks. See the benchmark documentation to regenerate the comparative and rejection reports from clean commits.</p>
   <ul>
     <li><a href="../docs/PROBLEM_REPRODUCTION.md">Problem reproduction</a></li>
     <li><a href="../docs/CAPACITY_GUARD_SPEC.md">Guard specification and invariants</a></li>

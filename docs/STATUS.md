@@ -4,12 +4,16 @@ Updated 2026-09-09. Phase: v0 protocol implementation, security review and measu
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
-- Last milestone: `pnpm test` passes 30 tests, adding callback/nested rollback,
-  canonical maker-trait and fee-recipe regressions. Supported fee/callback source
-  paths are mapped in SECURITY_REVIEW_V0. No production contract changes.
-  Bootstrap and both benchmark/rejection evidence checkers also pass; the rejection
-  checker rejects 12 corrupted reports and the benchmark checker regenerates both seeds.
-  No test failures remain.
+- Last milestone: D017 eight-strategy comparative measurement and separate read-only
+  benchmark audit passed. Clean source `0ae94ec` generated 48 fixtures with 392 swaps
+  and 12 pushes; replay source `7a972af` covers 52 rejected candidates and 12 controls:
+  17 settlement failures, 35 capacity breaches, zero safe fills in this bounded sample.
+  All 20 benchmark checker tests, 12 replay corruption checks and 30 Solidity tests pass.
+  Original 2/4 metrics are unchanged. Eight-strategy low-contention success median is
+  210,099 gas guarded versus 113,715 raw; concentrated guard rejection costs more than
+  raw settlement failure (146,465/147,137 versus 126,779). No protocol code changes.
+  Proof page counts/limits and desktop/mobile browser checks are current; favicon 404
+  corrected, no console errors after reload, benchmark documentation link returned 200.
 - Public presentation cleanup: protocol-first README and verification page, event records
   archived under `docs/archive/ethonline-2026/`, and the original owner planning brief
   removed from the current tree and all reachable Git history. Main is pushed to the
@@ -57,11 +61,11 @@ protocol acceptance remains open.
 - Review: separate read-only review found M1 (allowance after permissionless replenishment);
   corrected output floor and follow-up review closed it. SECURITY_REVIEW_V0 records scope
   and limits; this is not an external audit or final security certification.
-- Benchmark review: separate read-only auditor found no blocking C100/checker calculation
-  issue; corrected custody wording and checked optimizer.enabled. Independent raw replay
-  implementation review is now closed for retained receipts/calldata/logs and
-  counterfactual classification. The checker now binds replay deployment identity and
-  exact calldata; independent receipt-log reconstruction remains open.
+- Benchmark review: D017 reviewer found no blocking defect in the 2/4/8 extension,
+  verified earlier outcomes unchanged and checked both-direction controls. Original
+  benchmark Transfer logs are reconstructed; rejection replay checks calldata, deployment
+  identity and recorded states but does not reconstruct replay Transfer logs. Broader
+  tokens, balanced/shuffled workloads and final release-wide security review remain open.
 - Local compiled byte sizes (solc 0.8.30, viaIR, optimizer 700, Cancun): router runtime
   21,072 / initcode 22,451; vault runtime 8,209 / initcode 9,192. Both below EVM limits.
   Solidity test harness exceeds deployment size limits; it is test-only. Compiler's
@@ -95,18 +99,17 @@ protocol acceptance remains open.
 
 ## Next three tasks
 
-Sep 9 active milestone: eight-strategy comparative extension (D017) is implemented;
-clean generation, counterfactual replay and read-only benchmark review are pending.
-The earlier 2/4 report is temporarily incompatible with the expanded checker until
-regenerated. No Solidity changes. Historical evidence outside the comparative/rejection
+Sep 9 eight-strategy milestone is complete. Historical evidence outside the comparative/rejection
 reports still references pre-cleanup commit IDs; do not treat those IDs as checkoutable
 source without reconciling the history rewrite or generating fresh evidence.
 
-1. Expand the benchmark workload beyond the current 2/4-strategy TokenMock matrix.
+1. Address remaining benchmark gaps: balanced/shuffled demand and replay receipt-log
+   validation; the eight-strategy extension alone does not close workload diversity.
 2. Complete release-wide security review and document remaining supported-token limits.
 3. Connect the proof page to a reproducible local transfer demo; keep wallet/UI scope minimal.
 
-Current continuation: standalone rejection replay and checker recreate all 30
+Historical Sep 8 continuation (superseded by the 52-candidate report above):
+standalone rejection replay and checker recreated all 30
 capacity-rejected pre-states plus eight successful controls. Clean replay from `9d77eda`
 classified 11 settlement failures, 19 successful capacity breaches and zero safe fills.
 `node scripts/check-rejections.mjs --self-test` passed, rejecting 12 corrupted reports;

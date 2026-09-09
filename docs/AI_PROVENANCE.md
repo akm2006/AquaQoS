@@ -82,6 +82,11 @@ retained raw evidence and the decisions recorded in this repository.
 strategies, added three corrupted-evidence regressions, and corrected stale method
 coverage and the README proof-server command. Owner requested continued project work.
 Measurements and separate benchmark review are recorded after execution in STATUS.
+The read-only benchmark-auditor independently passed 48 fixtures, 20 regression tests
+and 12 replay corruptions, and verified unchanged 2/4 measurements. Root retained the
+clean 52-candidate replay, documented the eight-strategy gas loss, corrected stale
+charter/coverage wording, and browser-checked the proof page at 1280px and 390px.
+This is AI-assisted internal review; no additional human technical contribution is inferred.
 
 The provenance and prompt files are intentionally retained. ETHOnline permits AI-assisted
 development but asks teams to identify where AI was used; its current submission guidance

@@ -23,6 +23,7 @@ build/
 test-results/
 output/
 playwright-report/
+.playwright-cli/
 *.log
 __pycache__/
 .venv/

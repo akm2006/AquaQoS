@@ -66,13 +66,14 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
   capital utilization, unsafe rejections, burst utilization and gas. Define each denominator/unit.
 - [x] Report rejection and failed-fill counts over all attempts; do not reclassify rejection as filled demand.
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
-- [x] Matched-guarantee C100 sensitivity covers the same 32-fixture matrix; reports
-  price/custody limits. Recorded-data checker rejects 16 deliberate corruptions.
+- [x] Matched-guarantee C100 sensitivity covers the same 48-fixture 2/4/8-strategy matrix;
+  reports price/custody limits and the eight-strategy losing gas case. Recorded-data
+  checker rejects 19 deliberate corruptions.
 - [x] Replay independently reconstructs receipt-log mapping before broad claims; seeded
   demand regeneration, deployment identity and exact saved calldata are now checked.
   Same-transaction and finite-allowance cases are not covered by the static replay below.
-- [x] Static fee-free maximum-allowance replay rebuilt all 30 C/C100 rejected pre-states;
-  11 settlement failures, 19 capacity breaches and 0 safe fills; eight controls passed.
+- [x] Static fee-free maximum-allowance replay rebuilt all 52 C/C100 rejected pre-states;
+  17 settlement failures, 35 capacity breaches and 0 safe fills; twelve controls passed.
   Same-transaction and finite-allowance conservatism remain separate gates.
 - [x] Focused real-settlement controls reproduce one safely backed sequential fill
   blocked by a settled reservation, and finite allowance followed by direct push

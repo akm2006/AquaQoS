@@ -1,6 +1,7 @@
 # Project charter
 
-Checked 2026-09-05. See [sources](RESEARCH_SOURCES.md) and [decisions](DECISIONS.md).
+Updated 2026-09-09 against the implemented v0 and retained tests. See
+[sources](RESEARCH_SOURCES.md) and [decisions](DECISIONS.md).
 
 ## Validated problem and conditional thesis
 
@@ -8,7 +9,8 @@ Aqua records independent virtual token balances per maker/app/strategy/token, wi
 escrowing inventory. Its source and official inventory-safety documentation show that
 one strategy can consume real tokens while another retains virtual capacity. A later
 transfer can fail from insufficient balance or allowance. This is documented behavior,
-not a newly discovered Aqua vulnerability. Local executable reproduction remains pending.
+not a newly discovered Aqua vulnerability. Three local Solidity tests reproduce inventory
+and allowance failures with transfer and rollback assertions; see PROBLEM_REPRODUCTION.md.
 
 AquaQoS will test whether configured per-strategy protected capacity plus shared burst
 access can improve the allocation trade-off for a maker running multiple strategies.
@@ -29,8 +31,9 @@ One token capacity group with a bounded number of strategies; official Aqua sett
 one minimal CAPACITY_GUARD implementation after specification; deterministic raw failure;
 adversarial and fuzz tests; three-baseline benchmark; simple maker/demo/proof UI; repeatable
 local token-transfer demonstration and technical documentation.
-Registry and maker Vault are candidates, not mandated contracts. Retain only the state and
-control boundary proven necessary. Initially assume ordinary non-rebasing, non-fee-on-transfer
+The implemented v0 uses a restricted maker vault with registration built in (D007);
+there is no separate registry. Its boundary is one immutable token pair and at most
+eight fee-free XYC strategies. It assumes ordinary non-rebasing, non-fee-on-transfer
 ERC-20s; unsupported behaviors must be rejected or explicitly outside the tested property.
 
 ## Non-goals and stretch
@@ -42,8 +45,9 @@ dynamic allocation and a 5–7 page technical paper. NAV floors and priority tie
 
 ## Questions that can change scope
 
-Define whether guarantees are remaining consumable entitlements or fixed floors; account
-for replenishment and fees. Prove closure of every inventory-consuming path. A wallet with
-unrestricted external spending cannot provide permanent reserve protection. Compare native
-Extruction with a custom dispatcher instruction. If safety requires too much new custody
-logic, pivot to a precisely scoped cooperative-maker capacity policy and disclose its limits.
+The v0 specification defines consumable entitlements, replenishment, fee exclusion and
+transaction-scoped reservations. D007 selects the dispatcher extension and restricted
+vault after comparing native Extruction. Remaining questions include token support,
+same-transaction conservatism, broader workloads and release-wide security review.
+Eight-strategy measurements expose higher swap and rejection gas; broader efficiency
+claims require evidence beyond these fixed test-token workloads.
