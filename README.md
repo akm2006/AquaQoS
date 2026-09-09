@@ -19,7 +19,7 @@ path load-bearing.
 ## Current state
 
 This is a local Solidity prototype with reproducible transaction receipts, state checks,
-benchmarks and a dependency-free verification page. The supported domain is deliberately
+benchmarks and a Next.js capacity workspace. The supported domain is deliberately
 small: one immutable token pair, up to eight fee-free XYC strategies, standard ERC-20
 behavior and pinned Aqua/SwapVM code. It does not claim general solvency, profitability,
 hostile-token coverage or an external audit.
@@ -39,16 +39,29 @@ node scripts/check-bootstrap.mjs
 
 The [guard specification](docs/CAPACITY_GUARD_SPEC.md) defines the supported domain and
 invariants. Reservations last until transaction end, which can reject otherwise safe
-sequential fills in the same transaction. Run `pnpm proof:serve` and open
-`http://127.0.0.1:4173/proof/`; the [recorded transaction replay](proof/demo.html) lets
-you step through receipts, balance changes and ERC-20 transfer logs. It reports only
-committed evidence; no public deployment or wallet connection is implied.
+sequential fills in the same transaction.
+
+## Capacity workspace
+
+The [Next.js app](web/) compares raw or conservative Aqua with two AquaQoS protection
+policies. Explore 2/4/8 strategies, replay synchronized transactions, inspect protected
+capacity and open real balance changes and receipt logs.
+
+```sh
+pnpm --dir web install --frozen-lockfile --ignore-scripts
+pnpm proof:serve
+```
+
+Open `http://127.0.0.1:4173/`; `/proof/` contains the protocol evidence. The app uses
+recorded local transactions. Wallet configuration and live execution are not implemented.
+Run `pnpm --dir web build` to validate the evidence and produce the static Next.js build.
+The frontend has its own lockfile; the protocol pins and benchmark hashes are unchanged.
 
 ## Repository map
 
 - `contracts/`, `test/`: protocol implementation and Solidity tests.
 - `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
-- `proof/`: dependency-free local verification page.
+- `web/`: Next.js App Router workspace, evidence page and browser regression checks.
 - `docs/`: protocol, benchmark, security, requirements and release documentation.
 - `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence
   retained for ETHOnline transparency; they are not runtime dependencies.

@@ -92,3 +92,15 @@ Checked installed source at SwapVM `f09a41e689240adc645934f965c8061749397cd2`
 
 The path matrix and new real-transfer tests are recorded in SECURITY_REVIEW_V0.
 This is pinned implementation verification, not a change to protocol dependencies.
+
+## 2026-09-09 Next.js frontend baseline
+
+- [Official App Router installation](https://nextjs.org/docs/app/getting-started/installation)
+  and [static export guide](https://nextjs.org/docs/app/guides/static-exports): checked via
+  Context7 `/vercel/next.js` and the installed version's `next/dist/docs/` Markdown.
+  Supports App Router, TypeScript, client interactivity and `output: export`.
+- npm registry queries selected exact Next.js 16.3.4 and React/React DOM 19.2.8;
+  TypeScript 5.9.3 is used as the conservative compiler version. `web/pnpm-lock.yaml`
+  preserves transitive integrity. No protocol dependency is upgraded.
+- Installed Next.js `config-shared.d.ts` documents `agentRules: false`, used to prevent
+  redundant generated instruction files; repository AGENTS.md remains authoritative.

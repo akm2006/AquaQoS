@@ -242,3 +242,16 @@ already serves committed JSON. Reason: shorten verification time without creatin
 second execution path or implying testnet availability. Consequence: this improves
 judge usability but does not satisfy the separate live/fork deployment gate, maker
 configuration UI, or human demo-video gate.
+
+## 2026-09-09 — D019: Next.js capacity workspace before submission
+
+Decision: follow the owner's explicit Next.js requirement with an App Router frontend
+in `web/`; defer submission packaging until the product is polished. Replace the earlier
+HTML page with synchronized policy comparisons, capacity state and expandable receipts.
+Alternatives: expand vanilla HTML or adopt a full wallet/backend starter. Evidence: the
+existing 48-fixture report already contains matching demand, state and receipts; official
+Next.js supports static exports and interactive client components. Reason: improve the
+actual product flow without adding unsupported onchain actions. Consequences: frontend
+has its own pinned lockfile; protocol benchmark hashes remain unchanged. Build reuses
+the existing checker and publishes only curated evidence. Live local execution, maker
+configuration, final protocol review and broader benchmarks remain separate work.

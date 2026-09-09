@@ -3,6 +3,10 @@
 Deadline: September 13, 2026, 16:00 UTC. Dates below are internal targets, not event rules.
 Root owns implementation, gates and commits. Reviewer passes are read-only.
 
+Owner direction, 2026-09-09: finish and polish the protocol and Next.js product before
+starting submission packaging. The dates below remain historical targets. Video,
+dashboard, launch assets and paper preparation are on hold while product work continues.
+
 | Phase | Dependency | Objective gate | Target |
 | --- | --- | --- | --- |
 | 0 Bootstrap | Full brief + environment audit | Durable docs, pins, local skills/reviewers validated and committed | Sep 5 |
@@ -28,9 +32,7 @@ Each milestone requires implementation where applicable, actual passing checks, 
 assumptions, updated STATUS/decisions, disposition of findings and a coherent commit.
 No artificial commit count: commit actual increments. Review [acceptance](ACCEPTANCE_CRITERIA.md).
 
-Immediate next phase: implement the audited A/B/C methodology in
-[BENCHMARK_METHODOLOGY.md](BENCHMARK_METHODOLOGY.md). Preserve identical offered demand,
-equal initial backing, explicit guarantee/allocation policies, price/slippage
-differences, raw failures and losing cases. Existing group-size gas and adaptive
-validation sequences do not satisfy that comparison gate. See STATUS for remaining
-validation and reproduction work.
+Immediate work: finish the Next.js capacity workspace and evidence flows, then add a
+verified live local execution path and close remaining protocol/security/benchmark gaps.
+The comparative benchmark already exists; balanced/shuffled demand and rejection replay
+Transfer-log reconstruction remain open. See STATUS for the current handoff.

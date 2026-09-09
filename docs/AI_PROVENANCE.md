@@ -2,6 +2,15 @@
 
 This is an AI-assisted project, not a claim of unaided human authorship.
 
+2026-09-09 product direction: owner requested completing product polish before submission
+and explicitly selected Next.js for the frontend. Codex implemented `web/`, the local
+launcher migration, evidence export and browser checks. Earlier HTML replay and root
+release-review documents were also Codex-authored; that review was not an external audit.
+The Next.js app reuses recorded benchmark transactions, not generated illustrative values.
+Root inspected the implementation and browser results. A separate frontend reviewer
+reached its usage limit without delivering a report; no independent approval is claimed.
+No additional human test execution or code authorship is inferred.
+
 | Date | Artifact scope | Origin / contribution |
 | --- | --- | --- |
 | 2026-09-05 takeover | Initial owner-supplied planning material | Used as unvalidated starting context; it is not part of the public repository |

@@ -1,22 +1,45 @@
-# AquaQoS demo path
+# AquaQoS capacity workspace
 
-The dependency-free proof page includes a transaction replay at `/proof/demo.html`.
-It reads `benchmarks/raw/a-b-c-v1.json`, the same retained report checked by
-`node scripts/check-benchmark.mjs`; it does not sign transactions, connect a wallet,
-call an RPC endpoint or invent a live address.
+The Next.js app in `web/` replaces the earlier HTML replay. `/` is the capacity workspace;
+`/proof/` links the protocol specification, benchmark, limitations and downloadable evidence.
+The app displays recorded local transactions. Live execution and maker configuration are
+not yet implemented.
 
 Start it locally:
 
 ```sh
+pnpm --dir web install --frozen-lockfile --ignore-scripts
 pnpm proof:serve
 ```
 
-Open <http://127.0.0.1:4173/proof/> and choose the replay link. The default view compares
-the two-strategy C100 policy with the concentrated overload workload. Select policy B to
-see raw Aqua continue fills until a sibling settlement fails. Select C100 to see the
-capacity guard reject the same demand before settlement. Use the step controls to inspect
-the exact recorded status, gas, receipt hash, before/after state and standard ERC-20
-`Transfer` logs.
+Open <http://127.0.0.1:4173/>. The default compares raw Aqua with half-guarantee AquaQoS
+on two strategies and concentrated demand. At step 3 the guarded policy rejects a fill;
+at step 4 the guarded sibling succeeds while the raw sibling fails settlement.
+Select 100% protection to compare a full-guarantee policy, or choose conservative Aqua
+as the reference. All 2/4/8 group sizes and four workloads are available.
+
+Expand each card to inspect receipt status, error arguments, gas, token balances,
+addresses, allowance and Transfer logs. Replenishment is a deposit via Aqua.push,
+not a swap. The capacity meter displays post-settlement remaining entitlements under
+the recorded policy; it is not a live quote. Amounts are raw mock-token units.
+
+`pnpm --dir web build` first runs the original benchmark checker, then exports a static
+Next.js site to `web/out/`. The generated `public/evidence/` directory is ignored; its
+manifest records the original report SHA256 and source commit. No protocol lockfile or
+benchmark report is changed by the frontend install/build. Runtime has no MCP dependency.
+
+For development use `pnpm --dir web dev` (port 3000). With it running, replay the durable
+browser checks from the repository root:
+
+```sh
+playwright-cli -s=aqua-next open http://127.0.0.1:3000
+playwright-cli -s=aqua-next run-code --filename=web/scripts/check-browser.js
+playwright-cli -s=aqua-next close
+```
+
+The browser checks cover 48 comparison selections, real fill/rejection/deposit values,
+scenario reset/end boundaries, 1440/390/320px layouts, evidence links and failed-load recovery.
+Playwright CLI is an optional development tool, not an app runtime dependency.
 
 The addresses and receipts are ephemeral local-EVM evidence retained in the report. Token
 labels are deliberately shown as `Token 0` and `Token 1` because the report sorts deployed

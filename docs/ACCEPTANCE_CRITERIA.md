@@ -82,6 +82,12 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 
 ## Frontend, deployment and demo
 
+- [x] Next.js recorded-evidence workspace compares A/B and C/C100 for all 48 scenario
+  selections, displays checked local receipts and labels its non-live environment.
+- [x] Recorded workspace browser regression passes fill/rejection/push values, evidence
+  links, failed-load retry and 1440/390/320px layouts. Static build and typecheck pass.
+- [ ] Independent review of the Next.js evidence-to-display path; first attempt reached
+  the reviewer's usage limit without a completed report.
 - [ ] Maker config, capacity explanation, competing fills and proof page use real contract state/evidence.
 - [ ] No invented addresses/metrics. Clearly label chain, local fork, stale quotes and failed transactions.
 - [ ] Desktop/mobile, accessible controls, changed flow, console and network checks via Playwright CLI.
