@@ -106,6 +106,8 @@ async function verifyWorkspace(page) {
           "replenishment",
           "lowContention",
           "adversarialOrder",
+          "balancedRoundRobin",
+          "shuffledPermutation",
         ]) {
           await page
             .getByRole("combobox", { name: "Workload", exact: true })

@@ -1,15 +1,19 @@
 # AquaQoS handoff
 
-Updated 2026-09-09. Phase: v0 protocol implementation, security review and measurement.
-Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
-protocol acceptance remains open.
+Updated 2026-09-10. Phase: v0 protocol implementation, live local product and release
+hardening. The supported protocol, benchmark evidence and local execution workspace work;
+public deployment, testnet proof and submission packaging remain intentionally open.
 
-2026-09-10 continuation in progress: independent internal protocol source review found
-no new blocker within the stated v0 scope; fresh Solidity rerun and review record follow.
-Expanded benchmark source has passed separate methodology review (unchanged original
-traces, balanced/shuffled identical multiset). Clean 72-fixture regeneration is pending;
-the old raw report intentionally does not pass the newly strengthened checker until
-replaced. Live local execution and maker controls are being implemented and tested.
+Sep 10 milestone complete: 30 Solidity tests pass, including three 256-run fuzz properties;
+the independent protocol review found no release-blocking defect in the documented v0 scope.
+The clean comparative report has 72 fixtures (616 swaps, 12 pushes), balanced/shuffled demand,
+and 22 checker tests pass. Rejection replay has 52 candidates plus 12 controls, with 35
+capacity breaches, 17 settlement failures and zero safe fills in that bounded sample.
+
+The live Next.js workspace now drives a fresh isolated Cancun EVM: setup, quote, successful
+fills, guarded rejection, sibling fill, push, pause/guarantee updates, docking and withdrawal
+all produce checked receipts and token-transfer evidence. API self-check and browser checks
+are the current local product gate; this is not a wallet, testnet or public deployment.
 
 Owner direction (2026-09-09): frontend must be a polished Next.js product. Submission
 packaging, video, paper and dashboard work are on hold until product polish is complete.
@@ -20,19 +24,20 @@ packaging, video, paper and dashboard work are on hold until product polish is c
   remaining configured capacity, inventory trajectories, successful/reverted receipts
   and replenishment Transfer logs. `/proof/` serves protocol evidence links.
   Build-time export reuses the complete benchmark checker; numbers are retained local
-  evidence. No live wallet, maker configuration or deployment is implied.
+  evidence. `/live/` is a separate local-EVM execution flow with maker configuration;
+  no wallet, testnet or public deployment is implied.
   The original HTML frontend is replaced; `pnpm proof:serve` now starts Next.js locally.
   Validation: production static build, TypeScript check, production dependency audit
-  (no known vulnerabilities), bootstrap links and all 48 retained benchmark fixtures pass.
-  Playwright covers 48 comparison selections, real fill/rejection/push values, receipt
+  (no known vulnerabilities), bootstrap links and all 72 retained benchmark fixtures pass.
+  Playwright covers 72 comparison selections, real fill/rejection/push values, receipt
   logs, scenario boundaries, malformed-data retry and 1440/390/320px layouts. Root
   inspected rendered desktop/mobile screenshots and the evidence-to-display paths.
   The root `pnpm proof:serve` launcher passed the same browser suite on port 4173;
   fresh console had zero errors/warnings. Network inspection showed successful evidence
   loads and dev-mode effect-cleanup aborts followed by successful retries, not HTTP errors.
-  No contract or protocol dependency changes; the prior 30-test protocol result is
-  not represented as a new run. Independent frontend reviewer reached a usage limit
-  without a completed report; separate review remains open, not implicitly passed.
+  The live API and browser checks cover authenticated local execution, actual receipts,
+  rejected and successful fills, replenishment and the full exit path. Independent frontend
+  review remains open; the protocol review is internal and is not an external audit.
 
 - Previous milestone: a dependency-free transaction replay was linked from `proof/index.html`
   at `proof/demo.html`. It reads the retained clean A/B/C/C100 report and steps through
@@ -140,17 +145,12 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-Sep 9 Next.js recorded-evidence workspace milestone is complete; live application and
-independent frontend review remain open. Historical evidence outside the comparative/rejection
-reports still references pre-cleanup commit IDs; do not treat those IDs as checkoutable
-source without reconciling the history rewrite or generating fresh evidence.
-
-1. Add a verified live local execution and maker-configuration flow to the Next.js app;
-   keep recorded evidence visibly distinct from connected state.
-2. Complete independent protocol review and remaining benchmark gaps: balanced/shuffled
-   demand and rejection replay Transfer-log reconstruction.
-3. Polish the complete product flow, verify fresh-checkout reproducibility, and resolve
-   technical findings. Submission work remains deferred by owner direction.
+1. Complete fresh-checkout replay after the live-workspace commit and run the final
+   repository secret/license/history audit.
+2. Choose and verify the strongest authorized demonstration target: local fork or testnet;
+   bind deployed addresses, source/runtime hashes and actual transfer receipts if used.
+3. Only after those gates, finish the judge-facing proof/demo package, paper, video and
+   submission checklist. Public release and dashboard actions remain manual.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

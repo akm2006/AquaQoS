@@ -20,19 +20,19 @@ Check it with `node scripts/check-rejections.mjs --self-test` and commit the new
 Running both generators consecutively without committing the first report correctly
 produces dirty replay provenance, which the checker rejects.
 
-The Sep 9 clean run records source commit `0ae94ec7edff4a29c924095782ebf707be8e062a`,
+The Sep 10 clean run records source commit `b0d1d3e7bcb17dd551e458d1998dc84238db860c`,
 `dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
 solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
-hashes are retained. The retained Sep 9 report has **48 fresh EVM fixtures**, grouped into
-twelve policy/count entries: 2/4/8 strategies x four policies x four workloads. All 392
-offered swaps and 12 push actions are retained with receipts, calldata, states and gas. The
-current runner now appends balanced round-robin and independently seeded shuffled-permutation
-workloads, so the next clean regeneration produces 72 fixtures. No results for those new
-fixtures are claimed here until that regeneration and checker run complete.
+hashes are retained. There are **72 fresh EVM fixtures**, grouped into twelve policy/count
+entries: 2/4/8 strategies x four policies x six workloads. All 616 offered swaps and 12
+push actions are retained with receipts, calldata, states and gas. The appended balanced
+and shuffled workloads contribute 224 swaps; every policy fills all of that demand.
 
-Checker passed; 20 checker regression tests passed (valid evidence plus 19 corrupted
-variants), including missing eight-strategy coverage, altered seed and eighth-sibling
-mutation. The earlier 2/4 measurements are unchanged by this extension.
+Checker passed; 22 checker regression tests passed (valid evidence plus 21 corrupted
+variants). Separate review compared all 48 previous scenarios: demand, outcomes, calldata,
+transfer payloads, balances, quotes and transaction gas are unchanged. Deployment/runtime
+hashes, block/transaction identities and setup gas differ; setup gas increased by 12 per
+fixture. The report does not establish that compiler metadata alone caused that difference.
 These are local test-token transactions only.
 
 ## Policy and results
@@ -77,6 +77,19 @@ it is not economic capital efficiency. See [methodology](BENCHMARK_METHODOLOGY.m
 
 ## Representative median transaction gas
 
+The added balanced and shuffled cases each fill 2,531/2,482/2,502 output units per policy
+at 2/4/8 strategies respectively, with no rejection or settlement failure. Their success
+medians show a neutral volume result with higher guarded gas:
+
+| Strategies | A/B, either ordering | C/C100 balanced | C/C100 shuffled |
+| ---: | ---: | ---: | ---: |
+| 2 | 113,716 | 146,208 | 146,211.5 |
+| 4 | 113,716 | 165,390.5 | 165,390.5 |
+| 8 | 113,706.5 | 210,239.5 | 210,241.5 |
+
+Fractional medians average the middle two integer gas observations. One balanced
+permutation per count is bounded neutral coverage, not broad ordering robustness.
+
 Setup gas is separate; push gas belongs to its action. These are fixture measurements,
 not universal estimates. All outcome gas samples, including reverse/replenishment,
 remain in the raw report.
@@ -105,7 +118,7 @@ with per-strategy allocation, so these medians are not a controlled per-sibling 
 
 Separate read-only benchmark review checked the C100 construction and recomputation
 logic; custody wording and optimizer-enabled provenance assertions were corrected.
-The reviewer then independently ran the clean-report checker and all 17 regression
+The reviewer then independently ran the clean-report checker and all 22 regression
 tests, and verified C100/A volume, guarantee totals and the gas medians above; no
 blocking discrepancy was found. This is internal read-only review, not external audit.
 The checker validates recorded data consistency, regenerates the three seeded demand traces,
@@ -126,10 +139,11 @@ static, fee-free, maximum-allowance TokenMock integration for these cases; it do
 measure same-transaction or finite-allowance conservatism.
 
 Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
-from source commit `7a972afdb0493aaf5c675aaaf4bc0c1584221ec9` with `dirty=false`.
-`node scripts/check-rejections.mjs --self-test` passed, rejecting 12 deliberately
-corrupted reports. Count 1, seeded-shuffle/balanced workloads and universal worst-case
-gas remain open. TokenMock results do not cover hostile tokens or real markets. Root lead
+from source commit `dd02abcdfba23c2756658f50ebfa1d0a610a0989` with `dirty=false`.
+`node scripts/check-rejections.mjs --self-test` passed, rejecting 19 deliberately
+corrupted reports, including receipt hash, encoding, missing/extra/reordered transfers.
+Count 1, broader shuffled-overload cases and universal worst-case gas remain open.
+TokenMock results do not cover hostile tokens or real markets. Root lead
 owns these acceptance gates before broad performance or frontend proof-page claims.
 
 Sep 9 D017 read-only benchmark audit found no blocking defect. The reviewer independently
@@ -137,6 +151,10 @@ ran the 48-fixture checker, 20 regression tests and 12 replay corruptions, compa
 2/4 metrics and per-attempt gas/outcomes unchanged, and verified both-direction controls
 at eight strategies. The audit confirmed the losing gas case above. This is internal
 review of the bounded experiment, not an external protocol audit.
+
+Sep 10 separate read-only audit independently passed the 72-fixture checker, all 22
+regression tests and 19 replay corruption checks, recomputed the table above and the
+unchanged 52-rejection classification, and found no remaining blocker in this scope.
 
 ## Sep 8: focused conservatism regressions
 

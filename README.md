@@ -45,16 +45,27 @@ sequential fills in the same transaction.
 
 The [Next.js app](web/) compares raw or conservative Aqua with two AquaQoS protection
 policies. Explore 2/4/8 strategies, replay synchronized transactions, inspect protected
-capacity and open real balance changes and receipt logs.
+capacity and open real balance changes and receipt logs. `/live/` runs the same protocol
+against a fresh isolated local EVM with actual receipts, maker controls and token transfers.
 
 ```sh
 pnpm --dir web install --frozen-lockfile --ignore-scripts
 pnpm proof:serve
 ```
 
-Open `http://127.0.0.1:4173/`; `/proof/` contains the protocol evidence. The app uses
-recorded local transactions. Wallet configuration and live execution are not implemented.
-Run `pnpm --dir web build` to validate the evidence and produce the static Next.js build.
+Open `http://127.0.0.1:4173/`; `/proof/` contains the protocol evidence. For the live local
+workspace, build the static app and serve it with the protocol runner:
+
+```sh
+pnpm --dir web build
+node scripts/serve-live.mjs
+```
+
+Open `http://127.0.0.1:4174/live/`. It uses test accounts and mock tokens only; no wallet,
+testnet or public deployment is implied. Run `node scripts/check-live.mjs` for the API
+self-check and `playwright-cli -s=aqua-live run-code --filename=web/scripts/check-live-browser.js`
+for the browser flow. `pnpm --dir web build` also validates the evidence and produces the
+static Next.js build.
 The frontend has its own lockfile; the protocol pins and benchmark hashes are unchanged.
 
 ## Repository map

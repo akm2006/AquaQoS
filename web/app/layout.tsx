@@ -17,7 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </a>
         <header className="topbar">
           <div className="nav-wrap">
-            <Link href="/" className="brand" aria-label="AquaQoS home">
+            <Link href="/" prefetch={false} className="brand" aria-label="AquaQoS home">
               <span className="brand-mark" aria-hidden="true">
                 ≋
               </span>
@@ -25,14 +25,15 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <small>v0</small>
             </Link>
             <nav aria-label="Main navigation">
-              <Link href="/">Workspace</Link>
-              <Link href="/proof/">
+              <Link href="/" prefetch={false}>Workspace</Link>
+              <Link href="/live/" prefetch={false}>Live execution</Link>
+              <Link href="/proof/" prefetch={false}>
                 Protocol evidence <span aria-hidden="true">↗</span>
               </Link>
             </nav>
             <span className="environment">
               <i />
-              Local EVM <span className="desktop-only">/ recorded</span>
+              Local EVM
             </span>
           </div>
         </header>
@@ -42,7 +43,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             Powered by <strong>1inch Aqua + SwapVM</strong>
           </span>
           <span>Experimental v0 · Mock tokens · No public deployment</span>
-          <Link href="/proof/">Scope & verification ↗</Link>
+          <Link href="/proof/" prefetch={false}>Scope & verification ↗</Link>
         </footer>
       </body>
     </html>

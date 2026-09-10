@@ -45,3 +45,26 @@ callbacks and lifecycle boundaries.
 
 The review therefore supports continued local demo work. It does not close the final
 security gate, authorize funds, or establish solvency, profitability or market safety.
+
+## Sep 10 independent internal source review
+
+A separate read-only security reviewer inspected the unchanged protocol at `f49bd1c`:
+both production contracts, pinned upstream settlement paths, all four Solidity test files,
+the specification and retained validation evidence. It found no release-blocking defect
+within the supported v0 domain. The reviewer ran the 327,168-case arithmetic check;
+root independently reran the complete Solidity suite on Sep 10: 30 passing, including
+256 fuzz runs for each of three properties. This closes the missing independent internal
+protocol-review pass for that scope, not the external-audit or deployment gates.
+
+The review checked all six owner lifecycle methods, pause/dock requirements for withdrawal,
+absence of generic calls/approvals/upgrades, immutable dependencies, complete membership,
+both-token activation, canonical programs, final debit, quote/reserve separation, pending
+reservations, allowance floors, input payment routes, both settlement orders, taker
+callbacks, disabled maker hooks, Simulator rollback and router-only asset rescue.
+
+Accepted limits: honest standard tokens, authenticated dependency deployments,
+same-transaction conservative rejection, input-ledger saturation, and maker pause ending
+the commitment. Remaining test breadth includes mixed-direction/deeper nesting,
+successful nesting after outer output settlement, combined finite allowance/payment routes,
+explicit zero-output rollback and universal callback/token gas bounds. These are coverage
+limits rather than newly demonstrated defects. No production contract was changed.

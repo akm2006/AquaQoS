@@ -1,9 +1,8 @@
 # AquaQoS capacity workspace
 
-The Next.js app in `web/` replaces the earlier HTML replay. `/` is the capacity workspace;
-`/proof/` links the protocol specification, benchmark, limitations and downloadable evidence.
-The app displays recorded local transactions. Live execution and maker configuration are
-not yet implemented.
+The Next.js app in `web/` replaces the earlier HTML replay. `/` is the recorded capacity
+workspace; `/live/` is a fresh local-EVM execution workspace; `/proof/` links the protocol
+specification, benchmark, limitations and downloadable evidence.
 
 Start it locally:
 
@@ -37,9 +36,28 @@ playwright-cli -s=aqua-next run-code --filename=web/scripts/check-browser.js
 playwright-cli -s=aqua-next close
 ```
 
-The browser checks cover 48 comparison selections, real fill/rejection/deposit values,
+The browser checks cover 72 comparison selections, real fill/rejection/deposit values,
 scenario reset/end boundaries, 1440/390/320px layouts, evidence links and failed-load recovery.
 Playwright CLI is an optional development tool, not an app runtime dependency.
+
+For live local execution, build and serve the static app from the repository root:
+
+```sh
+pnpm --dir web build
+node scripts/serve-live.mjs
+```
+
+Open <http://127.0.0.1:4174/live/>. The server creates a fresh isolated Cancun EVM,
+deploys the pinned AquaQoS contracts and mock tokens, and exposes authenticated setup,
+quote, fill, rejection, replenishment and maker-exit actions. The browser regression is:
+
+```sh
+playwright-cli -s=aqua-live open http://127.0.0.1:4174/live/
+playwright-cli -s=aqua-live run-code --filename=web/scripts/check-live-browser.js
+playwright-cli -s=aqua-live close
+```
+
+This is real local transaction evidence, not a wallet, testnet or public deployment.
 
 The addresses and receipts are ephemeral local-EVM evidence retained in the report. Token
 labels are deliberately shown as `Token 0` and `Token 1` because the report sorts deployed

@@ -10,6 +10,8 @@ export const workloads: Record<string, string> = {
   replenishment: "Inventory replenishment",
   lowContention: "Low contention",
   adversarialOrder: "Reversed demand",
+  balancedRoundRobin: "Balanced trading",
+  shuffledPermutation: "Shuffled balanced trading",
 };
 export type Snapshot = {
   maker: string;

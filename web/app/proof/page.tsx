@@ -50,7 +50,7 @@ export default function Proof() {
             result.
           </p>
         </div>
-        <Link className="button primary" href="/">
+        <Link className="button primary" href="/" prefetch={false}>
           Open workspace →
         </Link>
       </div>

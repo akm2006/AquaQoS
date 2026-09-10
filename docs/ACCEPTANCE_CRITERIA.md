@@ -62,13 +62,14 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Include concentrated demand, sibling contention, replenishment, adversarial ordering, low contention and
   overloaded regimes. Conservative setup includes an honestly documented reserve/allocation policy.
 - [x] Raw machine-readable per-attempt records, initial/final state, seed, commit, gas settings and commands retained.
-- [ ] Metrics: virtual/shared ratio, successful volume, settlement failures, guarantee violations,
-  capital utilization, unsafe rejections, burst utilization and gas. Define each denominator/unit.
+- [x] Metrics: virtual/shared ratio, successful volume, settlement failures, guarantee violations,
+  capital utilization, unsafe rejections, burst utilization and gas are defined with units and
+  denominators in the methodology and retained report; broader market workloads remain out of scope.
 - [x] Report rejection and failed-fill counts over all attempts; do not reclassify rejection as filled demand.
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
-- [x] Matched-guarantee C100 sensitivity covers the same 48-fixture 2/4/8-strategy matrix;
-  reports price/custody limits and the eight-strategy losing gas case. Recorded-data
-  checker rejects 19 deliberate corruptions.
+- [x] Matched-guarantee C100 sensitivity covers the original 48-fixture 2/4/8-strategy matrix
+  and the report adds balanced/shuffled workloads; it reports price/custody limits and the
+  eight-strategy losing gas case. The recorded-data checker rejects 21 deliberate corruptions.
 - [x] Replay independently reconstructs receipt-log mapping before broad claims; seeded
   demand regeneration, deployment identity and exact saved calldata are now checked.
   Same-transaction and finite-allowance cases are not covered by the static replay below.
@@ -82,15 +83,18 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 
 ## Frontend, deployment and demo
 
-- [x] Next.js recorded-evidence workspace compares A/B and C/C100 for all 48 scenario
-  selections, displays checked local receipts and labels its non-live environment.
+- [x] Next.js recorded-evidence workspace compares A/B and C/C100 for all 72 policy/count/workload
+  fixtures, displays checked local receipts and labels its non-live environment.
 - [x] Recorded workspace browser regression passes fill/rejection/push values, evidence
   links, failed-load retry and 1440/390/320px layouts. Static build and typecheck pass.
-- [ ] Independent review of the Next.js evidence-to-display path; first attempt reached
-  the reviewer's usage limit without a completed report.
-- [ ] Maker config, capacity explanation, competing fills and proof page use real contract state/evidence.
-- [ ] No invented addresses/metrics. Clearly label chain, local fork, stale quotes and failed transactions.
-- [ ] Desktop/mobile, accessible controls, changed flow, console and network checks via Playwright CLI.
+- [ ] Independent review of the Next.js evidence-to-display path; the earlier reviewer reached
+  the usage limit without a completed report.
+- [x] Live local maker config, capacity explanation, competing fills and proof page use real
+  contract state, receipts and token-transfer evidence.
+- [x] No invented addresses/metrics in the live flow; chain, mock tokens, local state, stale
+  quotes and failed transactions are explicitly labeled.
+- [x] Desktop/mobile, accessible controls, changed live flow, console and network checks are
+  covered by the Playwright CLI browser regression.
 - [ ] Deployment/replay scripts declare chain/block/source pins; verify deployed code and addresses.
 - [ ] Local fork demonstration includes actual token balance changes and receipts/traces; fresh replay succeeds.
 - [ ] Public transactions or deployment costs require authority; local test balances carry no market-value claim.
