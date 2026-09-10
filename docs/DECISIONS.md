@@ -268,3 +268,21 @@ receipt evidence to actual token movement. Consequences: 72 fixtures must be reg
 from clean source; no new numerical claim until checked. One shuffle per count does not
 establish general ordering robustness. Canonical topic/data encoding and receipt hash
 association are checked alongside transfer addresses, values and order.
+
+## 2026-09-10 — D021: Five-route Next.js product with curated public docs
+
+Decision: make the Next.js app the judge-facing product surface with five public routes:
+landing (`/`), recorded workspace (`/workspace/`), live execution (`/live/`), proof
+(`/proof/`) and curated documentation (`/docs/`). Keep raw Markdown, reports and provenance
+in the repository as audit sources rather than duplicating them as separate app routes.
+Adopt the owner-supplied `AquaQoS.svg` as the immutable logo master; use CSS/SVG-first motion
+and add an animation library only if a measured interaction needs it.
+
+Alternatives: keep the workspace at `/`, create a separate evidence/methodology route for
+every document, or install a broad UI/animation stack. Evidence: the current app already
+has recorded, live and proof flows; the 1inch requirement accepts tests, scripts or UI as
+position evidence; current Next.js guidance supports shared layouts and route-level loading/
+error states. Reason: give a judge one clear story without fragmenting the product or
+introducing unsupported dependency surface. Consequences: the refactor must preserve the
+existing evidence logic while moving the recorded route, and every public claim must link
+to the underlying source/test/receipt. See `DESIGN.md` and `docs/APP_REFACTOR_GUIDE.md`.

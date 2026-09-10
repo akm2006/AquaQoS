@@ -1,8 +1,13 @@
 # AquaQoS handoff
 
-Updated 2026-09-10. Phase: v0 protocol implementation, live local product and release
-hardening. The supported protocol, benchmark evidence and local execution workspace work;
-public deployment, testnet proof and submission packaging remain intentionally open.
+Updated 2026-09-10. Phase: v0 protocol implementation, live local product and frontend
+refactor planning. The supported protocol, benchmark evidence and local execution workspace
+work; public deployment, testnet proof and submission packaging remain intentionally open.
+
+The owner-approved `DESIGN.md` now locks the supplied `AquaQoS.svg` as the final logo and
+defines the blue-led marketing / calm application split. `docs/APP_REFACTOR_GUIDE.md` records
+the approved five-route structure, curated `/docs/` surface, dependency policy, logo motion
+rules and frontend acceptance gates. No application refactor code has been changed yet.
 
 Sep 10 milestone complete: 30 Solidity tests pass, including three 256-run fuzz properties;
 the independent protocol review found no release-blocking defect in the documented v0 scope.
@@ -145,12 +150,12 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-1. Complete fresh-checkout replay after the live-workspace commit and run the final
-   repository secret/license/history audit.
-2. Choose and verify the strongest authorized demonstration target: local fork or testnet;
-   bind deployed addresses, source/runtime hashes and actual transfer receipts if used.
-3. Only after those gates, finish the judge-facing proof/demo package, paper, video and
-   submission checklist. Public release and dashboard actions remain manual.
+1. Refactor the app shell: integrate the final logo, add `/` landing and move recorded
+   comparison to `/workspace/` without changing evidence logic.
+2. Build the curated `/docs/` page and refine `/proof/` into the two-minute judge path;
+   add route loading/error states and run browser checks.
+3. After frontend gates pass, complete fresh-checkout/release audit and choose the authorized
+   local-fork or testnet demonstration target. Submission work remains deferred.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

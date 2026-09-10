@@ -27,6 +27,11 @@ it is not a claim that the proposed guard is correct.
 | C1 | [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) | Standalone project TOML, required name/description/instructions; inherited models, read-only mode |
 | C2 | [Codex source via Context7](https://github.com/openai/codex/blob/main/codex-rs/ext/skills/src/host_roots.rs) | `.agents/skills` discovery; installed prompt loader validation supplements moving-source docs |
 | P1 | [Official Aqua workflows](https://github.com/1inch/1inch-ai/tree/e60a741a50c7f0b61881c7551b8caaf48a7e0b68/skills/1inch-aqua) | Existing maker/taker workflow tooling; no reason to install another integration/MCP now |
+| N1 | [Next.js App Router project structure](https://nextjs.org/docs/app/getting-started/project-structure) | 2026-09-10 check: shared layouts, route files, loading/error/not-found conventions, private folders and route groups |
+| N2 | [Next.js production checklist](https://nextjs.org/docs/app/guides/production-checklist) | 2026-09-10 check: Server/Client boundaries, metadata, fonts, accessibility, error states and static-build guidance |
+| M1 | [Motion for React accessibility](https://motion.dev/docs/react-accessibility) | 2026-09-10 check: client-only App Router usage, SVG animation and reduced-motion behavior; optional dependency only |
+| B1 | [1inch Aqua product](https://1inch.com/aqua) | 2026-09-10 check: current blue-led, spacious product language and shared/self-custodial/permissionless concept framing |
+| B2 | [1inch rebrand rationale](https://1inch.com/blog/post/1inch-rebrand) | 2026-09-10 check: simpler visual communication intended to keep attention on user goals; ecosystem reference, not a cloning target |
 
 ## Resolution notes
 
