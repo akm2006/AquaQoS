@@ -32,7 +32,9 @@ Each milestone requires implementation where applicable, actual passing checks, 
 assumptions, updated STATUS/decisions, disposition of findings and a coherent commit.
 No artificial commit count: commit actual increments. Review [acceptance](ACCEPTANCE_CRITERIA.md).
 
-Immediate work: finish the Next.js capacity workspace and evidence flows, then add a
-verified live local execution path and close remaining protocol/security/benchmark gaps.
-The comparative benchmark already exists; balanced/shuffled demand and rejection replay
-Transfer-log reconstruction remain open. See STATUS for the current handoff.
+Owner direction, Sep 11: finish release verification, then local-fork proof, then consider
+testnet if practical. Fresh-checkout checks and authenticated fork proof now pass;
+the requested additional independent reviewer was blocked before findings. Resolve that
+review gate before public deployment. Balanced/shuffled benchmarks and rejection-transfer
+checks are already complete. Then resume the five-route frontend refactor; submission
+remains deferred. See STATUS and RELEASE_VERIFICATION for current evidence and blockers.

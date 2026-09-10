@@ -4,8 +4,11 @@ Updated 2026-09-11. Phase: final verification and local-fork proof, per owner di
 Fresh clone of d8b92fc passes 30 Solidity tests, 239-transaction replay, the capacity model,
 benchmark/rejection checkers, live API checks and eight-strategy lifecycle checks.
 New trace runner passed both local and Ethereum-fork scenarios using authenticated deployed
-AquaRouter plus actual DAI/WETH token contracts on the local copy. Source/evidence milestone
-is being committed before clean-source replay. No production contract has changed.
+AquaRouter plus actual DAI/WETH token contracts on the local copy. Clean source de8c609
+produced both reports with dirty=false; a second fresh clone rebuilt and replayed the fork.
+45 local and 43 fork transactions, 16 detailed swap traces, and seven corruption checks
+per report pass. Source authentication recompiled all 6,251 deployed Aqua runtime bytes
+exactly, including metadata. No production contract or Solidity test has changed.
 
 New independent reviewer request was rejected by the agent service before findings.
 The previous Sep 10 internal review stands, but the requested additional release pass and
@@ -115,7 +118,8 @@ packaging, video, paper and dashboard work are on hold until product polish is c
   BENCHMARK_RESULTS; source/lock/method/checker hashes match.
 - Deployment: local-fork trial passed at Ethereum block 25,948,160. Uses authenticated
   official AquaRouter at 0x499943e74fb0ce105688beee8ef2abec5d936d31; custom contracts are
-  deployed only locally. Retained clean-source replay is next; no public deployment.
+  deployed only locally. Clean-source replay and retained-evidence checks pass; no public
+  deployment. See deployments/ethereum-fork/report.json and FORK_PROOF.
 - Blockers: no protocol-work blocker. Sandbox benchmark attempts hit the compiler-cache
   lock; approved host-context replay passed. Rotate the exposed Context7 key (M7);
   eligibility/provenance and publication actions remain in
@@ -161,11 +165,12 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-1. Commit verification source/pins, replay local and fork traces from that clean revision,
-   verify retained evidence and commit the resulting milestone.
-2. Complete the additional independent release review when the reviewer service is available;
+1. Complete the additional independent release review when the reviewer service is available;
    keep its absence explicit. Consider testnet only after review and fork gates pass.
-3. Resume the approved five-route Next.js refactor. Submission remains deferred until polish.
+2. Resume the approved five-route Next.js refactor and expose the fork evidence without
+   representing local receipts as public-chain transactions.
+3. After review/product gates, choose the practical testnet target and prepare deployment
+   for the owner's wallet/funding workflow. Submission remains deferred until polish.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

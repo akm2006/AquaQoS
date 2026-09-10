@@ -79,6 +79,20 @@ can retain upstream chain context, affecting EIP-712 values. No protocol workaro
 
 ## Evidence and limitations
 
+Clean source `de8c60932c0366962c464e176c855743cf83f5a8` produced both retained reports
+with `dirty=false`: [local report](../deployments/local-release/report.json) has 45
+transactions and [fork report](../deployments/ethereum-fork/report.json) has 43, including
+setup and lifecycle. Both contain eight swap traces: five successes and three expected
+reverts per environment. The fork was rebuilt and replayed from a separate fresh clone
+with cached dependencies/compiler; all checks passed. Seven deliberately corrupted
+reports per environment are rejected by the checker.
+
+Raw and guarded scenarios each start a separate isolated network. Local addresses can
+therefore coincide across scenarios while code differs; use the scenario label and
+runtime hash, not an address alone, to identify a deployment. The guarded fork router is
+`0xcc452c6ce5c0c52ac6e4dfade614d156ff2330bd`, and its vault is
+`0x41bc2654a03069df90bd2a3f00d40dad13b6992d`. They exist only during that local run.
+
 The runner writes `deployments/local-release/report.json` and
 `deployments/ethereum-fork/report.json`, plus compressed EVM opcode/stack traces for
 all eight recorded swaps per environment. Memory/storage snapshots are disabled;

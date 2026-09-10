@@ -67,3 +67,20 @@ for the recorded environment; additional review remains necessary for release ap
 
 See [FORK_PROOF.md](FORK_PROOF.md) for traces, commands and deployment evidence.
 Submission work and testnet deployment remain deferred.
+
+## Committed proof replay
+
+Source `de8c60932c0366962c464e176c855743cf83f5a8` was cloned again into
+`.tmp/release-proof-de8c609`, installed with the frozen lockfile and existing pnpm cache,
+and rebuilt from absent artifacts. The fork runner passed against Ethereum block
+25,948,160. The main checkout ran the pinned-source local mode at the same clean source.
+Both reports retain `dirty=false`; only their own generated evidence outputs are
+excluded from that check. Production contracts and Solidity tests are unchanged from
+the d8b92fc full-suite pass above.
+
+`node scripts/verify-fork-upstream.mjs` passed again without recapturing/changing pins.
+`node scripts/check-release-evidence.mjs --self-test` accepted both clean reports and
+rejected seven corruptions each. The earlier dirty fork trial was deliberately rejected
+by this checker, then replaced with fresh-checkout evidence; it is not release evidence.
+No protocol fix was needed. A fork constructor-simulation chain-context difference was
+resolved in the verification script and does not alter any deployed Solidity source.

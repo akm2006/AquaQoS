@@ -12,7 +12,8 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Use real ERC-20 transfer calls on a local EVM; preserve deterministic test command in PROBLEM_REPRODUCTION.
 - [x] Fresh checkout with empty package/compiler caches installs, builds and passes
   30 tests plus transaction replay. See TRANSACTION_VALIDATION, source `0bf3447`.
-- [ ] Retain a detailed baseline-problem execution trace for the final proof package.
+- [x] Retain detailed baseline failure and guarded outcome traces in local and fork
+  reports; clean replay and integrity checks pass. See [FORK_PROOF.md](FORK_PROOF.md).
 
 ## CAPACITY_GUARD
 
@@ -47,6 +48,9 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
 - [x] Official Aqua handles token movement and virtual accounting; custom functionality executes inside SwapVM.
 - [ ] Separate review checks cross-order/router callbacks, reentrancy, hostile tokens, fees, allowance changes,
   lifecycle/config changes, griefing/DoS, integer limits and transaction ordering.
+  Sep 10 internal review covers the stated v0 scope; the additional Sep 11 request was
+  rejected by the reviewer service before findings. Historical deployed AquaRouter
+  integration review remains open. See RELEASE_VERIFICATION.
 - [x] Unit/integration/fuzz/property tests cover the current material paths; fixed seeds and
   failures are retained. Broader token-behavior and exhaustive-state coverage remain open.
 - [ ] No high/critical unresolved findings at release; other accepted risks identify owner and justification.
@@ -95,8 +99,10 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
   quotes and failed transactions are explicitly labeled.
 - [x] Desktop/mobile, accessible controls, changed live flow, console and network checks are
   covered by the Playwright CLI browser regression.
-- [ ] Deployment/replay scripts declare chain/block/source pins; verify deployed code and addresses.
-- [ ] Local fork demonstration includes actual token balance changes and receipts/traces; fresh replay succeeds.
+- [x] Deployment/replay scripts declare chain/block/source pins; authenticate existing
+  Aqua and custom deployed code. Historical AquaRouter source differences are explicit.
+- [x] Local fork demo uses DAI/WETH balance changes, receipts and detailed traces;
+  separate clean-checkout replay succeeds. No public transaction claim is made.
 - [ ] Public transactions or deployment costs require authority; local test balances carry no market-value claim.
 
 ## Documentation and submission

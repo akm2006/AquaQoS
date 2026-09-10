@@ -24,6 +24,12 @@ small: one immutable token pair, up to eight fee-free XYC strategies, standard E
 behavior and pinned Aqua/SwapVM code. It does not claim general solvency, profitability,
 hostile-token coverage or an external audit.
 
+The [local-fork proof](docs/FORK_PROOF.md) also exercises the authenticated Ethereum
+Aqua deployment with DAI/WETH, retaining deployment code, receipts and execution traces.
+These transactions run on a local copy of Ethereum, not a public testnet. See
+[release verification](docs/RELEASE_VERIFICATION.md) for passing checks and the remaining
+additional independent-review gate.
+
 ## Reproduce it
 
 Exact source identities are in [sources.lock.json](sources.lock.json) and the dependency
@@ -72,6 +78,7 @@ The frontend has its own lockfile; the protocol pins and benchmark hashes are un
 
 - `contracts/`, `test/`: protocol implementation and Solidity tests.
 - `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
+- `deployments/`: local/fork runtime identities, receipts, source authentication and traces.
 - `web/`: Next.js App Router workspace, evidence page and browser regression checks.
 - `docs/`: protocol, benchmark, security, requirements and release documentation.
 - `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence
