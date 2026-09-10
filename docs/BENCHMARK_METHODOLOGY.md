@@ -63,13 +63,15 @@ own transaction so transient reservations cannot hide inter-order behavior.
 
 1. **Low contention:** one active strategy at a time; checks that conservative
    allocation is not penalized by unrelated siblings.
-2. **Balanced contention:** all strategies receive the same deterministic demand
-   stream and both token directions.
+2. **Balanced trading:** every strategy receives one offered swap per direction;
+   fixed-seed amounts differ by strategy. Each policy receives the identical trace.
 3. **Concentrated demand:** one strategy consumes its guarantee and burst before
    siblings are offered demand.
 4. **Replenishment:** fixed Aqua pushes restore output capacity at documented steps.
-5. **Adversarial order:** the same demand multiset is replayed in forward, reverse
-   and seeded-shuffle order.
+5. **Ordering comparisons:** concentrated demand is run in forward and reverse order;
+   the balanced trace is run in round-robin and one seeded-shuffle order per count.
+   Each pair preserves its own demand multiset. This does not establish general ordering
+   robustness or shuffled-overload behavior.
 6. **Overloaded demand:** offered output intentionally exceeds initial backing; this
    is the failure-discrimination case, not a success-rate target.
 
@@ -141,21 +143,29 @@ real-market value.
 
 ## Implemented coverage and open gates
 
-The current runner defines 48 fresh fixtures: 2/4/8 strategies x A/B/C/C100 x four
-workloads (low contention, concentrated overload, its reverse order, replenishment).
-Seeds are `0xa201`, `0xa401`, and `0xa801` respectively. The eight-strategy group uses
-the same 10,000 backing per token and existing demand generator, at the vault's fixed
-maximum group size. Per-strategy demand scales with group size, so this measures the
+The runner defines 72 fresh fixtures: 2/4/8 strategies x A/B/C/C100 x six workloads.
+The four retained workloads remain byte-for-byte unchanged; the appended workloads are
+`balancedRoundRobin` and `shuffledPermutation`. The balanced trace visits every strategy
+once in each direction, in round-robin order. Its per-count amount seeds are `0xb201`,
+`0xb401`, and `0xb801`; its independently seeded Fisher-Yates permutations use `0xc201`,
+`0xc401`, and `0xc801`. The checker regenerates both traces and proves that the shuffled
+trace has exactly the balanced trace's offered-demand multiset. No action selection reacts
+to any quote, rejection or receipt.
+
+The original per-count seeds remain `0xa201`, `0xa401`, and `0xa801`. The eight-strategy
+group uses the same 10,000 backing per token and existing demand generator, at the vault's
+fixed maximum group size. Per-strategy demand scales with group size, so this measures the
 declared workload at each size rather than holding trade amounts constant across sizes.
-Count 1, balanced contention and seeded-shuffle order remain open. Counterfactual
-replay covers every guard rejection in the retained report plus both-direction controls.
-Completed measurements and review status are recorded in BENCHMARK_RESULTS.md.
+Count 1 and token diversity remain open. Counterfactual replay covers every guard rejection
+in the generated report plus both-direction controls. Completed measurements and review
+status are recorded in BENCHMARK_RESULTS.md.
 The historical raw path `a-b-c-v1.json` now declares schema `local-a-b-c-benchmark-v2`.
 
 The checker separately recomputes recorded maker/taker/router/Aqua balances, maker
 allowance, every virtual balance, state continuity, XYC inputs, error selectors/arguments,
 guarded entitlement backing and summary metrics. It does not authenticate a JSON file
-against a live chain. It regenerates seeded demand and reconstructs retained Transfer
+against a live chain. It regenerates all seeded demand, verifies the balanced/shuffled
+multiset, and reconstructs retained Transfer
 logs. Exact saved swap calldata and reference deployment identity are checked by the
 separate rejection-replay checker, not for every original benchmark transaction.
 Full receipts/calldata and build identity are retained for replay/review.

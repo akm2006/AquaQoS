@@ -10,6 +10,23 @@ const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex
 const sum = rows => rows.reduce((n, r) => n + BigInt(r.amount), 0n);
 const swapInterface = new Interface(['function swap((address maker,uint256 traits,bytes data) order,uint256 amount,bytes takerTraitsAndData)']);
 const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion'];
+const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+const transferRows = receipt => (receipt.logs ?? []).filter(log => log.topics?.[0]?.toLowerCase() === transferTopic).map(log => {
+  assert.equal(log.transactionHash, receipt.transactionHash, 'Transfer belongs to receipt');
+  assert.equal(log.topics.length, 3, 'canonical Transfer topics');
+  assert.match(log.topics[1], /^0x0{24}[a-fA-F0-9]{40}$/);
+  assert.match(log.topics[2], /^0x0{24}[a-fA-F0-9]{40}$/);
+  assert.match(log.data, /^0x[a-fA-F0-9]{64}$/);
+  return { token: log.address.toLowerCase(), from: `0x${log.topics[1].slice(-40)}`.toLowerCase(),
+    to: `0x${log.topics[2].slice(-40)}`.toLowerCase(), amount: String(BigInt(log.data)) };
+});
+const expectedTransfers = (record, inputAmount) => {
+  const out = record.aToB ? 1 : 0, inp = 1 - out, tokens = record.deployments.filter(d => d.name === 'TokenMock');
+  assert.equal(tokens.length, 2, 'replay TokenMock deployments');
+  return [{ token: tokens[inp].address.toLowerCase(), from: record.tx.from.toLowerCase(), to: record.tx.to.toLowerCase(), amount: String(inputAmount) },
+    { token: tokens[inp].address.toLowerCase(), from: record.tx.to.toLowerCase(), to: record.deployments[0].receipt.from.toLowerCase(), amount: String(inputAmount) },
+    { token: tokens[out].address.toLowerCase(), from: record.deployments[0].receipt.from.toLowerCase(), to: record.tx.from.toLowerCase(), amount: String(record.amount) }];
+};
 
 function expectedDeployments(input, run) {
   const reference = input.runs.find(candidate => candidate.system === 'A' && candidate.count === run.count);
@@ -92,6 +109,7 @@ export function checkRejections(report, input) {
     const after = structuredClone(r.before);
     if (r.receipt.status === '0x1') {
       assert.equal(r.error, null);
+      assert.deepEqual(transferRows(r.receipt), expectedTransfers(r, inputAmount), 'reference Transfer log order and values');
       for (const [i, delta] of [[out, -amount], [inp, inputAmount]]) {
         after[i].balance = String(BigInt(after[i].balance) + delta);
         after[i].takerBalance = String(BigInt(after[i].takerBalance) - delta);
@@ -99,6 +117,7 @@ export function checkRejections(report, input) {
       }
     } else {
       assert.equal(r.receipt.status, '0x0');
+      assert.deepEqual(transferRows(r.receipt), [], 'reverted reference swap has no Transfer logs');
       assert.equal(r.error.data, new Interface(['error SafeTransferFromFailed()']).encodeErrorResult('SafeTransferFromFailed'));
       assert.equal(r.error.name, 'SafeTransferFromFailed');
       assert.ok(BigInt(r.before[out].balance) < amount);
@@ -137,8 +156,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   assert.equal(report.inputPath, 'benchmarks/raw/a-b-c-v1.json');
   const input = JSON.parse(readFileSync(report.inputPath));
   assert.equal(hash(report.inputPath), report.inputHash);
-  const required = ['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs', 'docs/REJECTION_REPLAY.md',
-    'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'];
+  const required = ['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs', 'scripts/check-benchmark.mjs',
+    'docs/BENCHMARK_METHODOLOGY.md', 'docs/REJECTION_REPLAY.md', 'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'];
   assert.deepEqual(Object.keys(report.sourceHashes).sort(), required.sort());
   for (const [path, value] of Object.entries({ ...input.sourceHashes, ...report.sourceHashes })) assert.equal(hash(path), value, path);
   checkRejections(report, input);
@@ -157,6 +176,13 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       r => { r.records[0].tx.data = `0xdeadbeef${r.records[0].tx.data.slice(10)}`; },
       r => { r.records[0].deployments.pop(); },
       r => { r.records[0].deployments[0].runtimeHash = `0x${'00'.repeat(32)}`; },
+      r => { r.records.find(x => x.receipt.status === '0x1').receipt.logs = []; },
+      r => { r.records.find(x => x.receipt.status === '0x0').receipt.logs = [structuredClone(r.records.find(x => x.receipt.status === '0x1').receipt.logs[0])]; },
+      r => { const logs = r.records.find(x => x.receipt.status === '0x1').receipt.logs; logs.push(structuredClone(logs.find(log => log.topics?.[0]?.toLowerCase() === transferTopic))); },
+      r => { const logs = r.records.find(x => x.receipt.status === '0x1').receipt.logs, transfers = logs.filter(log => log.topics?.[0]?.toLowerCase() === transferTopic); const a = logs.indexOf(transfers[0]), b = logs.indexOf(transfers[1]); [logs[a], logs[b]] = [logs[b], logs[a]]; },
+      r => { r.records.find(x => x.receipt.status === '0x1').receipt.logs.find(log => log.topics?.[0]?.toLowerCase() === transferTopic).data = '0x01'; },
+      r => { r.records.find(x => x.receipt.status === '0x1').receipt.logs.find(log => log.topics?.[0]?.toLowerCase() === transferTopic).transactionHash = '0x' + '00'.repeat(32); },
+      r => { r.records.find(x => x.receipt.status === '0x1').receipt.logs.find(log => log.topics?.[0]?.toLowerCase() === transferTopic).topics.push('0x' + '00'.repeat(32)); },
     ];
     for (const mutate of corruptions) {
       const changed = structuredClone(report);

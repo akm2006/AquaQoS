@@ -23,9 +23,12 @@ produces dirty replay provenance, which the checker rejects.
 The Sep 9 clean run records source commit `0ae94ec7edff4a29c924095782ebf707be8e062a`,
 `dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
 solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
-hashes are retained. There are **48 fresh EVM fixtures**, grouped into twelve policy/count
-entries: 2/4/8 strategies x four policies x four workloads. All 392 offered swaps and
-12 push actions are retained with receipts, calldata, states and gas.
+hashes are retained. The retained Sep 9 report has **48 fresh EVM fixtures**, grouped into
+twelve policy/count entries: 2/4/8 strategies x four policies x four workloads. All 392
+offered swaps and 12 push actions are retained with receipts, calldata, states and gas. The
+current runner now appends balanced round-robin and independently seeded shuffled-permutation
+workloads, so the next clean regeneration produces 72 fixtures. No results for those new
+fixtures are claimed here until that regeneration and checker run complete.
 
 Checker passed; 20 checker regression tests passed (valid evidence plus 19 corrupted
 variants), including missing eight-strategy coverage, altered seed and eighth-sibling
@@ -110,8 +113,9 @@ reconstructs retained ERC-20 `Transfer` logs, and now authenticates each replay
 deployment against the clean benchmark fixture and decodes every saved swap calldata
 record. It is still not live-chain authentication or an independent source
 implementation. Raw transaction data and receipts remain retained for review.
-Transfer-log reconstruction applies to the original comparative receipts; the separate
-rejection checker does not yet reconstruct the replay receipt logs.
+Transfer-log reconstruction applies to the original comparative receipts and to every replay
+reference receipt: successful fee-free swaps require the exact three Transfer logs in
+settlement order, while reverted swaps require none.
 Counterfactual false-rejection replay remains open: do not claim every guard rejection
 was unsafe outside the defined scope. The bounded replay is complete for this report: all 52 C/C100 guard
 rejections were rebuilt from their saved pre-state using the official unguarded router.

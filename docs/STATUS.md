@@ -4,6 +4,13 @@ Updated 2026-09-09. Phase: v0 protocol implementation, security review and measu
 Guard/router/vault, integration tests and a matched-policy benchmark work locally; full
 protocol acceptance remains open.
 
+2026-09-10 continuation in progress: independent internal protocol source review found
+no new blocker within the stated v0 scope; fresh Solidity rerun and review record follow.
+Expanded benchmark source has passed separate methodology review (unchanged original
+traces, balanced/shuffled identical multiset). Clean 72-fixture regeneration is pending;
+the old raw report intentionally does not pass the newly strengthened checker until
+replaced. Live local execution and maker controls are being implemented and tested.
+
 Owner direction (2026-09-09): frontend must be a polished Next.js product. Submission
 packaging, video, paper and dashboard work are on hold until product polish is complete.
 

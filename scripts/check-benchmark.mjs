@@ -9,10 +9,12 @@ const errors = new Interface(['error InsufficientCapacity(uint256 available,uint
   'error SafeTransferFromFailed()']);
 const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
 const systems = ['A', 'B', 'C', 'C100'];
-const names = ['lowContention', 'concentratedOverload', 'adversarialOrder', 'replenishment'];
+const names = ['lowContention', 'concentratedOverload', 'adversarialOrder', 'replenishment', 'balancedRoundRobin', 'shuffledPermutation'];
 const outcomes = ['success', 'quote_rejection', 'guard_rejection', 'settlement_failure'];
 const canonical = a => ({ actionIndex: a.actionIndex, type: a.type, strategy: a.strategy,
   aToB: a.aToB, token: a.token, amount: String(a.amount) });
+const demandMultiset = actions => actions.map(a => JSON.stringify({ type: a.type, strategy: a.strategy,
+  aToB: a.aToB, token: a.token, amount: String(a.amount) })).sort();
 const sum = (items, field) => items.reduce((n, a) => n + BigInt(a[field]), 0n);
 const min = (a, b) => a < b ? a : b;
 const max = (a, b) => a > b ? a : b;
@@ -33,8 +35,25 @@ const makeDemandTrace = (count, seed) => {
     { type: 'swap', strategy: Math.min(1, count - 1), aToB: true, amount: replenishAmount },
     { type: 'swap', strategy: 0, aToB: true, amount: replenishAmount },
   ];
+  const balancedSeed = { 2: 0xb201, 4: 0xb401, 8: 0xb801 }[count];
+  const shuffleSeed = { 2: 0xc201, 4: 0xc401, 8: 0xc801 }[count];
+  let balancedValue = balancedSeed >>> 0;
+  const balancedRandom = () => { balancedValue ^= balancedValue << 13; balancedValue ^= balancedValue >>> 17; balancedValue ^= balancedValue << 5; return balancedValue >>> 0; };
+  const balancedAmount = Math.max(1, Math.floor(per / 10)), balancedSpread = Math.max(1, Math.floor(per / 20));
+  const balancedRoundRobin = [];
+  for (let round = 0; round < 2; round++) for (let strategy = 0; strategy < count; strategy++) {
+    balancedRoundRobin.push({ type: 'swap', strategy, aToB: round === 0,
+      amount: balancedAmount + (balancedRandom() % balancedSpread) });
+  }
+  let shuffleValue = shuffleSeed >>> 0;
+  const shuffleRandom = () => { shuffleValue ^= shuffleValue << 13; shuffleValue ^= shuffleValue >>> 17; shuffleValue ^= shuffleValue << 5; return shuffleValue >>> 0; };
+  const shuffledPermutation = [...balancedRoundRobin];
+  for (let i = shuffledPermutation.length - 1; i > 0; i--) {
+    const j = shuffleRandom() % (i + 1);
+    [shuffledPermutation[i], shuffledPermutation[j]] = [shuffledPermutation[j], shuffledPermutation[i]];
+  }
   return { seed, count, lowContention: low, concentratedOverload: concentrated,
-    adversarialOrder: [...concentrated].reverse(), replenishment };
+    adversarialOrder: [...concentrated].reverse(), replenishment, balancedSeed, shuffleSeed, balancedRoundRobin, shuffledPermutation };
 };
 const transferRows = action => (action.receipt.logs ?? []).filter(log =>
   log.topics?.[0]?.toLowerCase() === transferTopic).map(log => {
@@ -189,6 +208,8 @@ export function checkBenchmark(report) {
     }
     }
     assert.deepEqual(report.demandTrace[count], makeDemandTrace(count, { 2: 0xa201, 4: 0xa401, 8: 0xa801 }[count]), `${count} seeded demand trace`);
+    assert.deepEqual(demandMultiset(report.demandTrace[count].shuffledPermutation),
+      demandMultiset(report.demandTrace[count].balancedRoundRobin), `${count} shuffled workload is the balanced multiset`);
   }
 }
 
@@ -202,5 +223,5 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
     assert.equal(createHash('sha256').update(readFileSync(path)).digest('hex'), expected, path);
   }
   checkBenchmark(report);
-  console.log('48 local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.');
+  console.log(`${report.runs.reduce((n, run) => n + run.scenarios.length, 0)} local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.`);
 }

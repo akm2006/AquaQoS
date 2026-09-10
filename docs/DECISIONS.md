@@ -255,3 +255,16 @@ actual product flow without adding unsupported onchain actions. Consequences: fr
 has its own pinned lockfile; protocol benchmark hashes remain unchanged. Build reuses
 the existing checker and publishes only curated evidence. Live local execution, maker
 configuration, final protocol review and broader benchmarks remain separate work.
+
+## 2026-09-10 — D020: Expand fixed demand and reconstruct rejection transfers
+
+Decision: append balanced round-robin and independently shuffled balanced demand to the
+existing four workloads; require exact ordered reference Transfer events in rejection
+replay. Alternatives: replace old demand or select new actions after observing failures.
+Evidence: separate read-only review compared all original traces against committed/raw
+versions and confirmed they are unchanged at 2/4/8 strategies; the two new traces share
+their multiset across all policies. Reason: add neutral both-direction coverage and bind
+receipt evidence to actual token movement. Consequences: 72 fixtures must be regenerated
+from clean source; no new numerical claim until checked. One shuffle per count does not
+establish general ordering robustness. Canonical topic/data encoding and receipt hash
+association are checked alongside transfer addresses, values and order.

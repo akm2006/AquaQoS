@@ -42,7 +42,11 @@ changed state, missing candidates, fake outcomes and altered summary. The checke
 compares every replay deployment's name/address/build identity/runtime hash with the clean
 input fixture and decodes saved `swap` calldata to reconstruct maker, program, salt, amount
 and direction. This prevents result-only evidence from silently substituting another local
-deployment or demand.
+deployment or demand. The replay also reconstructs each reference receipt's ERC-20
+`Transfer` logs: a fee-free successful swap must contain, in order, taker-to-router input,
+router-to-maker input, and maker-to-taker output, with the recorded TokenMock emitter,
+participant addresses and amounts. A reverted reference swap must contain no Transfer logs.
+Missing, extra, reordered or altered logs reject the evidence.
 The retained evidence contains every rejected attempt; no adaptive selection.
 
 Denominators are total rejected attempts and total rejected output units, with counts

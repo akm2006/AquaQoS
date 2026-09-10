@@ -92,7 +92,25 @@ function makeDemandTrace(count, seed) {
     { type: 'swap', strategy: 0, aToB: true, amount: replenishAmount },
   ];
   const adversarialOrder = [...concentrated].reverse();
-  return { seed, count, lowContention: low, concentratedOverload: concentrated, adversarialOrder, replenishment };
+  // These seeds are part of the benchmark contract, not outcome-dependent choices.
+  const balancedSeed = { 2: 0xb201, 4: 0xb401, 8: 0xb801 }[count];
+  const shuffleSeed = { 2: 0xc201, 4: 0xc401, 8: 0xc801 }[count];
+  const balancedRandom = xorshift32(balancedSeed);
+  const balancedAmount = Math.max(1, Math.floor(per / 10));
+  const balancedSpread = Math.max(1, Math.floor(per / 20));
+  const balancedRoundRobin = [];
+  for (let round = 0; round < 2; round++) for (let strategy = 0; strategy < count; strategy++) {
+    balancedRoundRobin.push({ type: 'swap', strategy, aToB: round === 0,
+      amount: balancedAmount + (balancedRandom() % balancedSpread) });
+  }
+  const shuffledPermutation = [...balancedRoundRobin];
+  const shuffleRandom = xorshift32(shuffleSeed);
+  for (let i = shuffledPermutation.length - 1; i > 0; i--) {
+    const j = shuffleRandom() % (i + 1);
+    [shuffledPermutation[i], shuffledPermutation[j]] = [shuffledPermutation[j], shuffledPermutation[i]];
+  }
+  return { seed, count, lowContention: low, concentratedOverload: concentrated, adversarialOrder, replenishment,
+    balancedSeed, shuffleSeed, balancedRoundRobin, shuffledPermutation };
 }
 
 async function runSystemScenario(system, count, trace, name, actions) {
@@ -312,6 +330,8 @@ async function runSystem(system, count, trace) {
     concentratedOverload: trace.concentratedOverload,
     adversarialOrder: trace.adversarialOrder,
     replenishment: trace.replenishment,
+    balancedRoundRobin: trace.balancedRoundRobin,
+    shuffledPermutation: trace.shuffledPermutation,
   });
   const runs = [];
   for (const [name, actions] of entries) runs.push(await runSystemScenario(system, count, trace, name, actions));

@@ -28,6 +28,8 @@ const mutations = {
   'missing eight-strategy group': r => { r.runs = r.runs.filter(x => x.count !== 8); delete r.demandTrace[8]; },
   'altered eight-strategy seed': r => { r.demandTrace[8].seed++; },
   'eighth sibling mutation': r => { r.runs.find(x => x.count === 8 && x.system === 'C').scenarios[0].attempts[0].after.tokens[0].virtual[7] = '999'; },
+  'missing balanced workload': r => { r.runs[0].scenarios = r.runs[0].scenarios.filter(s => s.name !== 'balancedRoundRobin'); },
+  'altered shuffled permutation': r => { const s = r.runs[0].scenarios.find(x => x.name === 'shuffledPermutation'); if (s) s.attempts[0].amount = String(BigInt(s.attempts[0].amount) + 1n); },
 };
 for (const [name, mutate] of Object.entries(mutations)) test(`rejects ${name}`, () => {
   const changed = structuredClone(report);

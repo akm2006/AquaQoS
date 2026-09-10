@@ -12,11 +12,22 @@ const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cw
 const inputPath = 'benchmarks/raw/a-b-c-v1.json';
 const input = JSON.parse(readFileSync(inputPath));
 const coder = AbiCoder.defaultAbiCoder();
+const transferTopic = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
+const transferRows = receipt => (receipt.logs ?? []).filter(log => log.topics?.[0]?.toLowerCase() === transferTopic).map(log => ({
+  token: log.address.toLowerCase(), from: `0x${log.topics[1].slice(-40)}`.toLowerCase(),
+  to: `0x${log.topics[2].slice(-40)}`.toLowerCase(), amount: String(BigInt(log.data)),
+}));
+const expectedTransfers = (tokens, maker, taker, router, aToB, amount, quoteInput) => {
+  const out = aToB ? 1 : 0, input = 1 - out;
+  return [{ token: tokens[input].address.toLowerCase(), from: taker.toLowerCase(), to: router.toLowerCase(), amount: String(quoteInput) },
+    { token: tokens[input].address.toLowerCase(), from: router.toLowerCase(), to: maker.toLowerCase(), amount: String(quoteInput) },
+    { token: tokens[out].address.toLowerCase(), from: maker.toLowerCase(), to: taker.toLowerCase(), amount: String(amount) }];
+};
 const report = {
   kind: 'local-rejection-replay-v1', sourceCommit: git('rev-parse', 'HEAD'), dirty: git('status', '--porcelain') !== '',
   inputPath, inputHash: hash(inputPath), inputSourceCommit: input.sourceCommit,
-  sourceHashes: Object.fromEntries(['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs',
-    'docs/REJECTION_REPLAY.md', 'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'].map(p => [p, hash(p)])),
+  sourceHashes: Object.fromEntries(['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs', 'scripts/check-benchmark.mjs',
+    'docs/BENCHMARK_METHODOLOGY.md', 'docs/REJECTION_REPLAY.md', 'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'].map(p => [p, hash(p)])),
   node: process.version, hardhat: input.hardhat, solc: input.solc, evm: input.evm,
   records: [], summary: {},
 };
@@ -110,6 +121,7 @@ async function replay(run, scenario, action, control) {
     const receipt = await send(tx, false), after = await snapshot();
     let outcome, error = null;
     if (receipt.status === '0x0') {
+      assert.deepEqual(transferRows(receipt), [], 'reverted reference swap has no Transfer logs');
       assert.deepEqual(after, before, 'failure rollback');
       const trace = await rpc('debug_traceTransaction', [receipt.transactionHash, { disableMemory: true, disableStack: true, disableStorage: true }]);
       const data = trace.returnValue.startsWith('0x') ? trace.returnValue : `0x${trace.returnValue}`;
@@ -119,6 +131,8 @@ async function replay(run, scenario, action, control) {
       outcome = 'settlement_failure';
     } else {
       assert.equal(receipt.status, '0x1');
+      assert.deepEqual(transferRows(receipt), expectedTransfers(tokens, maker, taker, router.address, action.aToB, amount, quoteInput),
+        'fee-free reference swap Transfer logs');
       const expected = structuredClone(before);
       for (const [i, delta] of [[out, -amount], [inp, quoteInput]]) {
         expected[i].balance = String(BigInt(expected[i].balance) + delta);
