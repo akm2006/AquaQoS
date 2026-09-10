@@ -1,5 +1,17 @@
 # Decisions
 
+## 2026-09-11 — D022: Authenticate historical Ethereum Aqua separately
+
+Decision: retain tested source pins, add a local-fork proof against official Ethereum
+AquaRouter at block 25,948,160, authenticate its full runtime from verified compiler input.
+Alternatives: assume the address matches our package, redeploy and describe it as the
+existing deployment, or upgrade protocol dependencies during verification. Evidence:
+published compiler input exactly rebuilds the 6,251-byte runtime; the older core has
+multicall/simulation helpers. Reason: test a real deployment without disguising drift.
+Consequences: pinned-source and fork evidence stay distinct; router/vault deploy only
+locally; DAI/WETH transfers carry no market-value claim. Additional independent review
+remains open because the reviewer service rejected the request. See FORK_PROOF.
+
 ## 2026-09-05 — D001: Evidence-first bootstrap
 
 Decision: preserve the winning brief unchanged as lowest-priority provenance; claims remain

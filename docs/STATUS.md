@@ -1,8 +1,17 @@
 # AquaQoS handoff
 
-Updated 2026-09-10. Phase: v0 protocol implementation, live local product and frontend
-refactor planning. The supported protocol, benchmark evidence and local execution workspace
-work; public deployment, testnet proof and submission packaging remain intentionally open.
+Updated 2026-09-11. Phase: final verification and local-fork proof, per owner direction.
+Fresh clone of d8b92fc passes 30 Solidity tests, 239-transaction replay, the capacity model,
+benchmark/rejection checkers, live API checks and eight-strategy lifecycle checks.
+New trace runner passed both local and Ethereum-fork scenarios using authenticated deployed
+AquaRouter plus actual DAI/WETH token contracts on the local copy. Source/evidence milestone
+is being committed before clean-source replay. No production contract has changed.
+
+New independent reviewer request was rejected by the agent service before findings.
+The previous Sep 10 internal review stands, but the requested additional release pass and
+review of the older deployed AquaRouter integration remain open. Do not report full release
+approval or proceed to public testnet on the strength of a failed review request.
+See RELEASE_VERIFICATION and FORK_PROOF. Public deployment and submission remain open.
 
 The owner-approved `DESIGN.md` now locks the supplied `AquaQoS.svg` as the final logo and
 defines the blue-led marketing / calm application split. `docs/APP_REFACTOR_GUIDE.md` records
@@ -104,7 +113,9 @@ packaging, video, paper and dashboard work are on hold until product polish is c
   case, matching A; C50 fills 9,000. This is policy/depth evidence, not a general
   efficiency improvement. Clean-source v2 evidence and corrected gas tables are in
   BENCHMARK_RESULTS; source/lock/method/checker hashes match.
-- Deployment: none. Target local fork for final transfer demo; chain/block not chosen yet.
+- Deployment: local-fork trial passed at Ethereum block 25,948,160. Uses authenticated
+  official AquaRouter at 0x499943e74fb0ce105688beee8ef2abec5d936d31; custom contracts are
+  deployed only locally. Retained clean-source replay is next; no public deployment.
 - Blockers: no protocol-work blocker. Sandbox benchmark attempts hit the compiler-cache
   lock; approved host-context replay passed. Rotate the exposed Context7 key (M7);
   eligibility/provenance and publication actions remain in
@@ -150,12 +161,11 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-1. Refactor the app shell: integrate the final logo, add `/` landing and move recorded
-   comparison to `/workspace/` without changing evidence logic.
-2. Build the curated `/docs/` page and refine `/proof/` into the two-minute judge path;
-   add route loading/error states and run browser checks.
-3. After frontend gates pass, complete fresh-checkout/release audit and choose the authorized
-   local-fork or testnet demonstration target. Submission work remains deferred.
+1. Commit verification source/pins, replay local and fork traces from that clean revision,
+   verify retained evidence and commit the resulting milestone.
+2. Complete the additional independent release review when the reviewer service is available;
+   keep its absence explicit. Consider testnet only after review and fork gates pass.
+3. Resume the approved five-route Next.js refactor. Submission remains deferred until polish.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

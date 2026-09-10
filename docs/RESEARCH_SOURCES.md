@@ -1,5 +1,18 @@
 # Primary-source register
 
+## 2026-09-11 fork verification
+
+- Official pinned Aqua [deployment list](https://github.com/1inch/aqua/blob/81c26e4619ce21556ab02b3284ee2685de21fb18/README.md):
+  Ethereum address attribution. The deployed version differs from the pinned package.
+- [Verified deployed source API](https://eth.blockscout.com/api/v2/smart-contracts/0x499943e74fb0ce105688beee8ef2abec5d936d31):
+  retained full compiler input reproduces the runtime at Ethereum block 25,948,160;
+  hashes/settings/differences are recorded in [FORK_PROOF.md](FORK_PROOF.md). No deployed
+  source Git SHA is inferred from explorer metadata.
+- [Hardhat network manager](https://hardhat.org/docs/reference/network-manager) and
+  [fork guide](https://hardhat.org/docs/guides/forking), fetched through Context7:
+  `network.create` overrides and pinned-block local forking. Installed 3.8.0 types
+  confirm exact interfaces; no plugin was required.
+
 Bootstrap entries checked **2026-09-05**; pinned contract source was reinspected
 on **2026-09-06** for reproduction and guard design. Event pages were not all
 rechecked on September 6. Moving pages have no published commit identifier;

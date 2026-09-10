@@ -1,0 +1,28 @@
+{
+  "kind": "ethereum-local-fork-pin-v1",
+  "upstreamChainId": 1,
+  "localChainId": 31337,
+  "blockNumber": 25948160,
+  "blockHash": "0xb47840ad9539f977db5c928413c0a68d80f53f70845b40cb0116b8186a3cff8c",
+  "timestamp": "0x6aa2d987",
+  "aqua": {
+    "address": "0x499943e74fb0ce105688beee8ef2abec5d936d31",
+    "runtimeHash": "0xced66b74e01f418c698e6aca8560d33957fb2588ea120eadbde74960f138baa2",
+    "runtimeBytes": 6251,
+    "sourceHash": "ef9cbfd6758e1fce771136716f2971ebb1426fdcfa02980d98d9d5d241d023b5",
+    "sourceUrl": "https://eth.blockscout.com/api/v2/smart-contracts/0x499943e74fb0ce105688beee8ef2abec5d936d31"
+  },
+  "tokens": [
+    {
+      "symbol": "DAI",
+      "address": "0x6b175474e89094c44da98b954eedeac495271d0f",
+      "decimals": 18
+    },
+    {
+      "symbol": "WETH",
+      "address": "0xc02aaa39b223fe8d0a0e5c4f27ead9083c756cc2",
+      "decimals": 18
+    }
+  ],
+  "daiFundingAccount": "0xa478c2975ab1ea89e8196811f51a7b7ade33eb11"
+}

@@ -1,5 +1,10 @@
 # Third-party provenance and release gate
 
+2026-09-11: `deployments/ethereum-fork/upstream-aqua.json` retains unmodified published
+compiler input for the older Ethereum AquaRouter, with original source/license notices,
+to reproduce deployed bytecode. This is third-party source, not AquaQoS-authored code
+or a replacement for main build pins. See [FORK_PROOF.md](FORK_PROOF.md).
+
 Powered by Aqua — © Degensoft Ltd 2025.
 Powered by SwapVM — © Degensoft Ltd 2025.
 

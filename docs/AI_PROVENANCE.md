@@ -1,5 +1,11 @@
 # AI and work provenance
 
+2026-09-11: owner requested final checks before fork evidence, with testnet afterward
+if practical. Codex authored release/trace and upstream-authentication scripts, ran
+clean-checkout checks and documented source drift. Receipts/traces are EVM-generated.
+The additional independent reviewer request was rejected by the agent service before
+findings; no new independent approval or human execution is inferred.
+
 This is an AI-assisted project, not a claim of unaided human authorship.
 
 2026-09-09 product direction: owner requested completing product polish before submission
