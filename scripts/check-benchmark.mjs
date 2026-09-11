@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { Interface } from 'ethers';
 
@@ -18,6 +19,8 @@ const demandMultiset = actions => actions.map(a => JSON.stringify({ type: a.type
 const sum = (items, field) => items.reduce((n, a) => n + BigInt(a[field]), 0n);
 const min = (a, b) => a < b ? a : b;
 const max = (a, b) => a > b ? a : b;
+const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cwd().replaceAll('\\', '/')}`, ...args],
+  { stdio: ['ignore', 'pipe', 'pipe'] });
 const makeDemandTrace = (count, seed) => {
   let value = seed >>> 0;
   const random = () => { value ^= value << 13; value ^= value >>> 17; value ^= value << 5; return value >>> 0; };
@@ -213,15 +216,28 @@ export function checkBenchmark(report) {
   }
 }
 
-if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  const report = JSON.parse(readFileSync(new URL('../benchmarks/raw/a-b-c-v1.json', import.meta.url)));
+export function checkRecordedCommit(commit, descendant = 'HEAD') {
+  assert.match(commit, /^[a-f0-9]{40}$/);
+  assert.equal(git('cat-file', '-t', commit).toString().trim(), 'commit');
+  git('merge-base', '--is-ancestor', commit, descendant);
+}
+
+export function checkRecordedSource(report, descendant = 'HEAD') {
+  assert.match(report.sourceCommit, /^[a-f0-9]{40}$/);
+  checkRecordedCommit(report.sourceCommit, descendant);
   const required = ['contracts/AquaQoSRouter.sol', 'contracts/AquaQoSVault.sol', 'hardhat.config.ts',
     'benchmarks/run-a-b-c.mjs', 'scripts/check-benchmark.mjs', 'sources.lock.json', 'package.json',
     'pnpm-lock.yaml', 'docs/BENCHMARK_METHODOLOGY.md'];
   assert.deepEqual(Object.keys(report.sourceHashes).sort(), required.sort());
   for (const [path, expected] of Object.entries(report.sourceHashes)) {
-    assert.equal(createHash('sha256').update(readFileSync(path)).digest('hex'), expected, path);
+    const source = git('show', `${report.sourceCommit}:${path}`);
+    assert.equal(createHash('sha256').update(source).digest('hex'), expected, `${report.sourceCommit}:${path}`);
   }
+}
+
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  const report = JSON.parse(readFileSync(new URL('../benchmarks/raw/a-b-c-v1.json', import.meta.url)));
+  checkRecordedSource(report);
   checkBenchmark(report);
   console.log(`${report.runs.reduce((n, run) => n + run.scenarios.length, 0)} local fixtures checked: provenance hashes, traces, recorded state transitions, error bytes, capacity and metrics.`);
 }

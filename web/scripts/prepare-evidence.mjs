@@ -30,19 +30,21 @@ writeFileSync(
     2,
   ),
 );
-for (const name of [
-  "CAPACITY_GUARD_SPEC",
-  "BENCHMARK_RESULTS",
-  "BENCHMARK_METHODOLOGY",
-  "PROBLEM_REPRODUCTION",
-  "SECURITY_REVIEW_V0",
-  "THIRD_PARTY",
-  "AI_PROVENANCE",
-  "DEMO",
+for (const [name, path = `../../docs/${name}.md`] of [
+  ["CAPACITY_GUARD_SPEC"],
+  ["BENCHMARK_RESULTS"],
+  ["BENCHMARK_METHODOLOGY"],
+  ["PROBLEM_REPRODUCTION"],
+  ["SECURITY_REVIEW_V0"],
+  ["THREAT_MODEL"],
+  ["SEPOLIA_DEPLOYMENT"],
+  ["THIRD_PARTY"],
+  ["AI_PROVENANCE", "../../docs/archive/ethonline-2026/AI_PROVENANCE.md"],
+  ["DEMO", "../../docs/product/DEMO.md"],
 ]) {
   writeFileSync(
     new URL(`${name}.md`, output),
-    readFileSync(new URL(`../../docs/${name}.md`, import.meta.url)),
+    readFileSync(new URL(path, import.meta.url)),
   );
 }
 console.log("Prepared checked local evidence for the Next.js app.");

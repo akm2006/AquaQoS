@@ -28,8 +28,9 @@ entries: 2/4/8 strategies x four policies x six workloads. All 616 offered swaps
 push actions are retained with receipts, calldata, states and gas. The appended balanced
 and shuffled workloads contribute 224 swaps; every policy fills all of that demand.
 
-Checker passed; 22 checker regression tests passed (valid evidence plus 21 corrupted
-variants). Separate review compared all 48 previous scenarios: demand, outcomes, calldata,
+Checker passed; 24 checker test cases passed. Their negative assertions cover 27 deliberate
+data and source-identity changes, including non-commit and non-ancestor Git objects,
+changed paths, and a changed recorded-source hash. Separate review compared all 48 previous scenarios: demand, outcomes, calldata,
 transfer payloads, balances, quotes and transaction gas are unchanged. Deployment/runtime
 hashes, block/transaction identities and setup gas differ; setup gas increased by 12 per
 fixture. The report does not establish that compiler metadata alone caused that difference.
@@ -121,6 +122,8 @@ logic; custody wording and optimizer-enabled provenance assertions were correcte
 The reviewer then independently ran the clean-report checker and all 22 regression
 tests, and verified C100/A volume, guarantee totals and the gas medians above; no
 blocking discrepancy was found. This is internal read-only review, not external audit.
+The later recorded-source regressions raise the current local total to 24 without changing
+the measured report.
 The checker validates recorded data consistency, regenerates the three seeded demand traces,
 reconstructs retained ERC-20 `Transfer` logs, and now authenticates each replay
 deployment against the clean benchmark fixture and decodes every saved swap calldata
@@ -140,8 +143,9 @@ measure same-transaction or finite-allowance conservatism.
 
 Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
 from source commit `dd02abcdfba23c2756658f50ebfa1d0a610a0989` with `dirty=false`.
-`node scripts/check-rejections.mjs --self-test` passed, rejecting 19 deliberately
-corrupted reports, including receipt hash, encoding, missing/extra/reordered transfers.
+`node scripts/check-rejections.mjs --self-test` passed, rejecting 25 deliberately
+corrupted reports or source identities, including receipt hash, encoding,
+missing/extra/reordered transfers, and a changed recorded-source hash.
 Count 1, broader shuffled-overload cases and universal worst-case gas remain open.
 TokenMock results do not cover hostile tokens or real markets. Root lead
 owns these acceptance gates before broad performance or frontend proof-page claims.

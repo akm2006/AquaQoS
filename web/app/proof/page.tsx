@@ -33,6 +33,18 @@ const records = [
   ],
   [
     "06",
+    "Sepolia deployment",
+    "Twenty-two public transactions, exact-match source verification and live receipt rechecks.",
+    "SEPOLIA_DEPLOYMENT",
+  ],
+  [
+    "07",
+    "Threat model",
+    "Trust boundaries, attacker capabilities, abuse paths, existing controls and residual risk.",
+    "THREAT_MODEL",
+  ],
+  [
+    "08",
     "Source & attribution",
     "Pinned upstream components, custom source licenses and required notices.",
     "THIRD_PARTY",
@@ -73,13 +85,14 @@ export default function Proof() {
           </p>
           <p>
             The current evidence uses pinned, fee-free XYC programs and honest
-            TokenMocks on a local EVM. There is no public deployment or external
-            audit.
+            TokenMocks on a local EVM. A separate public Sepolia deployment
+            provides exact-match source verification and checked transaction
+            receipts. This prototype has not received an external audit.
           </p>
           <div className="scope-chips">
             <span>CAPACITY_GUARD · 0x05</span>
             <span>Canonical XYC</span>
-            <span>Local receipts</span>
+            <span>Local + Sepolia receipts</span>
           </div>
         </div>
       </div>

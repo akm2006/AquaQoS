@@ -1,6 +1,6 @@
 # Environment audit — 2026-09-05
 
-Initial directory: `C:\Users\akash\Desktop\AquaQoS`; one 24,340-byte winning-package MD,
+Initial directory: `<repository-root>`; one 24,340-byte winning-package MD,
 read completely before other task actions. No Git repository, history, remote, project
 instructions, dependencies or project skills/config existed. Git initialized on main only
 after audit and `.gitignore`. Existing author identity is configured; no remote created.
@@ -62,5 +62,5 @@ No global repair, upgrade, auth change or configuration edit was performed.
 
 Git initialization from the sandbox created `.git` under its user. Later host Git reported
 dubious ownership. Commands use the exact per-command
-`git -c safe.directory=C:/Users/akash/Desktop/AquaQoS ...` exception for this verified
+`git -c safe.directory=<repository-root> ...` exception for this verified
 task-created repository. No global safe.directory setting was added.

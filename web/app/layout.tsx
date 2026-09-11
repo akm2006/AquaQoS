@@ -33,16 +33,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </nav>
             <span className="environment">
               <i />
-              Local EVM
+              Experimental v0
             </span>
           </div>
         </header>
         {children}
         <footer>
           <span>
-            Powered by <strong>1inch Aqua + SwapVM</strong>
+            Powered by Aqua — © Degensoft Ltd 2025 · Powered by SwapVM — © Degensoft Ltd 2025
           </span>
-          <span>Experimental v0 · Mock tokens · No public deployment</span>
+          <span>Local workspace · Public Sepolia proof available</span>
           <Link href="/proof/" prefetch={false}>Scope & verification ↗</Link>
         </footer>
       </body>

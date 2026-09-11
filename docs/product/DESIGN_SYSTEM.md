@@ -2,7 +2,7 @@
 
 > **Aqua makes liquidity shareable. AquaQoS makes shared liquidity schedulable.**
 
-**Document:** `DESIGN.md`
+**Document:** `docs/product/DESIGN_SYSTEM.md`
 **Project:** AquaQoS
 **Purpose:** Single source of truth for brand, product UI, data visualization, motion, and frontend polish.
 **Status:** Adopted frontend design direction; owner-supplied logo locked
@@ -788,7 +788,7 @@ Retry at safe capacity
 
 # 18. Proof Page
 
-The judge-facing proof page should be visually austere.
+The public proof page should be visually austere.
 
 Recommended:
 
@@ -842,7 +842,7 @@ Bad:
 
 ## 19.1 Benchmark chart
 
-For the final hackathon comparison:
+For the final public comparison:
 
 ```text
 Conservative Aqua
@@ -1197,7 +1197,7 @@ Never let animation or styling delay working protocol evidence.
 
 # 30. Design QA Checklist
 
-Before final submission:
+Before public release:
 
 ### Logo
 

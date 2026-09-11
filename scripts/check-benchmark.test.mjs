@@ -1,10 +1,31 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { test } from 'node:test';
-import { checkBenchmark } from './check-benchmark.mjs';
+import { checkBenchmark, checkRecordedCommit, checkRecordedSource } from './check-benchmark.mjs';
 
 const report = JSON.parse(readFileSync(new URL('../benchmarks/raw/a-b-c-v1.json', import.meta.url)));
-test('retained evidence passes', () => checkBenchmark(report));
+test('retained evidence and recorded source pass', () => {
+  checkRecordedSource(report);
+  checkBenchmark(report);
+});
+test('rejects a changed recorded source hash', () => {
+  const changed = structuredClone(report);
+  changed.sourceHashes['package.json'] = '0'.repeat(64);
+  assert.throws(() => checkRecordedSource(changed));
+});
+test('rejects non-commit, non-ancestor and changed-path source identities', () => {
+  const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cwd().replaceAll('\\', '/')}`, ...args], { encoding: 'utf8' }).trim();
+  assert.throws(() => checkRecordedCommit('0'.repeat(40)));
+  assert.throws(() => checkRecordedCommit(git('rev-parse', `${report.sourceCommit}^{tree}`)));
+  assert.throws(() => checkRecordedCommit(git('rev-parse', 'HEAD'), report.sourceCommit));
+  const extra = structuredClone(report);
+  extra.sourceHashes['renamed-package.json'] = extra.sourceHashes['package.json'];
+  assert.throws(() => checkRecordedSource(extra));
+  const missing = structuredClone(report);
+  delete missing.sourceHashes['package.json'];
+  assert.throws(() => checkRecordedSource(missing));
+});
 const first = r => r.runs[0].scenarios[0].attempts[0];
 const failed = r => r.runs.find(x => x.system === 'B').scenarios
   .flatMap(s => s.attempts).find(a => a.outcome === 'settlement_failure');

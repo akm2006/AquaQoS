@@ -53,7 +53,8 @@ Use precise tested-capacity language; no unconditional solvency, yield or safety
 Keep coherent local milestone commits; never rewrite published history. Inspect staged
 diffs for secrets and generated files. Preserve reused-source notices and provenance records.
 Track AI-assisted files and retain sanitized project prompts/specifications in
-`docs/AI_PROVENANCE.md` and `docs/prompts/`. Human contribution and narration are event gates.
+`docs/archive/ethonline-2026/AI_PROVENANCE.md` and
+`docs/archive/ethonline-2026/prompts/`. Human contribution and narration are event gates.
 Update `docs/STATUS.md` after milestones and before ending long sessions; include actual
 commands/results, risks and next three tasks. Keep claims traceable across README, proof
 page, paper and demo. Use `docs/archive/ethonline-2026/SUBMISSION_CHECKLIST.md` before release.

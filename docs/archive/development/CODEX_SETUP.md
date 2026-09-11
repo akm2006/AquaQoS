@@ -15,7 +15,7 @@ After bootstrap, **start a fresh session** so skills and agent discovery reliabl
 PowerShell:
 
 ```powershell
-codex -C "C:\Users\akash\Desktop\AquaQoS" "Read AGENTS.md and docs/STATUS.md. Verify the AquaQoS skills and reviewer roles are available, then continue phase 1 reproduction."
+codex -C "<repository-root>" "Read AGENTS.md and docs/STATUS.md. Verify the AquaQoS skills and reviewer roles are available, then continue from the current status."
 ```
 
 In the app, reopen this directory and start a new chat with the same instruction. If a
@@ -39,7 +39,7 @@ custom role activation still requires verification in the fresh session.
 See STATUS for actual validation outcomes and ENVIRONMENT_AUDIT for the global sandbox warning.
 
 If host Git reports dubious ownership after sandbox initialization, use the verified-path
-per-command option `git -c safe.directory=C:/Users/akash/Desktop/AquaQoS status` (and likewise
+per-command option `git -c safe.directory=<repository-root> status` (and likewise
 for subsequent Git commands). Do not add a global wildcard trust exception.
 
 Fallback if roles are not loaded: use existing global `sol_auditor` with the relevant

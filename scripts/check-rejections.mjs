@@ -1,12 +1,28 @@
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
+import { execFileSync } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 import { Interface } from 'ethers';
-import { checkBenchmark } from './check-benchmark.mjs';
+import { checkBenchmark, checkRecordedCommit, checkRecordedSource } from './check-benchmark.mjs';
 
 const key = r => `${r.system}/${r.count}/${r.scenario}/${r.actionIndex}`;
 const hash = path => createHash('sha256').update(readFileSync(path)).digest('hex');
+const git = (...args) => execFileSync('git', ['-c', `safe.directory=${process.cwd().replaceAll('\\', '/')}`, ...args],
+  { stdio: ['ignore', 'pipe', 'pipe'] });
+const checkRecordedHashes = (commit, hashes) => {
+  checkRecordedCommit(commit);
+  for (const [path, value] of Object.entries(hashes)) {
+    assert.equal(createHash('sha256').update(git('show', `${commit}:${path}`)).digest('hex'), value, `${commit}:${path}`);
+  }
+};
+const replaySourcePaths = ['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs',
+  'scripts/check-benchmark.mjs', 'docs/BENCHMARK_METHODOLOGY.md', 'docs/REJECTION_REPLAY.md',
+  'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'];
+const checkReplaySource = report => {
+  assert.deepEqual(Object.keys(report.sourceHashes).sort(), replaySourcePaths.slice().sort());
+  checkRecordedHashes(report.sourceCommit, report.sourceHashes);
+};
 const sum = rows => rows.reduce((n, r) => n + BigInt(r.amount), 0n);
 const swapInterface = new Interface(['function swap((address maker,uint256 traits,bytes data) order,uint256 amount,bytes takerTraitsAndData)']);
 const deploymentFields = ['name', 'address', 'buildInfoId', 'solcLongVersion'];
@@ -156,10 +172,8 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
   assert.equal(report.inputPath, 'benchmarks/raw/a-b-c-v1.json');
   const input = JSON.parse(readFileSync(report.inputPath));
   assert.equal(hash(report.inputPath), report.inputHash);
-  const required = ['benchmarks/replay-rejections.mjs', 'scripts/check-rejections.mjs', 'scripts/check-benchmark.mjs',
-    'docs/BENCHMARK_METHODOLOGY.md', 'docs/REJECTION_REPLAY.md', 'hardhat.config.ts', 'pnpm-lock.yaml', 'sources.lock.json'];
-  assert.deepEqual(Object.keys(report.sourceHashes).sort(), required.sort());
-  for (const [path, value] of Object.entries({ ...input.sourceHashes, ...report.sourceHashes })) assert.equal(hash(path), value, path);
+  checkRecordedSource(input, report.sourceCommit);
+  checkReplaySource(report);
   checkRejections(report, input);
   console.log('Rejection replay: complete source coverage, state transitions, error bytes, capacity and denominators passed.');
   if (process.argv.includes('--self-test')) {
@@ -189,6 +203,19 @@ if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) 
       mutate(changed);
       assert.throws(() => checkRejections(changed, input));
     }
-    console.log(`${corruptions.length} deliberately corrupted reports rejected; valid report passed first.`);
+    const sourceCorruptions = [
+      r => { r.sourceHashes['scripts/check-benchmark.mjs'] = '0'.repeat(64); },
+      r => { r.sourceCommit = '0'.repeat(40); },
+      r => { r.sourceCommit = git('rev-parse', `${report.sourceCommit}^{tree}`).toString().trim(); },
+      r => { r.sourceHashes['renamed-checker.mjs'] = r.sourceHashes['scripts/check-benchmark.mjs']; },
+      r => { delete r.sourceHashes['scripts/check-benchmark.mjs']; },
+    ];
+    for (const mutate of sourceCorruptions) {
+      const changed = structuredClone(report);
+      mutate(changed);
+      assert.throws(() => checkReplaySource(changed));
+    }
+    assert.throws(() => checkRecordedCommit(report.sourceCommit, input.sourceCommit));
+    console.log(`${corruptions.length + sourceCorruptions.length + 1} deliberately corrupted reports or source identities rejected; valid report passed first.`);
   }
 }

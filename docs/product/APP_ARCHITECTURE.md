@@ -3,10 +3,10 @@
 **Status:** Approved implementation contract
 **Date:** 2026-09-10
 **Applies to:** `web/` Next.js App Router application
-**Design authority:** [`DESIGN.md`](../DESIGN.md)
-**Product authority:** [`docs/STATUS.md`](STATUS.md), [`docs/ACCEPTANCE_CRITERIA.md`](ACCEPTANCE_CRITERIA.md)
+**Design authority:** [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)
+**Product authority:** [`docs/STATUS.md`](../STATUS.md), [`docs/ACCEPTANCE_CRITERIA.md`](../ACCEPTANCE_CRITERIA.md)
 
-This guide turns the design direction into a small, judge-first product. It is an
+This guide turns the design direction into a focused, evidence-first product. It is an
 implementation contract, not a request to add every possible page, package or animation.
 The app must make AquaQoS understandable in ten seconds, verifiable in two minutes and
 reproducible from the repository.
@@ -37,7 +37,7 @@ The app must distinguish four kinds of truth:
 | --- | --- |
 | Recorded | Retained local transaction evidence from the benchmark report |
 | Live local | A fresh isolated local EVM session with mock tokens |
-| Fork/testnet | A future deployed environment with chain/block/address evidence |
+| Public testnet | The retained Sepolia deployment with chain, address and receipt evidence |
 | Planned | Not implemented and not evidence |
 
 Never use a recorded number, ephemeral address or mock-token receipt as if it were a public
@@ -52,7 +52,7 @@ Ship five public product routes:
 | `/` | Landing and orientation | Run the live demo |
 | `/workspace/` | Recorded comparison explorer | Step through a scenario |
 | `/live/` | Interactive execution | Configure, execute and inspect |
-| `/proof/` | Judge verification | Open receipts and commands |
+| `/proof/` | Independent verification | Open receipts and commands |
 | `/docs/` | Curated public documentation | Understand the protocol |
 
 System routes are not product pages:
@@ -65,7 +65,7 @@ System routes are not product pages:
 
 Do not add separate `/about`, `/methodology`, `/benchmarks`, `/simulator` or `/evidence`
 pages. Their jobs are already covered by `/docs`, `/proof`, `/workspace` and `/live`.
-Additional routes are justified only by a real judge or user task that cannot be completed
+Additional routes are justified only by a real user or verification task that cannot be completed
 in those four product surfaces.
 
 ## 3. Recommended file structure
@@ -138,8 +138,8 @@ Order:
 8. Live-demo CTA.
 9. Limitations and source links.
 
-Hero copy must not claim solvency, profitability, safety or production deployment. Use
-`Run live local demo` until a verified fork/testnet environment exists.
+Hero copy must not claim solvency, profitability, safety or production deployment. Keep
+`Run live local demo` for the interactive path and link the verified Sepolia proof separately.
 
 ### 4.2 Recorded workspace `/workspace/`
 
@@ -334,7 +334,7 @@ audit record; curated docs are the readable explanation.
 2. Add semantic design tokens and Geist through `next/font`.
 3. Add `/workspace/` and move the current recorded route without changing evidence logic.
 4. Build the landing page and hero scheduling visualization.
-5. Refine `/proof/` into the two-minute judge path.
+5. Refine `/proof/` into a short independent-verification path.
 6. Add curated `/docs/` from validated repository material.
 7. Add route-level loading/error states.
 8. Add only the approved logo-wrapper and capacity-state motion.
@@ -342,7 +342,7 @@ audit record; curated docs are the readable explanation.
 10. Review the rendered pages at desktop/mobile widths and inspect the final diff for
     fabricated claims, untracked assets, remote images and accidental protocol changes.
 
-Do not begin paper/video/submission polish until the landing, docs, proof and live flow pass
+Do not begin paper/video/release polish until the landing, docs, proof and live flow pass
 the browser gate.
 
 ## 12. Definition of done
@@ -352,13 +352,13 @@ The refactor is complete only when:
 - all five routes are reachable from compact navigation;
 - the landing page explains AquaQoS without requiring protocol knowledge;
 - the final logo master is integrated unchanged and remains legible;
-- recorded, live-local and future fork/testnet states cannot be confused;
+- recorded, live-local and public-Sepolia states cannot be confused;
 - `/docs/` explains the protocol without copying raw files;
 - `/proof/` links every claim to code, test, receipt or source;
 - loading, error, stale and reduced-motion states work;
 - typecheck, build, audit and browser checks pass;
 - no new library exists without a recorded reason;
-- `DESIGN.md`, this guide and `docs/STATUS.md` agree;
+- `DESIGN_SYSTEM.md`, this guide and `docs/STATUS.md` agree;
 - a coherent Git commit records the refactor and no unrelated files are staged.
 
 ## 13. Primary references
@@ -369,5 +369,5 @@ The refactor is complete only when:
 - [1inch Aqua product](https://1inch.com/aqua)
 - [1inch rebrand rationale](https://1inch.com/blog/post/1inch-rebrand)
 - [ETHGlobal 1inch Aqua prize requirements](https://ethglobal.com/events/ethonline2026/prizes)
-- [AquaQoS design system](../DESIGN.md)
-- [AquaQoS acceptance criteria](ACCEPTANCE_CRITERIA.md)
+- [AquaQoS design system](DESIGN_SYSTEM.md)
+- [AquaQoS acceptance criteria](../ACCEPTANCE_CRITERIA.md)

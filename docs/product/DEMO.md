@@ -57,12 +57,14 @@ playwright-cli -s=aqua-live run-code --filename=web/scripts/check-live-browser.j
 playwright-cli -s=aqua-live close
 ```
 
-This is real local transaction evidence, not a wallet, testnet or public deployment.
+This is real local transaction evidence, not a wallet or public-chain execution flow. A
+separate public Sepolia demonstration is retained in
+[`SEPOLIA_DEPLOYMENT.md`](../SEPOLIA_DEPLOYMENT.md).
 
-The addresses and receipts are ephemeral local-EVM evidence retained in the report. Token
+The addresses and receipts in `/live/` are ephemeral local-EVM evidence retained in the report. Token
 labels are deliberately shown as `Token 0` and `Token 1` because the report sorts deployed
-addresses and does not establish a market token identity. The replay is a judge-verification
-aid; it is not a public deployment, testnet transaction or production safety claim.
+addresses and does not establish a market token identity. The replay is a verification
+aid; it must not be presented as a Sepolia transaction or production safety claim.
 
 For the complete checks, run `pnpm build`, `pnpm test`, `node scripts/check-benchmark.mjs`,
 `node scripts/check-rejections.mjs --self-test`, and `pnpm test:transactions`.

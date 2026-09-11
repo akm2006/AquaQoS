@@ -34,3 +34,6 @@ __pycache__/
 .codex/.tmp/
 .DS_Store
 Thumbs.db
+
+# Workspace-local archives; GitHub releases provide source archives
+/AquaQoS.zip

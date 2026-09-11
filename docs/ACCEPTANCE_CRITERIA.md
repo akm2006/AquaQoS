@@ -74,7 +74,8 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Separate advertised depth from executable volume and distinguish local workload results from real-market value.
 - [x] Matched-guarantee C100 sensitivity covers the original 48-fixture 2/4/8-strategy matrix
   and the report adds balanced/shuffled workloads; it reports price/custody limits and the
-  eight-strategy losing gas case. The recorded-data checker rejects 21 deliberate corruptions.
+  eight-strategy losing gas case. Negative checker assertions cover 27 deliberate data and
+  source-identity changes, including changed paths and non-commit/non-ancestor Git objects.
 - [x] Replay independently reconstructs receipt-log mapping before broad claims; seeded
   demand regeneration, deployment identity and exact saved calldata are now checked.
   Same-transaction and finite-allowance cases are not covered by the static replay below.
@@ -107,7 +108,7 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
 - [x] Owner-authorized Sepolia deployment retains 22 public receipts, exact-match source
   verification, real demo-token transfers and cost; test ETH/tokens carry no market-value claim.
 
-## Documentation and submission
+## Documentation and release
 
 - [ ] README, architecture diagram, threat model, benchmark docs and proof page agree with tested implementation.
 - [ ] Technical claims map to source/test/receipt; third-party notices and AI/provenance complete.

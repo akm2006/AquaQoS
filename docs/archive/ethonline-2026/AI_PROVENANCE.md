@@ -3,8 +3,11 @@
 2026-09-11: owner requested final checks before fork evidence, with testnet afterward
 if practical. Codex authored release/trace and upstream-authentication scripts, ran
 clean-checkout checks and documented source drift. Receipts/traces are EVM-generated.
-The additional independent reviewer request was rejected by the agent service before
-findings; no new independent approval or human execution is inferred.
+The first additional reviewer request was rejected by the agent service. A later bounded
+independent internal review completed before Sepolia deployment and found no demonstrated
+v0-scope blocker. This is AI-assisted internal review, not an external audit or human
+security certification. The clean Sepolia run retained 22 public transactions and four
+exact-match Sourcify verifications; no human execution is inferred.
 
 This is an AI-assisted project, not a claim of unaided human authorship.
 
@@ -80,8 +83,8 @@ requires failed swaps to emit none; broader workload diversity remains open.
 covered desktop and 390px layouts; no wallet, deployment or external publication is inferred.
 
 The exact owner bootstrap request is retained in
-`docs/prompts/2026-09-05-owner-bootstrap.md`, recovered from this session's user message.
-Retain sanitized project prompts in `docs/prompts/`; omit credentials/private runtime
+`docs/archive/ethonline-2026/prompts/2026-09-05-owner-bootstrap.md`, recovered from this session's user message.
+Retain sanitized project prompts in `docs/archive/ethonline-2026/prompts/`; omit credentials/private runtime
 context, not substantive project direction. Update this ledger with precise file/asset
 scope and actual human decisions/test contributions every milestone. Before submission,
 reconcile the ledger with Git history and retained prompts. Never fabricate human activity

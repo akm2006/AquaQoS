@@ -1,40 +1,58 @@
 # Execution plan
 
-Deadline: September 13, 2026, 16:00 UTC. Dates below are internal targets, not event rules.
-Root owns implementation, gates and commits. Reviewer passes are read-only.
+AquaQoS advances only through evidence-backed gates. Root owns architecture, implementation,
+verification, documentation, and milestone commits; high-risk protocol changes receive a
+separate read-only review.
 
-Owner direction, 2026-09-09: finish and polish the protocol and Next.js product before
-starting submission packaging. The dates below remain historical targets. Video,
-dashboard, launch assets and paper preparation are on hold while product work continues.
+## Delivery order
 
-| Phase | Dependency | Objective gate | Target |
-| --- | --- | --- | --- |
-| 0 Bootstrap | Full brief + environment audit | Durable docs, pins, local skills/reviewers validated and committed | Sep 5 |
-| 1 Reproduction | Relaunch; candidate toolchain compile | Unmodified official Aqua/SwapVM competing-fill failure with rollback evidence | Sep 6 |
-| 2 Specification | Reproduction + source map | Invariants, policy semantics, native-extension comparison, Registry/Vault decision, threat model | Sep 6 |
-| 3 Primitive | Approved recorded specification | Smallest guard and necessary lifecycle controls; positive/negative/fuzz tests | Sep 7–8 |
-| 4 Security | Integration tests | Independent adversarial review; callback/fee/lifecycle findings resolved | Sep 8 |
-| 5 Measurement | Stable invariant + security gate | Reproducible A/B/C workloads, raw data, gas and limitations | Sep 9 |
-| 6 Usable app | Stable ABI + benchmark | Functional configuration/demo/proof routes, desktop/mobile verification | Sep 10 |
-| 7 Demo/release | Reproducible protocol/app | Local fork or approved deployment; real transfer receipts; clean-machine rehearsal | Sep 11 |
-| 8 Packaging | Evidence locked | README, diagrams, threat model, benchmark docs, video script; paper if time | Sep 12 |
-| 9 Final audit/submission | All hard gates + human actions | Final test run, public access approval, narrated video, dashboard confirmation | Sep 13 before deadline |
+1. Reproduce the shared-inventory failure with official Aqua/SwapVM behavior.
+2. Define the protected-capacity invariant and explicit supported domain.
+3. Implement the smallest enforceable primitive and restricted lifecycle boundary.
+4. Cover positive, negative, boundary, callback, lifecycle, and fuzz paths.
+5. Complete independent internal security review and resolve findings.
+6. Measure conservative Aqua, raw overcommitment, and AquaQoS under identical demand.
+7. Prove the result on isolated local EVM, authenticated fork, and valueless public testnet.
+8. Deliver an accessible product and short verification path.
+9. Rehearse the complete release from a clean checkout.
 
-Critical path: reproduction -> invariant and trust boundary -> enforcement -> adversarial
-review -> measured benefit -> usable proof -> reproducible transfer demo -> submission.
-Record a pivot if the thesis fails; do not skip reproducibility or hide losing workloads.
+Steps 1–7 are complete within the documented v0 scope. Step 8 is active.
 
-Before frontend polish: protocol correctness, relevant negative tests, security review and
-stable reproducible benchmark must pass. Documentation and human-account tasks run alongside
-technical work. Trim stretch features/paper before correctness or demo reliability.
+## Active milestone: product surface
 
-Each milestone requires implementation where applicable, actual passing checks, validated
-assumptions, updated STATUS/decisions, disposition of findings and a coherent commit.
-No artificial commit count: commit actual increments. Review [acceptance](ACCEPTANCE_CRITERIA.md).
+The approved five-route Next.js application must provide:
 
-Owner direction, Sep 11: finish release verification, then local-fork proof, then consider
-testnet if practical. Fresh-checkout checks and authenticated fork proof now pass;
-the requested additional independent reviewer was blocked before findings. Resolve that
-review gate before public deployment. Balanced/shuffled benchmarks and rejection-transfer
-checks are already complete. Then resume the five-route frontend refactor; submission
-remains deferred. See STATUS and RELEASE_VERIFICATION for current evidence and blockers.
+- `/`: product thesis, architecture, measured result, limitations, and clear calls to action;
+- `/workspace/`: retained A/B/C/C100 comparisons without implying live execution;
+- `/live/`: fresh isolated local-EVM transactions and maker lifecycle controls;
+- `/proof/`: source, test, receipt, benchmark, and deployment verification;
+- `/docs/`: curated public protocol documentation backed by repository sources.
+
+The final logo and product system are defined in
+[`product/DESIGN_SYSTEM.md`](product/DESIGN_SYSTEM.md); implementation and browser gates are
+defined in [`product/APP_ARCHITECTURE.md`](product/APP_ARCHITECTURE.md). Protocol correctness,
+evidence parsers, and environment labels must survive the refactor unchanged.
+
+## Release gate
+
+Before a tagged public release:
+
+- frozen installs, contract compilation, 30 Solidity tests, bounded capacity model, benchmark,
+  rejection, release-evidence, and recursive-link checks pass;
+- Next.js typecheck, production build, desktop/mobile browser flow, console, requests,
+  accessibility basics, and evidence links pass;
+- retained local, fork, and Sepolia evidence remains bound to its recorded clean source;
+- public claims, contract scope, threat model, license map, and upstream attribution agree;
+- reachable Git history and the final staged diff pass secret review;
+- a fresh checkout reproduces all checks without relying on untracked files;
+- unresolved limitations are visible, not converted into passing claims.
+
+## Deferred work
+
+Do not expand token types, strategy count, VM recipes, fees, upgradeability, or production
+custody during product polish. Comprehensive external audit, production operations, formal
+verification, and broader market workloads are separate future milestones.
+
+Event-specific deadlines, dashboard steps, video requirements, prompts, and provenance are
+retained under [`archive/ethonline-2026/`](archive/ethonline-2026/); they do not define the
+protocol roadmap.

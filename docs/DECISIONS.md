@@ -1,30 +1,10 @@
 # Decisions
 
-## 2026-09-11 — D023: Ethereum Sepolia public proof after fork/review gates
-
-Decision: use the official Aqua deployment already present at the authenticated address on
-Ethereum Sepolia, deploy the unchanged AquaQoS router/vault and two explicitly named
-owner-mintable demo tokens, then retain public receipts and source verification. Alternatives:
-redeploy Aqua, use production assets, or keep only local-fork evidence. Evidence: Sepolia
-Aqua runtime matches the authenticated 6,251-byte hash; independent internal review found no
-v0-scope testnet blocker; Ethereum identifies Sepolia for application development. Reason:
-add public proof without real-value token risk or version ambiguity. Consequences: the owner
-wallet is also the demo taker; maker remains the vault. Demo tokens and values have no market
-value. Credentials stay in ignored `.env.sepolia`; report/explorer links contain public data.
-
-## 2026-09-11 — D022: Authenticate historical Ethereum Aqua separately
-
-Decision: retain tested source pins, add a local-fork proof against official Ethereum
-AquaRouter at block 25,948,160, authenticate its full runtime from verified compiler input.
-Alternatives: assume the address matches our package, redeploy and describe it as the
-existing deployment, or upgrade protocol dependencies during verification. Evidence:
-published compiler input exactly rebuilds the 6,251-byte runtime; the older core has
-multicall/simulation helpers. Reason: test a real deployment without disguising drift.
-Consequences: pinned-source and fork evidence stay distinct; router/vault deploy only
-locally; DAI/WETH transfers carry no market-value claim. Additional independent review
-remains open because the reviewer service rejected the request. See FORK_PROOF.
-
 ## 2026-09-05 — D001: Evidence-first bootstrap
+
+Status note: the original brief was later removed from the current tree and all reachable
+public Git history; its useful direction was replaced by validated specifications and this
+decision record. The evidence-first rule remains active.
 
 Decision: preserve the winning brief unchanged as lowest-priority provenance; claims remain
 hypotheses until verified. Alternatives: implement the brief literally. Evidence: official
@@ -309,4 +289,45 @@ position evidence; current Next.js guidance supports shared layouts and route-le
 error states. Reason: give a judge one clear story without fragmenting the product or
 introducing unsupported dependency surface. Consequences: the refactor must preserve the
 existing evidence logic while moving the recorded route, and every public claim must link
-to the underlying source/test/receipt. See `DESIGN.md` and `docs/APP_REFACTOR_GUIDE.md`.
+to the underlying source/test/receipt. See `docs/product/DESIGN_SYSTEM.md` and
+`docs/product/APP_ARCHITECTURE.md`.
+
+## 2026-09-11 — D022: Authenticate historical Ethereum Aqua separately
+
+Decision: retain tested source pins, add a local-fork proof against official Ethereum
+AquaRouter at block 25,948,160, authenticate its full runtime from verified compiler input.
+Alternatives: assume the address matches our package, redeploy and describe it as the
+existing deployment, or upgrade protocol dependencies during verification. Evidence:
+published compiler input exactly rebuilds the 6,251-byte runtime; the older core has
+multicall/simulation helpers. Reason: test a real deployment without disguising drift.
+Consequences: pinned-source and fork evidence stay distinct; router/vault deploy only
+locally; DAI/WETH transfers carry no market-value claim. The initially rejected reviewer
+request was later superseded by the completed bounded internal review recorded in D023.
+See `FORK_PROOF.md`.
+
+## 2026-09-11 — D023: Ethereum Sepolia public proof after fork/review gates
+
+Decision: use the official Aqua deployment already present at the authenticated address on
+Ethereum Sepolia, deploy the unchanged AquaQoS router/vault and two explicitly named
+owner-mintable demo tokens, then retain public receipts and source verification. Alternatives:
+redeploy Aqua, use production assets, or keep only local-fork evidence. Evidence: Sepolia
+Aqua runtime matches the authenticated 6,251-byte hash; independent internal review found no
+v0-scope testnet blocker; Ethereum identifies Sepolia for application development. Reason:
+add public proof without real-value token risk or version ambiguity. Consequences: the owner
+wallet is also the demo taker; maker remains the vault. Demo tokens and values have no market
+value. Credentials stay in ignored `.env.sepolia`; report/explorer links contain public data.
+
+## 2026-09-11 — D024: Product-first public repository boundary
+
+Decision: preserve protocol source, raw evidence, source pins, licenses, prompts, and coherent
+Git history while making the root and primary documentation product-first. Add one read-only
+CI workflow, a mixed-license map, a security policy, a public documentation index, and a
+concise threat model. Move development-environment records and event-specific provenance
+under `docs/archive/`; retain them for auditability without presenting them as the product.
+Alternatives: delete AI/event records, rewrite history cosmetically, move every evidence file,
+or add a broad open-source/release boilerplate bundle. Evidence: official ETHOnline guidance
+requires relevant spec/prompt provenance; GitHub recommends CI, licensing and a security
+policy; existing path-bound checkers make broad evidence moves risky. Reason: improve public
+trust and navigation without weakening reproducibility. Consequences: original AquaQoS files
+without separate notices remain all-rights-reserved until the owner selects a broader license;
+raw evidence paths and protocol bytecode remain unchanged.

@@ -13,7 +13,7 @@ Use one consistent architecture and short judge-verification path: problem -> re
 -> policy -> actual transfer -> measured trade-offs -> reproducible commands. Verify commands
 from a fresh checkout before publishing; never invent addresses, test counts or results.
 
-Read `docs/THIRD_PARTY.md`, `docs/AI_PROVENANCE.md` and
+Read `docs/THIRD_PARTY.md`, `docs/archive/ethonline-2026/AI_PROVENANCE.md` and
 `docs/archive/ethonline-2026/SUBMISSION_CHECKLIST.md`.
 Retain upstream notices and sanitized prompts/specs; attribute AI-assisted files and actual
 human contributions. Video needs human narration and current duration/resolution rules.
