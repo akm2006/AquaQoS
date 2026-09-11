@@ -1,0 +1,157 @@
+---
+title: Reproduce
+description: The commands behind every number on this site, from a clean checkout.
+---
+
+Exact source identities are in `sources.lock.json` and the lockfile. Use Node 22.16.0 (at
+least 22.13) and pnpm 11.10.0. Run everything from the repository root.
+
+<Steps>
+<Step>
+
+### Install and test
+
+```bash
+pnpm install --frozen-lockfile --ignore-scripts
+pnpm build
+pnpm test
+```
+
+Expect 30 passing Solidity tests, including three fuzz properties at 256 runs each.
+
+</Step>
+<Step>
+
+### Check the model and bootstrap
+
+```bash
+node scripts/check-capacity-model.mjs
+node scripts/check-bootstrap.mjs
+```
+
+327,168 bounded settlement cases, then source identities and documentation links.
+
+</Step>
+<Step>
+
+### Replay separate transactions
+
+```bash
+pnpm test:transactions
+```
+
+239 retained transactions; 137 accepted and 55 rejected seeded swaps must match the
+independent model at every step.
+
+</Step>
+<Step>
+
+### Check the benchmark evidence
+
+```bash
+pnpm check:benchmark
+node --test scripts/check-benchmark.test.mjs
+node scripts/check-rejections.mjs --self-test
+```
+
+72 fixtures and 22 checker tests pass; the rejection checker must reject all 19 deliberately
+corrupted reports.
+
+</Step>
+<Step>
+
+### Measure lifecycle gas
+
+```bash
+pnpm exec hardhat run scripts/check-lifecycle-gas.mjs
+```
+
+</Step>
+</Steps>
+
+## Regenerate the benchmark [#regenerate]
+
+Generation requires a clean tree, because every report records its source commit and dirty flag.
+
+```bash
+pnpm benchmark:a-b-c
+# verify and commit the new report first, so the tree is clean again
+pnpm exec hardhat run benchmarks/replay-rejections.mjs
+```
+
+Running both generators back to back without committing the first report produces dirty
+replay provenance, which the checker correctly rejects.
+
+## Fork and Sepolia [#fork]
+
+<Tabs items={["bash", "PowerShell"]} groupId="shell" persist>
+<Tab value="bash">
+
+```bash
+pnpm exec hardhat run scripts/check-release.mjs
+node scripts/verify-fork-upstream.mjs
+AQUAQOS_FORK=1 pnpm exec hardhat run scripts/check-release.mjs
+node scripts/check-release-evidence.mjs --self-test
+pnpm check:sepolia
+```
+
+</Tab>
+<Tab value="PowerShell">
+
+```powershell
+pnpm exec hardhat run scripts/check-release.mjs
+node scripts/verify-fork-upstream.mjs
+$env:AQUAQOS_FORK = '1'
+pnpm exec hardhat run scripts/check-release.mjs
+Remove-Item Env:AQUAQOS_FORK
+node scripts/check-release-evidence.mjs --self-test
+pnpm check:sepolia
+```
+
+</Tab>
+</Tabs>
+
+<Callout type="warn" title="Fork RPC">
+  The fork defaults to a public read-only Ethereum RPC. Supply an archive-capable URL through
+  `AQUAQOS_FORK_RPC` if needed, and never commit credentials. The runner never forwards writes
+  to that URL.
+</Callout>
+
+## Run the app [#app]
+
+<Tabs items={["Recorded + proof", "Live local"]}>
+<Tab value="Recorded + proof">
+
+```bash
+pnpm --dir web install --frozen-lockfile --ignore-scripts
+pnpm proof:serve
+```
+
+Open `http://127.0.0.1:4173/`.
+
+</Tab>
+<Tab value="Live local">
+
+```bash
+pnpm --dir web build
+node scripts/serve-live.mjs
+```
+
+Open `http://127.0.0.1:4174/live/`. It uses test accounts and mock tokens only.
+
+</Tab>
+</Tabs>
+
+`pnpm --dir web build` also reruns the benchmark checker before exporting, so the app cannot
+ship evidence that fails validation.
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Package scripts", path: "package.json" },
+    { label: "Source pins", path: "sources.lock.json" },
+    { label: "Fresh-checkout release verification", path: "docs/RELEASE_VERIFICATION.md" },
+    { label: "Web app evidence export", path: "web/scripts/prepare-evidence.mjs" },
+  ]}
+/>

@@ -1,5 +1,17 @@
 # Primary-source register
 
+## 2026-09-11 docs framework
+
+- Fumadocs [quick start](https://www.fumadocs.dev/docs), [CLI](https://www.fumadocs.dev/docs/cli),
+  [Next.js installation](https://www.fumadocs.dev/docs/manual-installation/next),
+  [themes](https://www.fumadocs.dev/docs/ui/theme), [static build](https://www.fumadocs.dev/docs/deploying/static)
+  and [static search](https://www.fumadocs.dev/docs/headless/search/orama), read as raw MDX:
+  Tailwind CSS 4 requirement, macro content source, `DocsLayout`, `staticGET` with
+  `staticClient`. Installed 16.15.8 type declarations confirm the props used. See D024.
+- Installed Next.js 16.3.4 docs (`not-found.md`, `static-exports.md`, `route-groups.md`):
+  multiple root layouts need `global-not-found`, static route handlers need `force-static`,
+  and navigating between root layouts is a full page load.
+
 ## 2026-09-11 fork verification
 
 - Official pinned Aqua [deployment list](https://github.com/1inch/aqua/blob/81c26e4619ce21556ab02b3284ee2685de21fb18/README.md):

@@ -1,0 +1,132 @@
+---
+title: Quote, swap and lifecycle
+description: What a quote promises, how reservations live and die, and how a maker configures and exits a group.
+---
+
+## Quote versus swap [#quote-swap]
+
+Both paths run the same program against the same live balances. They differ in what the
+guard is allowed to do.
+
+| | Quote | Swap |
+| --- | --- | --- |
+| SwapVM context | Static | State-changing |
+| Guard call | `checkCapacity` (view) | `reserve` (writes transient state) |
+| Reservation | None | Adds `d` for this strategy and token |
+| Callbacks | None | Taker callbacks run after the reservation |
+
+A quote says the fill is eligible **at that state**. Anything can change before the swap:
+another fill, a push, a pause. The swap always rechecks and reserves against current state,
+so a stale quote fails cleanly instead of breaking a sibling.
+
+## Transient reservations [#reservations]
+
+`reserve` records the debit in EIP-1153 transient storage, keyed by strategy and token.
+
+- A nested sibling swap inside the same transaction sees the pending reservation.
+- A revert removes it automatically, together with every other effect.
+- A completed transaction clears it at the end; the next transaction starts from zero.
+
+<Callout type="warn" title="Same-transaction conservatism">
+  A reservation outlives its settled transfer until the transaction ends. With two `g = 500`
+  strategies and 1,000 real tokens, a first 500 fill leaves 500 real tokens plus a 500
+  reservation. A second 500 fill in the **same** transaction is rejected (available 500,
+  required 1,000), although an unguarded reference completes it. This is an accepted v0
+  limitation; use separate transactions.
+</Callout>
+
+## Maker lifecycle [#maker-lifecycle]
+
+Every lifecycle call is owner-only and rejects with `TransactionInProgress` if any reservation
+was made in the current transaction. An owner callback cannot pause, dock, re-baseline or
+withdraw while an admitted output is still pending.
+
+<Steps>
+<Step>
+
+### Deploy
+
+The constructor fixes Aqua, the router, the sorted token pair and the owner, checks that the
+router points at the same Aqua, and approves Aqua for both tokens. The group starts paused.
+
+</Step>
+<Step>
+
+### Register strategies
+
+`createStrategy(salt, virtualA, virtualB, gA, gB)` runs only while paused. It requires fewer
+than eight strategies and `g <= v` for both tokens, builds the canonical order and ships it to Aqua.
+
+</Step>
+<Step>
+
+### Fund and activate
+
+Transfer real tokens to the vault, then call `activate()`. It resets every baseline to
+`v - g` and requires `I >= sum(g)` for both tokens before unpausing.
+
+</Step>
+<Step>
+
+### Trade and adjust
+
+Guarded quotes and swaps run while active. To change a guarantee, `pause()`, call
+`setGuarantees`, then `activate()` again; the feasibility check reruns.
+
+</Step>
+<Step>
+
+### Exit
+
+`pause()` ends the commitment. `dockAll()` docks every strategy in Aqua. Only then does
+`withdraw(token, to, amount)` release inventory.
+
+</Step>
+</Steps>
+
+## Errors [#errors]
+
+| Error | Raised by | Meaning |
+| --- | --- | --- |
+| `InsufficientCapacity(available, required)` | Vault | Inventory or allowance cannot cover the fill plus every remaining entitlement |
+| `VirtualCapacityExceeded` | Vault | The debit exceeds the strategy's own virtual balance |
+| `UnknownStrategy` | Vault | The hash is not active, or its Aqua marker is not live |
+| `GroupPaused` / `GroupActive` | Vault | The call needs the opposite pause state |
+| `TransactionInProgress` | Vault | A lifecycle call was attempted after a reservation in this transaction |
+| `InvalidConfiguration` / `InvalidToken` / `Unauthorized` | Vault | Bad parameters, a foreign token, or the wrong caller |
+| `InvalidGuardProgram` | Router | The program is not the exact canonical shape |
+| `UnsupportedFees` | Router | Fee state is nonempty after the inner program |
+
+## Measured lifecycle gas [#gas]
+
+<Truth kind="measured" /> Highest charged gas across an eight-strategy matrix in two isolated
+local EVMs. These are observed maxima within the matrix, not upper bounds for every token,
+calldata or storage history.
+
+| Operation | Highest observed gas |
+| --- | ---: |
+| Activation | 518,103 |
+| Failed late activation | 518,883 |
+| Registration | 248,911 |
+| Guarantee update | 80,388 |
+| Dock all | 182,846 |
+| Partial withdrawal | 59,748 |
+| Pause | 44,761 |
+
+## Settlement boundaries [#boundaries]
+
+Capacity eligibility is not a settlement guarantee. At Aqua's `uint248` maximum input ledger,
+a tiny output can pass the guard and still revert when its input push cannot fit. Extreme XYC
+multiplication reverts the same way. Both roll back atomically, and numeric regression tests
+cover them.
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Vault lifecycle functions", path: "contracts/AquaQoSVault.sol#L50-L147" },
+    { label: "Same-transaction conservatism tests", path: "test/AquaQoSConservatism.t.sol" },
+    { label: "Callback and nesting tests", path: "test/AquaQoSCallbacks.t.sol" },
+    { label: "Lifecycle gas method", path: "docs/LIFECYCLE_GAS.md" },
+  ]}
+/>

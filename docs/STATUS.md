@@ -25,7 +25,11 @@ the approved five-route structure, curated `/docs/` surface, dependency policy, 
 rules and frontend acceptance gates. Refactor scaffold (branch `refactor`, 2026-09-11): landing `/`,
 `/workspace/` (recorded explorer moved unchanged), `/live/` (server wrapper plus loading/error),
 `/proof/`, shared `_components/` and `_lib/`, favicon derivative and the byte-identical logo
-master in `web/public/brand/`. `/docs/` is deferred while the owner chooses a docs framework.
+master in `web/public/brand/`. `/docs/` now uses owner-selected Fumadocs (D024): eleven
+curated MDX pages in a separate `app/(docs)` root layout, dark logo-cyan theme and static
+search; product routes moved unchanged into `app/(site)`. The build exports all docs pages and
+`api/search.json`, product pages load only the product stylesheet, and CDP emulation found no
+horizontal overflow on docs or product pages at 390px or 320px.
 `tsc --noEmit` and full `pnpm build` pass. The build had been blocked because 17a6b99 changed
 root `package.json` after the benchmark report pinned its hash; the A/B/C report (source
 58ae957) and linked rejection replay (source 9fe8aaf) were re-run on Node 22.16.0 with

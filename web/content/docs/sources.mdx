@@ -1,0 +1,118 @@
+---
+title: Sources and provenance
+description: Pinned upstream code, license terms, AI provenance and the raw records behind these docs.
+---
+
+These docs are a curated explanation. The raw Markdown, reports and receipts in the repository
+remain the audit record. When they disagree, the repository wins.
+
+## Pinned upstream [#pins]
+
+<Truth kind="pinned" /> Nothing is resolved by a semver label alone.
+
+| Component | Pin |
+| --- | --- |
+| Aqua | [`v1.0.0` · `81c26e4`](https://github.com/1inch/aqua/tree/81c26e4619ce21556ab02b3284ee2685de21fb18) |
+| SwapVM | [`main` · `f09a41e`](https://github.com/1inch/swap-vm/tree/f09a41e689240adc645934f965c8061749397cd2) |
+| `@1inch/solidity-utils` | `6.9.10` |
+| OpenZeppelin Contracts | `5.4.0` |
+| forge-std | `v1.11.0` |
+| Toolchain | solc `0.8.30`, Hardhat `3.8.0`, Node `22.16.0`, pnpm `11.10.0` |
+| Compiler settings | viaIR, optimizer 700 runs, Cancun |
+
+No upstream implementation file was copied. The router subclasses the pinned SwapVM router
+and the vault uses official instruction builders. The one retained third-party source is the
+unmodified compiler input of the historical Ethereum `AquaRouter`, kept only to reproduce its
+deployed bytecode.
+
+## Licenses [#licenses]
+
+Aqua and SwapVM use custom Degensoft source licenses. They are not blanket MIT or Apache
+grants, and they set terms for modifications, corresponding source, dated changes,
+attribution and reproducible builds. New AquaQoS Solidity files carry the SwapVM license
+identifier; Aqua remains an unmodified dependency under its own license. Full texts are in
+`LICENSES/`. This mapping is a record, not a legal opinion.
+
+Powered by Aqua — © Degensoft Ltd 2025.
+Powered by SwapVM — © Degensoft Ltd 2025.
+
+## AI provenance [#ai]
+
+AquaQoS is an AI-assisted project; it makes no claim of unaided human authorship. The ledger
+in `docs/AI_PROVENANCE.md` records which tool produced which files and what the owner decided.
+Sanitized planning prompts are kept in `docs/prompts/`. These docs pages were drafted by Claude
+Code from the repository's validated records.
+
+## Raw records [#records]
+
+### Protocol
+
+<Verify
+  items={[
+    { label: "CAPACITY_GUARD specification", path: "docs/CAPACITY_GUARD_SPEC.md" },
+    { label: "Source-level protocol baseline", path: "docs/PROTOCOL_BASELINE.md" },
+    { label: "Shared-inventory reproduction", path: "docs/PROBLEM_REPRODUCTION.md" },
+    { label: "Architecture decisions", path: "docs/DECISIONS.md" },
+  ]}
+/>
+
+### Evidence
+
+<Verify
+  items={[
+    { label: "Benchmark methodology", path: "docs/BENCHMARK_METHODOLOGY.md" },
+    { label: "Benchmark results", path: "docs/BENCHMARK_RESULTS.md" },
+    { label: "Guard-rejection replay", path: "docs/REJECTION_REPLAY.md" },
+    { label: "Transaction validation", path: "docs/TRANSACTION_VALIDATION.md" },
+    { label: "Lifecycle gas", path: "docs/LIFECYCLE_GAS.md" },
+    { label: "Release verification", path: "docs/RELEASE_VERIFICATION.md" },
+  ]}
+/>
+
+### Reviews and records
+
+<Verify
+  items={[
+    { label: "v0 implementation review", path: "docs/SECURITY_REVIEW_V0.md" },
+    { label: "Primary-source register", path: "docs/RESEARCH_SOURCES.md" },
+    { label: "Third-party notices", path: "docs/THIRD_PARTY.md" },
+    { label: "AI provenance ledger", path: "docs/AI_PROVENANCE.md" },
+  ]}
+/>
+
+## Official 1inch references [#official]
+
+<Verify
+  items={[
+    { label: "1inch Aqua", href: "https://1inch.com/aqua" },
+    {
+      label: "Aqua documentation",
+      href: "https://business.1inch.com/portal/documentation/aqua/overview",
+    },
+    {
+      label: "Aqua whitepaper 1.0 (pinned)",
+      href: "https://github.com/1inch/aqua/blob/9c5c42e5840e8741fba3597c48456c9510212b66/docs/whitepaper-aqua-1.0.pdf",
+    },
+    {
+      label: "SwapVM whitepaper 1.0 (pinned)",
+      href: "https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/docs/whitepaper-swap-vm-1.0.pdf",
+    },
+  ]}
+/>
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Source lock", path: "sources.lock.json" },
+    { label: "License texts", path: "LICENSES" },
+    {
+      label: "Aqua license",
+      href: "https://github.com/1inch/aqua/blob/81c26e4619ce21556ab02b3284ee2685de21fb18/LICENSES/Aqua-Source-1.1.txt",
+    },
+    {
+      label: "SwapVM license",
+      href: "https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/LICENSES/SwapVM-1.1.txt",
+    },
+  ]}
+/>

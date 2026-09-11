@@ -375,6 +375,13 @@ Prefer Aqua Blue:
 
 Do not use green/red as brand colors.
 
+## 7.4 Documentation palette
+
+Owner direction, 2026-09-11 (D024): `/docs/` is dark-only. It uses the ink surface `#070707`
+with the logo's own light cyan (`#31D7FD`, `#9FEEFD`) as its only accent: matte and light,
+with no `#0000FF` fields, gradients or glow. Dark-only keeps the master's white chevron legible.
+State colors stay functional, lightened to sit on ink.
+
 ---
 
 # 8. Color Usage Ratio

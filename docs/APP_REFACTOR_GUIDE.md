@@ -76,7 +76,7 @@ details instead of introducing route groups before they solve a real layout prob
 ```text
 web/
   app/
-    layout.tsx                 # shared shell, metadata, navigation and footer
+    (site)/layout.tsx          # product shell; the product files below live in (site)/ (D024)
     page.tsx                   # landing page
     workspace/
       page.tsx                 # recorded comparison route
@@ -88,8 +88,9 @@ web/
       live.css
     proof/
       page.tsx                 # concise evidence hub
-    docs/
-      page.tsx                 # curated docs, not raw Markdown rendering
+    (docs)/                    # separate root layout: Fumadocs + Tailwind (D024)
+      docs/[[...slug]]/        # renders curated web/content/docs/*.mdx
+      api/search.json/         # static search index
     _components/
       BrandLogo.tsx
       Button.tsx
@@ -182,9 +183,9 @@ can be read from the checked manifest.
 
 ### 4.5 Curated docs `/docs/`
 
-Build one static, presentable documentation page with a sticky table of contents and
-anchor sections. Write a concise narrative from the repository’s validated material; do
-not dump or auto-render every Markdown file.
+Build `/docs/` with Fumadocs (owner decision, D024): a static multi-page site with sidebar,
+per-page table of contents and static search. Write a concise narrative from the repository’s
+validated material; do not dump or auto-render every Markdown file.
 
 Required sections:
 
@@ -250,7 +251,9 @@ The goal is a reliable product, not a showcase of dependencies.
 | `lucide-react` 1.44.0 | Optional | Only if repeated outline icons exceed the few existing symbols |
 | `swr` 2.5.1 | Optional | Only if live polling/revalidation is added |
 | chart library | Avoid for now | Existing SVG/HTML charts are smaller and easier to audit |
-| Tailwind/shadcn/Framer Motion legacy package | Avoid | Current CSS is established; no migration benefit yet |
+| Fumadocs UI/Core 16.15.8, MDX 15.4.0 | Adopted for `/docs/` (D024) | Owner-selected docs framework with static export and search |
+| Tailwind CSS 4.3.3 | Docs only (D024) | Required by Fumadocs UI; loaded only by the `(docs)` root layout |
+| shadcn/Framer Motion legacy package | Avoid | Current CSS is established; no migration benefit yet |
 | Three.js/canvas/particle packages | Avoid | They conflict with the infrastructure-grade visual direction |
 
 Versions above are registry candidates checked 2026-09-10, not an instruction to install

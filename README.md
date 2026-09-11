@@ -59,7 +59,8 @@ pnpm --dir web install --frozen-lockfile --ignore-scripts
 pnpm proof:serve
 ```
 
-Open `http://127.0.0.1:4173/`; `/proof/` contains the protocol evidence. For the live local
+Open `http://127.0.0.1:4173/`; `/proof/` contains the protocol evidence and `/docs/` the
+curated documentation. For the live local
 workspace, build the static app and serve it with the protocol runner:
 
 ```sh
@@ -79,7 +80,8 @@ The frontend has its own lockfile; the protocol pins and benchmark hashes are un
 - `contracts/`, `test/`: protocol implementation and Solidity tests.
 - `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
 - `deployments/`: local, fork and Sepolia runtime identities, receipts and source authentication.
-- `web/`: Next.js App Router workspace, evidence page and browser regression checks.
+- `web/`: Next.js App Router workspace, evidence page, Fumadocs documentation
+  (`web/content/docs/`) and browser regression checks.
 - `docs/`: protocol, benchmark, security, requirements and release documentation.
 - `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence
   retained for ETHOnline transparency; they are not runtime dependencies.

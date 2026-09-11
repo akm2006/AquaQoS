@@ -1,0 +1,68 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/preset.css";
+
+/*
+ * AquaQoS docs theme. Colors come from the logo master (#31D7FD, #9FEEFD, white) on the
+ * near-black ink surface from DESIGN.md: light, matte accents only, no deep blue fields,
+ * gradients or glow. Docs render dark-only because the master's white chevron needs a dark
+ * ground (DESIGN.md §6.3).
+ */
+@theme {
+  --color-aq-cyan: #31d7fd;
+  --color-aq-sky: #9feefd;
+  --color-aq-steel: #7c98a5;
+  --color-aq-ink: #070707;
+
+  --color-fd-background: #070707;
+  --color-fd-foreground: #e8f0f3;
+  --color-fd-muted: #101213;
+  --color-fd-muted-foreground: #95a4ab;
+  --color-fd-popover: #0c0e0f;
+  --color-fd-popover-foreground: #e8f0f3;
+  --color-fd-card: #0b0d0e;
+  --color-fd-card-foreground: #e8f0f3;
+  --color-fd-border: rgb(159 238 253 / 0.1);
+  --color-fd-primary: #9feefd;
+  --color-fd-primary-foreground: #070707;
+  --color-fd-secondary: #111416;
+  --color-fd-secondary-foreground: #e8f0f3;
+  --color-fd-accent: rgb(49 215 253 / 0.08);
+  --color-fd-accent-foreground: #d4f7fe;
+  --color-fd-ring: rgb(49 215 253 / 0.55);
+  --color-fd-overlay: rgb(0 0 0 / 0.6);
+
+  --font-sans:
+    var(--font-geist-sans), Geist, Inter, ui-sans-serif, system-ui, -apple-system,
+    BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* State colors stay functional (DESIGN.md §7.3), lightened to sit on ink. */
+@theme static {
+  --color-fd-info: #31d7fd;
+  --color-fd-warning: #fcd34d;
+  --color-fd-error: #fca5a5;
+  --color-fd-success: #86efac;
+  --color-fd-idea: #9feefd;
+  --color-fd-diff-remove: rgb(252 165 165 / 0.1);
+  --color-fd-diff-remove-symbol: #fca5a5;
+  --color-fd-diff-add: rgb(134 239 172 / 0.08);
+  --color-fd-diff-add-symbol: #86efac;
+}
+
+:root {
+  --fd-layout-width: 1400px;
+}
+
+::selection {
+  background: rgb(49 215 253 / 0.28);
+  color: #ffffff;
+}
+
+.prose :where(h1, h2, h3, h4) {
+  letter-spacing: -0.02em;
+}
+
+.prose :where(table) {
+  font-variant-numeric: tabular-nums;
+}

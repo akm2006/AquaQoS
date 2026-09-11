@@ -1,0 +1,79 @@
+---
+title: Security model
+description: What AquaQoS trusts, which paths it enforces, what internal review found, and what remains open.
+---
+
+<Callout type="error" title="Internal review only">
+  Every review below is internal to the project. There has been no external audit. Nothing
+  here authorizes real funds or establishes solvency, profitability or market safety.
+</Callout>
+
+## Trust assumptions [#assumptions]
+
+1. **Authentic dependencies.** The configured Aqua and router addresses must host the pinned
+   code. The constructor checks code length and the router's Aqua getter, which cannot rule
+   out a counterfeit or a proxy. Deployment must verify runtime bytecode, as the fork and
+   Sepolia proofs did.
+2. **Honest standard ERC-20 tokens.** Rebasing, fee-on-transfer, callback-bearing,
+   malicious balance-reporting and arbitrary allowance-revoking tokens are unsupported.
+3. **The owner may pause.** Pausing ends the capacity commitment. It is the exit path, not a
+   hidden guarantee.
+
+## Enforced boundaries [#boundaries]
+
+| Path | Enforcement |
+| --- | --- |
+| Program shape | Exactly guard, XYC, salt. Anything else fails with `InvalidGuardProgram` |
+| Fee recipes | The vault cannot ship them; nonempty fee state fails with `UnsupportedFees` |
+| Maker hooks, receiver, unwrap | Fixed traits: hooks disabled, receiver is the vault, unwrap off. Changing them changes the Aqua key |
+| Taker callbacks | Run after the reservation; nested sibling fills see it |
+| Same-order reentry | Rejected by SwapVM's per-order lock (`UnexpectedLock`) |
+| Owner callbacks mid-fill | Every lifecycle call fails with `TransactionInProgress` |
+| Other apps | Aqua keys balances by app; another app's pull from the vault fails |
+| Allowance | The full guarantee allowance floor is preserved on every output |
+| Vault surface | No generic call, delegatecall, arbitrary approval or upgrade entrypoint |
+
+## Resolved finding M1 [#m1]
+
+The first output policy checked transferable inventory against remaining entitlements only.
+Because standard tokens can decrement even a maximum approval, and `Aqua.push` is
+permissionless, enough trading could leave restored entitlement without transferable backing.
+The fix, decision D008, requires `allowance >= sum(g) + sum(r) + d` on every output. A
+follow-up reviewer confirmed M1 closed under the supported token and dependency assumptions.
+
+## Review record [#reviews]
+
+| Date | Scope | Result |
+| --- | --- | --- |
+| 2026-09-06 | v0 router, vault and canonical programs | M1 found and closed; prototype limits accepted |
+| 2026-09-08 | Independent review of callback and conservatism tests | No production or blocking test defect |
+| 2026-09-09 | Release review of authorization, programs, floors and exits | No new blocker in the v0 domain |
+| 2026-09-10 | Independent internal source review | No release-blocking defect in the v0 domain |
+| 2026-09-11 | Independent internal review before Sepolia | No critical, high, medium or low defect demonstrated in v0 scope |
+
+## Accepted limitations [#limitations]
+
+| Limit | Consequence |
+| --- | --- |
+| One immutable pair, canonical fee-free XYC, at most eight strategies | Other recipes are unsupported |
+| Honest standard ERC-20 behavior | One DAI/WETH fork run does not extend support to arbitrary tokens |
+| Reservations last until transaction end | Some safe sequential fills in one transaction are rejected |
+| Full guarantee allowance floor | Low allowance can reject otherwise backed fills |
+| Input-ledger saturation and XYC overflow | Eligibility does not promise settlement; failures roll back |
+| Bounded fuzzing and gas measurements | No exhaustive proof and no universal gas bound |
+
+Remaining test breadth: mixed-direction and deeper callback nesting, successful nesting after
+outer output settlement, combined finite-allowance and payment routes, explicit zero-output
+rollback, and universal callback or token gas bounds. These are coverage limits, not
+demonstrated defects.
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "v0 implementation review", path: "docs/SECURITY_REVIEW_V0.md" },
+    { label: "Release review", path: "docs/SECURITY_REVIEW_RELEASE.md" },
+    { label: "Review before Sepolia", path: "docs/SECURITY_REVIEW_SEPOLIA.md" },
+    { label: "Release verification and accepted limits", path: "docs/RELEASE_VERIFICATION.md" },
+  ]}
+/>

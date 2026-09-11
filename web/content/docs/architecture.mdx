@@ -1,0 +1,142 @@
+---
+title: Architecture
+description: Official Aqua and SwapVM stay load-bearing. AquaQoS adds one opcode and one restricted vault.
+---
+
+AquaQoS is deliberately small: 47 lines of router and 226 lines of vault on top of unmodified,
+pinned 1inch code. The official contracts still price, account and settle; AquaQoS decides
+only whether a fill may proceed.
+
+| Component | Origin | Responsibility |
+| --- | --- | --- |
+| Aqua | Official, unmodified, pinned `v1.0.0` (`81c26e4`) | Virtual balances; `pull` and `push` token transfers |
+| `AquaSwapVMRouter` | Official SwapVM, pinned `f09a41e` | Program execution, settlement order, taker callbacks |
+| `AquaQoSRouter` | AquaQoS | Subclasses the official router, handles opcode `0x05` and delegates every other opcode to it |
+| `AquaQoSVault` | AquaQoS | Maker custody plus policy state: guarantees, baselines, reservations and lifecycle |
+
+## Swap path [#swap-path]
+
+```text title="One guarded exact-output swap"
+taker ── swap ──▶ AquaQoSRouter  (official SwapVM settlement)
+                    │
+                    ├─ opcode 0x05  CAPACITY_GUARD
+                    │     runs the inner program: XYC, then salt
+                    │     requires empty fee state
+                    │     quote → vault.checkCapacity(hash, tokenOut, amountOut)   view
+                    │     swap  → vault.reserve(hash, tokenOut, amountOut)         transient
+                    │
+                    └─ settlement
+                          Aqua.pull   vault ──▶ taker   (output)
+                          Aqua.push   taker ──▶ vault   (input)
+```
+
+The guard runs first in the program but checks last: it executes the rest of the program
+itself, so it sees the final output amount and fee state rather than a value that a later
+instruction could still change.
+
+```solidity title="contracts/AquaQoSRouter.sol"
+function _runOpcode(Context memory ctx, uint256 opcode, bytes calldata args) internal override {
+    if (opcode != CAPACITY_GUARD) {
+        super._runOpcode(ctx, opcode, args);
+        return;
+    }
+    bytes calldata program = ctx.program();
+    // 05 00 | 50 00 (XYC) | 02 08 (salt) | uint64 salt.
+    require(ctx.vm.nextPC == 2 && args.length == 0 && program.length == 14
+        && bytes6(program[:6]) == hex"050050000208", InvalidGuardProgram());
+    ctx.runLoop();
+    require(ctx.vm.nextPC == program.length, InvalidGuardProgram());
+    require(FeeMeta.unwrap(ctx.fee.meta) == 0 && ctx.fee.feeTotal == 0
+        && ctx.fee.receivers.length == 0, UnsupportedFees());
+    ICapacityVault vault = ICapacityVault(ctx.query.maker);
+    if (ctx.vm.isStaticContext) {
+        vault.checkCapacity(ctx.query.orderHash, ctx.query.tokenOut, ctx.swap.amountOut);
+    } else {
+        vault.reserve(ctx.query.orderHash, ctx.query.tokenOut, ctx.swap.amountOut);
+    }
+}
+```
+
+## The canonical program [#program]
+
+Every protected strategy runs exactly one 14-byte program, and the vault builds it itself:
+
+| Bytes | Instruction | Meaning |
+| --- | --- | --- |
+| `05 00` | `CAPACITY_GUARD` | Custom opcode `0x05` with no arguments; must be first |
+| `50 00` | XYC | Official constant-product swap, no arguments |
+| `02 08` + 8 bytes | Salt | Official no-op carrying a `uint64` salt, so strategies get distinct hashes |
+
+Opcode `0x05` is the next free slot in the pinned core-extension bank. SwapVM's reserved
+`0xf0`–`0xff` bank is untouched. Because the vault ships only programs it built, a protected
+order cannot omit, duplicate or jump around the guard.
+
+## Design choices [#choices]
+
+<Accordions type="single">
+  <Accordion title="Why a wrapper opcode, not SwapVM's Extruction?">
+    Native Extruction receives the swap registers but not the protocol-fee state, so it cannot
+    compute an output-side fee debit. A check placed before the rest of the program is also
+    unsafe, because later instructions can still change the final amounts. The wrapper runs
+    the inner program and checks its final result.
+  </Accordion>
+  <Accordion title="Why a vault, not a registry?">
+    A normal maker wallet can spend or approve its inventory outside Aqua at any time, so a
+    registry alone cannot enforce a capacity boundary. The vault owns the inventory. It
+    approves only the pinned Aqua contract, ships only canonical guarded orders to the fixed
+    router, and permits withdrawal only after the group is paused and every strategy is docked.
+  </Accordion>
+  <Accordion title="What the vault cannot do">
+    Aqua, the router, the owner and the sorted token pair are immutable. The vault has no
+    generic call, no delegatecall, no arbitrary approval and no upgrade path. Only the owner
+    may configure, pause, dock or withdraw; only the router may reserve.
+  </Accordion>
+  <Accordion title="Why a limit of eight strategies?">
+    Every admission reads each sibling's state, so gas grows with group size. The fixed
+    bound keeps that cost predictable and measured. It should be raised only after a new gas
+    review.
+  </Accordion>
+</Accordions>
+
+## Repository map [#repository]
+
+<Files>
+  <Folder name="contracts" defaultOpen>
+    <File name="AquaQoSRouter.sol" />
+    <File name="AquaQoSVault.sol" />
+  </Folder>
+  <Folder name="test">
+    <File name="SharedInventoryReproduction.t.sol" />
+    <File name="AquaQoS.t.sol" />
+    <File name="AquaQoSCallbacks.t.sol" />
+    <File name="AquaQoSConservatism.t.sol" />
+  </Folder>
+  <Folder name="benchmarks">
+    <File name="run-a-b-c.mjs" />
+    <File name="replay-rejections.mjs" />
+    <Folder name="raw" />
+  </Folder>
+  <Folder name="deployments">
+    <Folder name="sepolia" />
+    <Folder name="ethereum-fork" />
+    <Folder name="local-release" />
+  </Folder>
+  <Folder name="scripts" />
+  <Folder name="web" />
+  <Folder name="docs" />
+  <File name="sources.lock.json" />
+</Files>
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "AquaQoSRouter", path: "contracts/AquaQoSRouter.sol" },
+    { label: "AquaQoSVault", path: "contracts/AquaQoSVault.sol" },
+    {
+      label: "Official AquaSwapVMRouter at the pinned commit",
+      href: "https://github.com/1inch/swap-vm/blob/f09a41e689240adc645934f965c8061749397cd2/src/routers/AquaSwapVMRouter.sol",
+    },
+    { label: "D007: wrapper opcode plus restricted vault", path: "docs/DECISIONS.md" },
+  ]}
+/>

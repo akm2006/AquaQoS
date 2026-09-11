@@ -4,6 +4,7 @@ export const routes = {
   workspace: "/workspace/",
   live: "/live/",
   proof: "/proof/",
+  docs: "/docs/",
 } as const;
 
 export const primaryNav = [
@@ -11,6 +12,7 @@ export const primaryNav = [
   { href: routes.workspace, label: "Workspace" },
   { href: routes.live, label: "Live" },
   { href: routes.proof, label: "Proof" },
+  { href: routes.docs, label: "Docs" },
 ] as const;
 
 // Files copied into public/evidence/ by scripts/prepare-evidence.mjs.

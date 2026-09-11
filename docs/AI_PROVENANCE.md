@@ -18,6 +18,14 @@ reviewed proof-page text and CAPACITY_GUARD_SPEC wording; the landing capacity b
 labelled worked example, not measured data. No independent review or human test execution
 is inferred.
 
+2026-09-11 docs: owner selected Fumadocs and a logo-derived light blue on black palette for
+`/docs/`. Claude Code (Claude Opus 5) read the Fumadocs documentation, installed pinned packages,
+moved the product routes into `web/app/(site)` without content changes, and authored
+`web/app/(docs)`, `web/content/docs/*.mdx`, the docs theme and the D024/guide/status updates.
+Page text restates repository records; numbers come from STATUS, BENCHMARK_RESULTS,
+SEPOLIA_DEPLOYMENT, FORK_PROOF and LIFECYCLE_GAS. No independent review or human test
+execution is inferred.
+
 2026-09-11 evidence re-run: owner approved re-running the pinned benchmark after 17a6b99's
 `package.json` change blocked the web build. Claude Code re-ran `run-a-b-c.mjs` from clean
 58ae957 and `replay-rejections.mjs` from clean 9fe8aaf on checksum-verified Node 22.16.0.

@@ -1,0 +1,90 @@
+---
+title: Deployments
+description: Where AquaQoS has run, which environment each receipt comes from, and how to recheck it.
+---
+
+| Environment | Label | What it is |
+| --- | --- | --- |
+| Benchmark report | <Truth kind="recorded" /> | 72 fresh local EVM fixtures with retained receipts |
+| `/live/` workspace | <Truth kind="live" /> | A fresh isolated Cancun EVM with mock tokens, per session |
+| Local Ethereum fork | <Truth kind="testnet" /> | Authenticated official Aqua and real DAI/WETH on a local copy of block 25,948,160 |
+| Ethereum Sepolia | <Truth kind="testnet" /> | A public testnet deployment with valueless demo tokens |
+| Mainnet | <Truth kind="planned" /> | None. No mainnet deployment exists |
+
+## Ethereum Sepolia [#sepolia]
+
+Chain ID `11155111`, verified 2026-09-11 from clean source `17a6b99`. All four custom contracts
+are exact Sourcify creation and runtime matches.
+
+<Callout type="warn" title="Public testnet, not production">
+  The demo tokens are valueless and owner-mintable. This proves deployed behavior on a public
+  chain; it is not a production deployment or a security certification.
+</Callout>
+
+| Contract | Address | Source |
+| --- | --- | --- |
+| AquaQoS router | [`0xE2EE…5496`](https://sepolia.etherscan.io/address/0xE2EE332421bb0aE4177d0dE764ce5969bA0A5496) | [Sourcify exact match](https://repo.sourcify.dev/11155111/0xE2EE332421bb0aE4177d0dE764ce5969bA0A5496) |
+| AquaQoS vault | [`0x22a3…C252`](https://sepolia.etherscan.io/address/0x22a305FDB19C8856a427f4AEaB3264618Ca5C252) | [Sourcify exact match](https://repo.sourcify.dev/11155111/0x22a305FDB19C8856a427f4AEaB3264618Ca5C252) |
+| Demo token aqA | [`0x5f0a…F5DC`](https://sepolia.etherscan.io/address/0x5f0a52c5E51400157FbDA583d3141fAa5B7eF5DC) | [Sourcify exact match](https://repo.sourcify.dev/11155111/0x5f0a52c5E51400157FbDA583d3141fAa5B7eF5DC) |
+| Demo token aqB | [`0x6242…374a`](https://sepolia.etherscan.io/address/0x62420946020B80935dD87cac1A0034cA2C63374a) | [Sourcify exact match](https://repo.sourcify.dev/11155111/0x62420946020B80935dD87cac1A0034cA2C63374a) |
+
+The router uses the official Aqua deployment at
+[`0x4999…6d31`](https://sepolia.etherscan.io/address/0x499943e74fb0ce105688beee8ef2abec5d936d31).
+Its 6,251-byte runtime matches the separately authenticated Ethereum deployment.
+
+Two strategies each hold a 500 aqA guarantee over shared vault inventory:
+
+| Action | Result | Transaction |
+| --- | --- | --- |
+| Strategy 1 requests 600 aqA | Reverted with `InsufficientCapacity`; state and logs unchanged | [`0x5ad5…7bbd`](https://sepolia.etherscan.io/tx/0x5ad5e9463046dd1c8febddf3c45a8397faefd1d4872faa436ea579230aaf7bbd) |
+| Strategy 1 requests 500 aqA | Filled; three ERC-20 `Transfer` logs | [`0x49f7…3c42`](https://sepolia.etherscan.io/tx/0x49f76b79475c4f962cf09a92219f8c4947c8eff55bc7f71c63c97675ce073c42) |
+| Strategy 2 requests 501 aqA | Reverted with `InsufficientCapacity`; state and logs unchanged | [`0x6a76…c61d`](https://sepolia.etherscan.io/tx/0x6a7659c2773c4061149736cd063b9c7ed4756d06e5a9b927dc34a4bbc273c61d) |
+| Strategy 2 requests 500 aqA | Filled; three ERC-20 `Transfer` logs | [`0x1696…e968`](https://sepolia.etherscan.io/tx/0x1696c953ae351be9e90f55789081f428cea40158b57c79b358ede9f64c19e968) |
+| Replenish strategy 1 through `Aqua.push` | Capacity restored | [`0x0c09…6b5e`](https://sepolia.etherscan.io/tx/0x0c09639ac634c9abfa9737faff8e67e021196af34df4d7ba0c6f48451e556b5e) |
+| Strategy 1 requests the restored 500 aqA | Filled | [`0x7c99…9ff2`](https://sepolia.etherscan.io/tx/0x7c996a5ffd61da8b7373c0042335d44a77b34a2b9849f804a18f8a677ac69ff2) |
+| Reverse-direction request | Filled 100 aqB output | [`0x78dd…6309`](https://sepolia.etherscan.io/tx/0x78ddb0497030e0a7c9fd66c793e8b2129477f63c2816ae5127db680b053a6309) |
+
+The complete run retains 22 public transactions, including setup, and cost
+0.012706443810287423 Sepolia ETH in total.
+
+## Local Ethereum fork [#fork]
+
+The fork proof runs AquaQoS against Ethereum state copied into an in-process Hardhat EVM.
+Deployments, funding and swaps are all local; there is no Ethereum inclusion and no public
+explorer link for these receipts.
+
+- **Authentication.** The official Aqua address listed for Ethereum hosts an older
+  `AquaRouter` build. Its retained compiler input recompiles to the exact 6,251-byte runtime at
+  block 25,948,160, including metadata.
+- **Real tokens.** DAI is funded from an impersonated account in the local copy; WETH through
+  its actual deposit function. No token storage is patched and no mock token is used.
+- **Same story.** Raw Aqua fills 0.6, then the sibling's 0.5 fails for inventory shortage.
+  AquaQoS rejects the 0.6 (1.1 required), admits 0.5 for each strategy, rejects 0.501, and then
+  replenishes, reverses and exits to an empty vault.
+
+Clean source `de8c609` produced both retained reports with `dirty=false`: 45 local and 43 fork
+transactions, each with eight compressed swap traces. The checker rejects seven deliberately
+corrupted reports per environment.
+
+## Recheck it yourself [#recheck]
+
+Re-query Sepolia and Sourcify rather than trusting the committed report:
+
+```bash
+pnpm check:sepolia
+```
+
+The checker binds committed source hashes, the authenticated Aqua runtime, deployed runtime
+hashes, receipts, exact Sourcify matches, rollback states, transfer logs, final balances and
+allowances. See [Reproduce](/docs/reproduce/#fork) for the fork run.
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Sepolia deployment proof", path: "docs/SEPOLIA_DEPLOYMENT.md" },
+    { label: "Sepolia raw report", path: "deployments/sepolia/report.json" },
+    { label: "Local-fork proof", path: "docs/FORK_PROOF.md" },
+    { label: "Fork pin: block, hash, tokens", path: "deployments/ethereum-fork/pin.json" },
+  ]}
+/>

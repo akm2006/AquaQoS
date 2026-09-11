@@ -1,5 +1,22 @@
 # Decisions
 
+## 2026-09-11 — D024: Fumadocs for curated `/docs/`, isolated from product styles
+
+Decision: build `/docs/` with Fumadocs (UI/Core 16.15.8, MDX 15.4.0) and Tailwind CSS 4, as
+the owner selected, in a separate `web/app/(docs)` root layout; product routes move unchanged
+into `web/app/(site)`. Content is eleven curated MDX pages in `web/content/docs`, each ending
+in repository source links; raw Markdown remains the audit record. Per owner direction the docs
+theme is dark-only: the logo's light cyan (`#31D7FD`/`#9FEEFD`) on ink `#070707`, no deep blue.
+Alternatives: one hand-built page (the original guide §4.5), Tailwind across the whole app, or
+a separate docs app. Evidence: Fumadocs UI requires Tailwind CSS 4, whose preflight restyles
+base elements; Next.js performs a full page load between root layouts, and the built product
+pages reference only the product stylesheet. Reason: the owner-chosen framework gives sidebar,
+TOC and static search without restyling the tested product routes. Consequences: 242 added
+web packages; `next.config.mjs` because fumadocs-mdx is ESM-only; experimental
+`globalNotFound` for the shared 404; a ~500 KB static search index fetched on first search.
+16.15.9 was skipped because it fell inside pnpm's minimum release age, and the esbuild install
+script stays denied. Source links target GitHub `main` and resolve only where the repository is visible.
+
 ## 2026-09-11 — D023: Ethereum Sepolia public proof after fork/review gates
 
 Decision: use the official Aqua deployment already present at the authenticated address on
