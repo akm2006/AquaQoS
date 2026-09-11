@@ -6,7 +6,7 @@ async function verifyWorkspace(page) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = await page.evaluate(() => location.origin);
-  await page.goto(origin);
+  await page.goto(origin + "/workspace/");
   await page
     .getByRole("button", { name: "Next transaction", exact: true })
     .waitFor();
@@ -185,7 +185,7 @@ async function verifyWorkspace(page) {
     });
   }
   await page
-    .getByRole("link", { name: "Protocol evidence", exact: true })
+    .getByRole("link", { name: "Proof", exact: true })
     .click();
   await page.getByRole("heading", { name: "Open the receipts." }).waitFor();
   assert(
@@ -212,7 +212,7 @@ async function verifyWorkspace(page) {
       body: '{"runs":[]}',
     }),
   );
-  await page.goto(origin);
+  await page.goto(origin + "/workspace/");
   await page
     .getByRole("heading", { name: "Evidence could not be loaded" })
     .waitFor();

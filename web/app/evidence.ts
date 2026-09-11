@@ -75,9 +75,6 @@ export type Report = {
   dirty: boolean;
   runs: Run[];
 };
-export const num = (n: string | number | bigint) =>
-  BigInt(n).toLocaleString("en-US");
-export const short = (s: string) => `${s.slice(0, 6)}…${s.slice(-4)}`;
 export const actionsFor = (s: Scenario) =>
   [...s.attempts, ...s.actions].sort((a, b) => a.actionIndex - b.actionIndex);
 export const outcome = (a?: Action) =>

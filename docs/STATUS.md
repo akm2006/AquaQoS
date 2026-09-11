@@ -22,7 +22,13 @@ passes code, receipts, logs, balances and allowances. See SEPOLIA_DEPLOYMENT. Su
 The owner-approved `DESIGN.md` now locks the supplied `AquaQoS.svg` as the final logo and
 defines the blue-led marketing / calm application split. `docs/APP_REFACTOR_GUIDE.md` records
 the approved five-route structure, curated `/docs/` surface, dependency policy, logo motion
-rules and frontend acceptance gates. No application refactor code has been changed yet.
+rules and frontend acceptance gates. Refactor scaffold (branch `refactor`, 2026-09-11): landing `/`,
+`/workspace/` (recorded explorer moved unchanged), `/live/` (server wrapper plus loading/error),
+`/proof/`, shared `_components/` and `_lib/`, favicon derivative and the byte-identical logo
+master in `web/public/brand/`. `/docs/` is deferred while the owner chooses a docs framework.
+`tsc --noEmit` and `next build` pass. `pnpm build` is blocked before Next runs: root
+`package.json` changed in 17a6b99 after the benchmark report pinned its hash at b0d1d3e, so
+`check-benchmark.mjs` fails on clean HEAD too. Playwright suites were not run here.
 
 Sep 10 milestone complete: 30 Solidity tests pass, including three 256-run fuzz properties;
 the independent protocol review found no release-blocking defect in the documented v0 scope.

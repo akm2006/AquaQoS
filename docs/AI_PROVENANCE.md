@@ -8,6 +8,16 @@ findings; no new independent approval or human execution is inferred.
 
 This is an AI-assisted project, not a claim of unaided human authorship.
 
+2026-09-11 app scaffold: owner asked for a basic structure from APP_REFACTOR_GUIDE and
+deferred `/docs/` to a docs framework. Claude Code (Claude Opus 5) created the `web/app`
+route scaffold, shared component/copy/route modules, favicon derivative and the route
+updates in `check-browser.js`; the logo master was copied byte-identical. At the owner's
+request it removed arrow glyphs from UI text (direction arrows became words) and renamed
+the matching `check-live-browser.js` button. Copy reuses the
+reviewed proof-page text and CAPACITY_GUARD_SPEC wording; the landing capacity bar is a
+labelled worked example, not measured data. No independent review or human test execution
+is inferred.
+
 2026-09-09 product direction: owner requested completing product polish before submission
 and explicitly selected Next.js for the frontend. Codex implemented `web/`, the local
 launcher migration, evidence export and browser checks. Earlier HTML replay and root
