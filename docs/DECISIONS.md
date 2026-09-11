@@ -1,5 +1,17 @@
 # Decisions
 
+## 2026-09-11 — D023: Ethereum Sepolia public proof after fork/review gates
+
+Decision: use the official Aqua deployment already present at the authenticated address on
+Ethereum Sepolia, deploy the unchanged AquaQoS router/vault and two explicitly named
+owner-mintable demo tokens, then retain public receipts and source verification. Alternatives:
+redeploy Aqua, use production assets, or keep only local-fork evidence. Evidence: Sepolia
+Aqua runtime matches the authenticated 6,251-byte hash; independent internal review found no
+v0-scope testnet blocker; Ethereum identifies Sepolia for application development. Reason:
+add public proof without real-value token risk or version ambiguity. Consequences: the owner
+wallet is also the demo taker; maker remains the vault. Demo tokens and values have no market
+value. Credentials stay in ignored `.env.sepolia`; report/explorer links contain public data.
+
 ## 2026-09-11 — D022: Authenticate historical Ethereum Aqua separately
 
 Decision: retain tested source pins, add a local-fork proof against official Ethereum

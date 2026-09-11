@@ -10,11 +10,13 @@ produced both reports with dirty=false; a second fresh clone rebuilt and replaye
 per report pass. Source authentication recompiled all 6,251 deployed Aqua runtime bytes
 exactly, including metadata. No production contract or Solidity test has changed.
 
-New independent reviewer request was rejected by the agent service before findings.
-The previous Sep 10 internal review stands, but the requested additional release pass and
-review of the older deployed AquaRouter integration remain open. Do not report full release
-approval or proceed to public testnet on the strength of a failed review request.
-See RELEASE_VERIFICATION and FORK_PROOF. Public deployment and submission remain open.
+After one rejected reviewer-service attempt, a narrower independent internal review completed.
+It found no demonstrated critical/high/medium/low defect or testnet blocker within v0 and
+checked the older authenticated AquaRouter helpers. See SECURITY_REVIEW_SEPOLIA. This closes
+the internal review gate, not external audit or real-value readiness. Sepolia wallet
+0x5103b15D636B315e45C6E580BfC2c1bfEBf69fD2 has 0.113 test ETH; deployment preparation
+uses an ignored local key and authenticated Aqua at the same Sepolia address. No public
+transaction has been sent yet. Submission remains deferred.
 
 The owner-approved `DESIGN.md` now locks the supplied `AquaQoS.svg` as the final logo and
 defines the blue-led marketing / calm application split. `docs/APP_REFACTOR_GUIDE.md` records
@@ -165,9 +167,9 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-1. Complete the additional independent release review when the reviewer service is available;
-   keep its absence explicit. Consider testnet only after review and fork gates pass.
-2. Resume the approved five-route Next.js refactor and expose the fork evidence without
+1. Commit and dry-check the Sepolia deployment runner, then deploy the authenticated
+   AquaQoS router/vault plus labelled demo tokens and retain public receipts/source proofs.
+2. Resume the approved five-route Next.js refactor and expose fork/testnet evidence without
    representing local receipts as public-chain transactions.
 3. After review/product gates, choose the practical testnet target and prepare deployment
    for the owner's wallet/funding workflow. Submission remains deferred until polish.

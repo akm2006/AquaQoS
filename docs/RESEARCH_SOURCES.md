@@ -13,6 +13,18 @@
   `network.create` overrides and pinned-block local forking. Installed 3.8.0 types
   confirm exact interfaces; no plugin was required.
 
+## 2026-09-11 Sepolia deployment preparation
+
+- [Ethereum networks](https://ethereum.org/developers/docs/networks/): Sepolia is the
+  application-development testnet; faucet ETH has no mainnet balance or value continuity.
+- [Ethers v6 deployment/provider documentation](https://docs.ethers.org/v6/), fetched via
+  Context7 `/websites/ethers_v6`: ContractFactory deployment requests, transaction broadcast
+  and confirmation waits used by the repository script. Installed version remains 6.13.4.
+- [Sourcify API v2](https://sourcify.dev/server/api-docs/): standard JSON verification,
+  creation transaction binding and asynchronous job result schema. Source submission publicly
+  archives code under Sourcify's stated display license; only already-public repository source
+  and retained upstream source are submitted.
+
 Bootstrap entries checked **2026-09-05**; pinned contract source was reinspected
 on **2026-09-06** for reproduction and guard design. Event pages were not all
 rechecked on September 6. Moving pages have no published commit identifier;

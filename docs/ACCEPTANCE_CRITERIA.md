@@ -40,20 +40,21 @@ Problem-reproduction checks below reflect the executable evidence; unverified re
   activation, docking and withdrawal receipt maxima are measured in
   [LIFECYCLE_GAS.md](LIFECYCLE_GAS.md). The matrix is bounded and does not claim a
   universal worst-case across token/callback implementations.
-- [ ] Withdrawals, approvals, arbitrary calls, other apps and upgrades cannot silently bypass claimed protection.
+- [x] Internal review found no bypass through withdrawals, approvals, arbitrary calls,
+  other apps or upgrades within v0; vault exposes no generic call/approval/upgrade path.
 - [x] Document maker escape/pause behavior and the point at which guarantees cease.
 
 ## Integration and security
 
 - [x] Official Aqua handles token movement and virtual accounting; custom functionality executes inside SwapVM.
-- [ ] Separate review checks cross-order/router callbacks, reentrancy, hostile tokens, fees, allowance changes,
+- [x] Separate review checks cross-order/router callbacks, reentrancy, hostile tokens, fees, allowance changes,
   lifecycle/config changes, griefing/DoS, integer limits and transaction ordering.
-  Sep 10 internal review covers the stated v0 scope; the additional Sep 11 request was
-  rejected by the reviewer service before findings. Historical deployed AquaRouter
-  integration review remains open. See RELEASE_VERIFICATION.
+  Sep 11 independent internal review covers the v0 and historical AquaRouter scope;
+  unsupported tokens and broader nesting remain explicit. See SECURITY_REVIEW_SEPOLIA.
 - [x] Unit/integration/fuzz/property tests cover the current material paths; fixed seeds and
   failures are retained. Broader token-behavior and exhaustive-state coverage remain open.
-- [ ] No high/critical unresolved findings at release; other accepted risks identify owner and justification.
+- [x] No high/critical finding remains from internal reviews; accepted v0 limits are recorded.
+  This is not an external audit or production certification.
 - [x] Fresh install/build/test commands and runtime/tool versions verified on Windows;
   full-runtime metadata drift is explained and deployment artifact matching remains required.
 

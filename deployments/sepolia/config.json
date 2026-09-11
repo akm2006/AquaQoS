@@ -1,0 +1,23 @@
+{
+  "kind": "aquaqos-sepolia-config-v1",
+  "chainId": 11155111,
+  "network": "Ethereum Sepolia",
+  "rpcUrl": "https://ethereum-sepolia-rpc.publicnode.com",
+  "explorerUrl": "https://sepolia.etherscan.io",
+  "owner": "0x5103b15D636B315e45C6E580BfC2c1bfEBf69fD2",
+  "aqua": {
+    "address": "0x499943e74fb0ce105688beee8ef2abec5d936d31",
+    "runtimeHash": "0xced66b74e01f418c698e6aca8560d33957fb2588ea120eadbde74960f138baa2",
+    "runtimeBytes": 6251
+  },
+  "tokenA": {
+    "name": "AquaQoS Demo Token A",
+    "symbol": "aqA"
+  },
+  "tokenB": {
+    "name": "AquaQoS Demo Token B",
+    "symbol": "aqB"
+  },
+  "backing": "1000000000000000000000",
+  "guarantee": "500000000000000000000"
+}

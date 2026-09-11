@@ -35,13 +35,12 @@ not silently treated as full-bytecode matches.
 
 ## Additional independent review
 
-A new separate read-only security reviewer was requested for this milestone. The
-agent service rejected the request as a possible cybersecurity risk before returning
-findings. No review result or approval is inferred from that failed attempt.
-The completed Sep 10 independent internal review in
-[SECURITY_REVIEW_RELEASE.md](SECURITY_REVIEW_RELEASE.md) still applies to the unchanged
-production source. An additional independent release review remains open, particularly
-for the authenticated older deployed AquaRouter integration. Root owns follow-up.
+The first Sep 11 reviewer request was rejected by the agent service before findings.
+A new, narrowly scoped read-only review then completed successfully against unchanged
+production source and authenticated historical AquaRouter. It found no demonstrated
+critical, high, medium or low defect within v0 scope and no security blocker to a Sepolia
+demo with standard mock tokens. See [SECURITY_REVIEW_SEPOLIA.md](SECURITY_REVIEW_SEPOLIA.md).
+This closes the requested internal release-review gate, not external audit or production use.
 
 ## Accepted v0 limitations
 
