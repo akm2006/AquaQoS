@@ -1,6 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="-25 -75 300 300">
-<!-- Favicon derivative: the unchanged AquaQoS.svg paths centred on the approved #070707 surface. -->
-<rect x="-25" y="-75" width="300" height="300" rx="48" fill="#070707"/>
+<svg width="250" height="150" viewBox="0 0 250 150" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M40.8093 40.7002V64.3326H118.313L174.211 150H203.704L134.431 40.7002H40.8093Z" fill="#31D7FD"/>
 <path d="M40.8093 82.3851V105.361H99.7942L128.258 150H159.122L115.226 82.3851H40.8093Z" fill="#31D7FD"/>
 <path d="M40.8093 124.07V150H110.082L95.3361 124.07H40.8093Z" fill="#31D7FD"/>

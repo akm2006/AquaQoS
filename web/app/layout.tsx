@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { BrandLogo } from "./_components/BrandLogo";
+import { ButtonLink } from "./_components/Button";
+import { siteDescription } from "./_lib/copy";
+import { primaryNav, routes } from "./_lib/routes";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "AquaQoS · Shared liquidity, protected capacity",
-  description:
-    "Explore protected-capacity scheduling for shared 1inch Aqua inventory. Compare recorded transactions and verify every outcome.",
+  title: {
+    default: "AquaQoS · Shared liquidity, scheduled",
+    template: "%s · AquaQoS",
+  },
+  description: siteDescription,
 };
 
 export default function Layout({ children }: { children: React.ReactNode }) {
@@ -17,24 +23,25 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </a>
         <header className="topbar">
           <div className="nav-wrap">
-            <Link href="/" prefetch={false} className="brand" aria-label="AquaQoS home">
-              <span className="brand-mark" aria-hidden="true">
-                ≋
-              </span>
-              Aqua<span>QoS</span>
-              <small>v0</small>
+            <Link
+              href={routes.home}
+              prefetch={false}
+              className="brand"
+              aria-label="AquaQoS home"
+            >
+              <BrandLogo decorative />
+              AquaQoS
             </Link>
             <nav aria-label="Main navigation">
-              <Link href="/" prefetch={false}>Workspace</Link>
-              <Link href="/live/" prefetch={false}>Live execution</Link>
-              <Link href="/proof/" prefetch={false}>
-                Protocol evidence <span aria-hidden="true">↗</span>
-              </Link>
+              {primaryNav.map(({ href, label }) => (
+                <Link key={href} href={href} prefetch={false}>
+                  {label}
+                </Link>
+              ))}
             </nav>
-            <span className="environment">
-              <i />
-              Experimental v0
-            </span>
+            <ButtonLink href={routes.live} variant="primary">
+              Run live local demo
+            </ButtonLink>
           </div>
         </header>
         {children}
@@ -42,8 +49,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <span>
             Powered by Aqua — © Degensoft Ltd 2025 · Powered by SwapVM — © Degensoft Ltd 2025
           </span>
-          <span>Local workspace · Public Sepolia proof available</span>
-          <Link href="/proof/" prefetch={false}>Scope & verification ↗</Link>
+          <span>Experimental v0 · Public Sepolia proof · No external audit</span>
+          <Link href={routes.proof} prefetch={false}>
+            Scope & verification
+          </Link>
         </footer>
       </body>
     </html>

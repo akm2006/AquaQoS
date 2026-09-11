@@ -34,7 +34,7 @@ async function verifyLive(page) {
   state = await execute('Replenish strategy');
   assert(state.tokens[1].remaining === '2500', 'replenished capacity');
   assert((await page.locator('.live-receipt').first().locator('.transfer-list li').count()) === 1, 'push transfer displayed');
-  const downloadEvent = page.waitForEvent('download'); await button('Export session ↓').click();
+  const downloadEvent = page.waitForEvent('download'); await button('Export session').click();
   const download = await downloadEvent; assert(download.suggestedFilename().startsWith('aquaqos-live-'), 'export evidence');
   for (const width of [1440, 390, 320]) {
     await page.setViewportSize({ width, height: 1000 });

@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+import { limitations } from "../_lib/copy";
+import { routes } from "../_lib/routes";
+
+export const metadata: Metadata = { title: "Proof" };
 
 const records = [
   [
@@ -62,8 +67,8 @@ export default function Proof() {
             result.
           </p>
         </div>
-        <Link className="button primary" href="/" prefetch={false}>
-          Open workspace →
+        <Link className="button primary" href={routes.workspace} prefetch={false}>
+          Open workspace
         </Link>
       </div>
       <div className="proof-intro panel">
@@ -105,7 +110,7 @@ export default function Proof() {
           >
             <span className="eyebrow">{n} / SOURCE DOCUMENT</span>
             <h2>
-              {title} <span>↗</span>
+              {title}
             </h2>
             <p>{description}</p>
             <span className="record-format">Read Markdown document</span>
@@ -116,25 +121,9 @@ export default function Proof() {
         <span className="eyebrow">READ BEFORE INTERPRETING THE RESULTS</span>
         <h2>What the prototype does—and where it stops.</h2>
         <ul>
-          <li>
-            Smaller guarantees leave more inventory for burst. Higher fill
-            volume at 50% protection is not an equal-protection efficiency
-            claim.
-          </li>
-          <li>
-            At eight strategies, low-contention guarded swaps measured 210,099
-            median gas versus 113,715 raw. Guard rejection can cost more than
-            failed settlement.
-          </li>
-          <li>
-            Transaction-scoped reservations can reject otherwise safe sequential
-            fills in the same outer transaction.
-          </li>
-          <li>
-            Fee-on-transfer, rebasing and malicious tokens are outside the
-            supported domain. These tests do not establish general solvency or
-            financial safety.
-          </li>
+          {limitations.map((item) => (
+            <li key={item}>{item}</li>
+          ))}
         </ul>
       </section>
       <section className="evidence-banner">
@@ -150,13 +139,13 @@ export default function Proof() {
         </div>
         <div className="download-links">
           <a className="button" href="/evidence/report.json" download>
-            Download raw report ↓
+            Download raw report
           </a>
           <a className="button" href="/evidence/manifest.json">
-            View provenance manifest ↗
+            View provenance manifest
           </a>
           <a href="/evidence/AI_PROVENANCE.md">
-            AI-assisted development record ↗
+            AI-assisted development record
           </a>
         </div>
       </section>

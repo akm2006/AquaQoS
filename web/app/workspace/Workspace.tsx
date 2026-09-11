@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { num, short } from "../_lib/format";
+import { routes } from "../_lib/routes";
 import {
   actionsFor,
   entitlements,
-  num,
   outcome,
   policies,
-  short,
   tone,
   validateReport,
   workloads,
@@ -18,7 +18,7 @@ import {
   type Run,
   type Scenario,
   type Snapshot,
-} from "./evidence";
+} from "../evidence";
 
 export default function Workspace() {
   const [report, setReport] = useState<Report | null>(null);
@@ -242,7 +242,7 @@ export default function Workspace() {
               onClick={() => setStep(0)}
               aria-label="Reset replay"
             >
-              ↺ <span>Reset</span>
+              Reset
             </button>
             <button
               className="button"
@@ -250,14 +250,14 @@ export default function Workspace() {
               onClick={() => setStep(step - 1)}
               aria-label="Previous transaction"
             >
-              ←
+              Previous
             </button>
             <button
               className="button primary"
               disabled={step === qosActions.length}
               onClick={() => setStep(step + 1)}
             >
-              Next transaction <span aria-hidden="true">→</span>
+              Next transaction
             </button>
           </div>
         </div>
@@ -334,7 +334,7 @@ export default function Workspace() {
                       aria-pressed={step === i + 1}
                       onClick={() => setStep(i + 1)}
                     >
-                      {String(i + 1).padStart(2, "0")} ↗
+                      {String(i + 1).padStart(2, "0")}
                     </button>
                   </td>
                   <td>
@@ -342,7 +342,7 @@ export default function Workspace() {
                     <small>
                       {a.type === "push"
                         ? `Deposit Token ${a.token}`
-                        : `Token ${a.aToB ? "0 → 1" : "1 → 0"}`}
+                        : `Token ${a.aToB ? "0 to 1" : "1 to 0"}`}
                     </small>
                   </td>
                   <td className="mono">{num(a.amount)}</td>
@@ -368,8 +368,8 @@ export default function Workspace() {
             compare gas costs, or inspect the source evidence.
           </p>
         </div>
-        <Link className="button" href="/proof/">
-          Explore protocol evidence ↗
+        <Link className="button" href={routes.proof}>
+          Explore protocol evidence
         </Link>
       </div>
       <p className="source-line">
@@ -515,8 +515,7 @@ function CapacityCard({
       </p>
       <details className="receipt-details">
         <summary>
-          Inspect {action ? "transaction & balances" : "initial balances"}{" "}
-          <span>↗</span>
+          Inspect {action ? "transaction & balances" : "initial balances"}
         </summary>
         {action && (
           <>
@@ -574,7 +573,7 @@ function CapacityCard({
             {transfers.map((log, i) => (
               <li key={i}>
                 <span>
-                  {role(`0x${log.topics[1].slice(-40)}`)} →{" "}
+                  {role(`0x${log.topics[1].slice(-40)}`)} to{" "}
                   {role(`0x${log.topics[2].slice(-40)}`)}
                 </span>
                 <strong>
@@ -601,7 +600,7 @@ function CapacityCard({
             ))}
             {after.tokens.map((t, i) => (
               <div key={i}>
-                <dt>T{i} maker → Aqua allowance</dt>
+                <dt>T{i} maker allowance to Aqua</dt>
                 <dd>{t.allowance}</dd>
               </div>
             ))}
