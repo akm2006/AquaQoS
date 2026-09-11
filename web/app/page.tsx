@@ -17,7 +17,7 @@ import {
 import { num } from "./_lib/format";
 import { evidence, routes } from "./_lib/routes";
 
-// The guide's §1 sequence, worded against docs/CAPACITY_GUARD_SPEC.md.
+// The app architecture's §1 sequence, worded against docs/CAPACITY_GUARD_SPEC.md.
 const schedule = [
   {
     label: "Independent Aqua strategies",

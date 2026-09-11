@@ -3,7 +3,7 @@ import { environments, type Environment } from "../_lib/copy";
 type Outcome = "allowed" | "constrained" | "rejected";
 export type StatusKind = Outcome | Environment;
 
-// Meaning is carried by the icon and text; color only reinforces it (DESIGN.md §25).
+// Meaning is carried by the icon and text; color only reinforces it (docs/product/DESIGN_SYSTEM.md §25).
 const badges: Record<StatusKind, { icon: string; label: string }> = {
   allowed: { icon: "✓", label: "Allowed" },
   constrained: { icon: "⚠︎", label: "Constrained" },

@@ -1,8 +1,8 @@
 # AquaQoS handoff
 
-Updated 2026-09-11. Current phase: approved five-route Next.js product refactor. The
+Updated 2026-09-12. Current phase: integrated five-route Next.js product refactor. The
 public-repository cleanup and fresh-clone release rehearsal are complete. Submission packaging
-remains deferred until the product is fully polished.
+remains deferred until the product is fully polished and independently reviewed.
 
 ## Verified state
 
@@ -36,10 +36,13 @@ remains deferred until the product is fully polished.
 - The recorded workspace supports all retained policies, workloads, and 2/4/8-strategy groups.
 - `/live/` executes against a fresh isolated local EVM and checks actual receipts, transfers,
   configuration, replenishment, rejection, and maker exit paths.
-- `/proof/` links protocol evidence. The approved refactor will add the final landing,
-  `/workspace/`, `/live/`, `/proof/`, and curated `/docs/` product routes.
-- Existing browser checks cover 72 comparison selections plus 1440/390/320px layouts. A new
-  independent frontend evidence-path review is required after the refactor.
+- The landing, `/workspace/`, `/live/`, `/proof/`, and curated `/docs/` routes are implemented.
+  The supplied logo remains byte-identical, and the public pages distinguish recorded, live-local,
+  and Sepolia evidence.
+- The integrated browser checks pass 72 comparison selections, all proof/docs evidence links,
+  malformed-evidence recovery, real local fills/rejections/replenishment/exit, and
+  1440/390/320px layouts without console or HTTP errors. Production dependencies report no known
+  vulnerabilities. A separate frontend evidence-path/accessibility review is still required.
 
 ## Supported claim and limits
 
@@ -62,11 +65,9 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 
 ## Next three tasks
 
-1. Complete and browser-verify the five-route Next.js refactor with consistent local, recorded,
-   fork, and Sepolia evidence labels.
-2. Run a separate frontend evidence-path/accessibility review and resolve its findings.
-3. Re-run protocol, evidence, benchmark, web, link, secret, and fresh-checkout release gates;
-   then prepare the owner-approved public `v0.1.0` prerelease.
+1. Run a separate frontend evidence-path/accessibility review and resolve its findings.
+2. Re-run protocol, evidence, benchmark, web, link, secret, and fresh-checkout release gates.
+3. Prepare the owner-approved public `v0.1.0` prerelease only after product polish is accepted.
 
 Historical milestone detail is retained in
 [STATUS_HISTORY.md](archive/development/STATUS_HISTORY.md).

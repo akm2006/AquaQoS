@@ -4,6 +4,7 @@ export const routes = {
   workspace: "/workspace/",
   live: "/live/",
   proof: "/proof/",
+  docs: "/docs/",
 } as const;
 
 export const primaryNav = [
@@ -11,6 +12,7 @@ export const primaryNav = [
   { href: routes.workspace, label: "Workspace" },
   { href: routes.live, label: "Live" },
   { href: routes.proof, label: "Proof" },
+  { href: routes.docs, label: "Docs" },
 ] as const;
 
 // Files copied into public/evidence/ by scripts/prepare-evidence.mjs.
@@ -20,6 +22,8 @@ export type EvidenceDocument =
   | "BENCHMARK_RESULTS"
   | "BENCHMARK_METHODOLOGY"
   | "SECURITY_REVIEW_V0"
+  | "SEPOLIA_DEPLOYMENT"
+  | "THREAT_MODEL"
   | "THIRD_PARTY"
   | "AI_PROVENANCE"
   | "DEMO";
@@ -32,6 +36,8 @@ export const evidence = {
 
 export const external = {
   aqua: "https://1inch.com/aqua",
+  github: "https://github.com/akm2006/AquaQoS",
+  routerSource: "https://github.com/akm2006/AquaQoS/blob/main/src/AquaQoSRouter.sol",
 } as const;
 
 export const brandLogo = "/brand/AquaQoS.svg";

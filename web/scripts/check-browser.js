@@ -205,6 +205,32 @@ async function verifyWorkspace(page) {
     path: "output/playwright/next-proof-desktop.png",
     fullPage: true,
   });
+  await page.setViewportSize({ width: 320, height: 1000 });
+  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await page
+    .getByRole("heading", { name: "How AquaQoS protects shared capacity." })
+    .waitFor();
+  assert(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= innerWidth,
+    ),
+    "docs mobile overflow",
+  );
+  for (const link of await page.locator('main a[href^="/evidence/"]').all()) {
+    const response = await page.request.get(
+      origin + (await link.getAttribute("href")),
+    );
+    assert(response.ok(), "docs evidence download must exist");
+  }
+  await page.screenshot({
+    path: "output/playwright/next-docs-mobile.png",
+    fullPage: true,
+  });
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.screenshot({
+    path: "output/playwright/next-docs-desktop.png",
+    fullPage: true,
+  });
   await page.route("**/evidence/report.json", (route) =>
     route.fulfill({
       status: 200,
@@ -230,5 +256,5 @@ async function verifyWorkspace(page) {
     .getByRole("button", { name: "Next transaction", exact: true })
     .waitFor();
   assert(errors.length === 0, `browser exceptions: ${errors.join("; ")}`);
-  return `Passed ${selections} policy/workload selections, recorded fill/reject/push assertions, 3 widths, evidence links and malformed-data recovery.`;
+  return `Passed ${selections} policy/workload selections, recorded fill/reject/push assertions, 3 widths, proof/docs evidence links and malformed-data recovery.`;
 }

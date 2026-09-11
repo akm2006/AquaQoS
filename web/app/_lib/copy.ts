@@ -1,7 +1,7 @@
 import { num } from "./format";
 
 // Reviewed UI copy only. Every claim must trace to docs/STATUS.md, a passing test or a
-// retained report; see docs/APP_REFACTOR_GUIDE.md §10.
+// retained report; see docs/product/APP_ARCHITECTURE.md §10.
 
 export const siteDescription =
   "Explore protected-capacity scheduling for shared 1inch Aqua inventory. Compare recorded transactions and verify every outcome.";

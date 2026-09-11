@@ -1,7 +1,7 @@
 import { num } from "../_lib/format";
 
 // Guaranteed vs burst is carried by structure (solid vs outlined) and text, never by
-// color alone (DESIGN.md §14). The unfilled remainder is reserved for sibling strategies.
+// color alone (docs/product/DESIGN_SYSTEM.md §14). The unfilled remainder is reserved for sibling strategies.
 export function CapacityBar({
   label,
   backing,

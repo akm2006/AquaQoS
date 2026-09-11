@@ -11,6 +11,14 @@ exact-match Sourcify verifications; no human execution is inferred.
 
 This is an AI-assisted project, not a claim of unaided human authorship.
 
+2026-09-12 app integration: Codex retained the attributed UI scaffold commit, reconciled it
+with the newer protocol proof, Sepolia, license and release state on `main`, and added the
+previously deferred static `/docs/` route without a new dependency. Three refactor-branch
+benchmark/doc rerun commits were not merged because `main` already retained newer evidence and
+stronger historical source-authentication checks. Codex reran the protocol, model, benchmark,
+evidence, dependency, production-build and browser gates; browser execution included actual
+isolated local-EVM receipts. No human test execution or independent approval is inferred.
+
 2026-09-11 app scaffold: a parallel UI pass implemented the basic structure from the app
 architecture guide and deferred `/docs/` to the integration pass. Claude Code (Claude Opus 5)
 created the `web/app` route scaffold, shared component/copy/route modules, favicon derivative

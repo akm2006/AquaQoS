@@ -1,6 +1,6 @@
 # AquaQoS Next.js app refactor guide
 
-**Status:** Approved implementation contract
+**Status:** Implemented and integration-verified 2026-09-12; independent frontend review pending
 **Date:** 2026-09-10
 **Applies to:** `web/` Next.js App Router application
 **Design authority:** [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)

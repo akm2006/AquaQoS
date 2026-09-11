@@ -3,7 +3,7 @@ import Link from "next/link";
 import { BrandLogo } from "./_components/BrandLogo";
 import { ButtonLink } from "./_components/Button";
 import { siteDescription } from "./_lib/copy";
-import { primaryNav, routes } from "./_lib/routes";
+import { external, primaryNav, routes } from "./_lib/routes";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -50,9 +50,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             Powered by Aqua — © Degensoft Ltd 2025 · Powered by SwapVM — © Degensoft Ltd 2025
           </span>
           <span>Experimental v0 · Public Sepolia proof · No external audit</span>
-          <Link href={routes.proof} prefetch={false}>
-            Scope & verification
-          </Link>
+          <span className="footer-links">
+            <Link href={routes.docs} prefetch={false}>Documentation</Link>
+            <Link href={routes.proof} prefetch={false}>Scope & verification</Link>
+            <a href={external.github}>GitHub</a>
+          </span>
         </footer>
       </body>
     </html>
