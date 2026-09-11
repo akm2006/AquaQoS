@@ -1,8 +1,8 @@
 # AquaQoS handoff
 
-Updated 2026-09-11. Current phase: public-repository cleanup, followed by the approved
-five-route Next.js product refactor. Submission packaging remains deferred until the product
-and full release rehearsal are complete.
+Updated 2026-09-11. Current phase: approved five-route Next.js product refactor. The
+public-repository cleanup and fresh-clone release rehearsal are complete. Submission packaging
+remains deferred until the product is fully polished.
 
 ## Verified state
 
@@ -26,6 +26,9 @@ and full release rehearsal are complete.
   and withdrawal.
 - Review: a bounded independent internal protocol review found no demonstrated v0-scope
   defect or Sepolia blocker. This is not an external audit or production certification.
+- Public-release rehearsal: clean commit `8710918` installed with frozen dependencies, passed
+  the complete protocol/evidence gates and production web build, and remained Git-clean. The
+  staged release diff also passed Gitleaks 8.30.1 with zero findings.
 
 ## Product state
 

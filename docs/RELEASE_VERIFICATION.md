@@ -78,6 +78,34 @@ runtime, receipt, rollback, transfer, balance and allowance checks. See
 See [FORK_PROOF.md](FORK_PROOF.md) for the separate authenticated DAI/WETH fork proof.
 Submission work remains deferred until product polish is complete.
 
+## Public-repository rehearsal
+
+Commit `8710918f9ba423f5196487d5d76840d4b17e5236` was cloned into a new directory and
+installed from the frozen root and web lockfiles with pnpm 11.10.0 and `--ignore-scripts`.
+This exact normal install required the network because the existing local cache lacked one
+pinned Aqua tarball; it completed without changing tracked files.
+
+The clone then passed:
+
+- contract compilation and all 30 Solidity tests, including three 256-run fuzz properties;
+- 327,168 bounded capacity-model cases;
+- all 72 retained benchmark fixtures and 24 checker tests covering 27 negative assertions;
+- the rejection replay plus 25 deliberately invalid report/source cases;
+- both release-evidence reports plus seven corruptions per report;
+- bootstrap link/source/skill checks;
+- Next.js type-check and production build; and
+- a final clean Git-status check after the read-only release gates.
+
+The separate 239-transaction stateful generator also passed all three strategy-count seeds
+and gas scenarios. It intentionally regenerated `benchmarks/raw/transactions-v1.json`, so it
+is retained as an evidence-generation command rather than a clean-checkout CI gate.
+
+Before the commit, Gitleaks 8.30.1 scanned the exact staged content (about 61 KB) with zero
+findings. A reachable-history scan reported 140 `generic-api-key` candidates; inspection found
+that every candidate was a JSON field named `token` containing a public 20-byte EVM contract
+address in retained deployment evidence. No `.env` file is tracked, `.env.sepolia` remains
+ignored, and the removed workspace ZIP is not part of Git history.
+
 ## Committed proof replay
 
 Source `de8c60932c0366962c464e176c855743cf83f5a8` was cloned again into
