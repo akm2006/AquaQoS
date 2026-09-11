@@ -1,6 +1,6 @@
 {
   "kind": "local-a-b-c-benchmark-v2",
-  "sourceCommit": "b0d1d3e7bcb17dd551e458d1998dc84238db860c",
+  "sourceCommit": "58ae95730431e39522937cc26e9299eaee15c34c",
   "dirty": false,
   "node": "v22.16.0",
   "pnpm": "11.10.0",
@@ -74,7 +74,7 @@
     "benchmarks/run-a-b-c.mjs": "d576757b17dc89e08a141a383c1de1a57a592e4564c0f9dfdb5b3c4118164102",
     "scripts/check-benchmark.mjs": "791327d51bd7a3b7c31b726b297e919dd811334c6fa012154a3b39e48b3e4037",
     "sources.lock.json": "1f389b853521db63c4a1ae67700d22cd826936e52d5638cfcd1c248febd0322a",
-    "package.json": "5d71c9f1ac37f7c72a60df9d920037c01dc4b6f459110ac64dc22fd28f127e3d",
+    "package.json": "a23f9c3e2e9685c3a776e7439a2bed8f9380dbe608b604610db4d6900098dfe6",
     "pnpm-lock.yaml": "9d843d42fd55c8d388f8e677402979fd23c70c13e486b74b0fa5b562d93fb3f1",
     "docs/BENCHMARK_METHODOLOGY.md": "e61c5e220f3313b46f7334bdff448bbacf6fc2eb6b87c48c94c0ff25bbf74fe9"
   },
