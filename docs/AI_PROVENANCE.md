@@ -18,6 +18,12 @@ reviewed proof-page text and CAPACITY_GUARD_SPEC wording; the landing capacity b
 labelled worked example, not measured data. No independent review or human test execution
 is inferred.
 
+2026-09-11 evidence re-run: owner approved re-running the pinned benchmark after 17a6b99's
+`package.json` change blocked the web build. Claude Code re-ran `run-a-b-c.mjs` from clean
+58ae957 and `replay-rejections.mjs` from clean 9fe8aaf on checksum-verified Node 22.16.0.
+Only source-identity fields changed; `check-benchmark` (72 fixtures, 22 tests) and the
+rejection self-test (19 corruptions) passed. No independent review is inferred.
+
 2026-09-09 product direction: owner requested completing product polish before submission
 and explicitly selected Next.js for the frontend. Codex implemented `web/`, the local
 launcher migration, evidence export and browser checks. Earlier HTML replay and root

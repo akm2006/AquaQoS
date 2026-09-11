@@ -26,9 +26,10 @@ rules and frontend acceptance gates. Refactor scaffold (branch `refactor`, 2026-
 `/workspace/` (recorded explorer moved unchanged), `/live/` (server wrapper plus loading/error),
 `/proof/`, shared `_components/` and `_lib/`, favicon derivative and the byte-identical logo
 master in `web/public/brand/`. `/docs/` is deferred while the owner chooses a docs framework.
-`tsc --noEmit` and `next build` pass. `pnpm build` is blocked before Next runs: root
-`package.json` changed in 17a6b99 after the benchmark report pinned its hash at b0d1d3e, so
-`check-benchmark.mjs` fails on clean HEAD too. Playwright suites were not run here.
+`tsc --noEmit` and full `pnpm build` pass. The build had been blocked because 17a6b99 changed
+root `package.json` after the benchmark report pinned its hash; the A/B/C report (source
+58ae957) and linked rejection replay (source 9fe8aaf) were re-run on Node 22.16.0 with
+unchanged outcomes, receipts and gas. Playwright suites were not run here.
 
 Sep 10 milestone complete: 30 Solidity tests pass, including three 256-run fuzz properties;
 the independent protocol review found no release-blocking defect in the documented v0 scope.

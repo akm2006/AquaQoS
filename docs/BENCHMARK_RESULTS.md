@@ -20,7 +20,9 @@ Check it with `node scripts/check-rejections.mjs --self-test` and commit the new
 Running both generators consecutively without committing the first report correctly
 produces dirty replay provenance, which the checker rejects.
 
-The Sep 10 clean run records source commit `b0d1d3e7bcb17dd551e458d1998dc84238db860c`,
+The Sep 10 clean run was re-run on Sep 11 from source commit
+`58ae95730431e39522937cc26e9299eaee15c34c` after 17a6b99 added Sepolia scripts to
+`package.json`; only `sourceCommit` and that file hash changed. It records
 `dirty=false`, Node 22.16.0, pnpm 11.10.0, Hardhat 3.8.0, ethers 6.13.4,
 solc 0.8.30, Cancun, viaIR, optimizer enabled with 700 runs. Build IDs and runtime
 hashes are retained. There are **72 fresh EVM fixtures**, grouped into twelve policy/count
@@ -138,8 +140,9 @@ each guarded policy/count) reproduced their original after-state. This confirms 
 static, fee-free, maximum-allowance TokenMock integration for these cases; it does not
 measure same-transaction or finite-allowance conservatism.
 
-Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), generated
-from source commit `dd02abcdfba23c2756658f50ebfa1d0a610a0989` with `dirty=false`.
+Replay evidence is [rejections-v1.json](../benchmarks/raw/rejections-v1.json), regenerated
+on Sep 11 from source commit `9fe8aafd2ca8579d89eef4184786e8e46a653be1` with `dirty=false`
+against the re-run comparative report; only its source and input identity fields changed.
 `node scripts/check-rejections.mjs --self-test` passed, rejecting 19 deliberately
 corrupted reports, including receipt hash, encoding, missing/extra/reordered transfers.
 Count 1, broader shuffled-overload cases and universal worst-case gas remain open.
