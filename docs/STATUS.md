@@ -1,6 +1,6 @@
 # AquaQoS handoff
 
-Updated 2026-09-11. Phase: final verification and local-fork proof, per owner direction.
+Updated 2026-09-11. Phase: protocol/testnet proof complete; approved Next.js product refactor next.
 Fresh clone of d8b92fc passes 30 Solidity tests, 239-transaction replay, the capacity model,
 benchmark/rejection checkers, live API checks and eight-strategy lifecycle checks.
 New trace runner passed both local and Ethereum-fork scenarios using authenticated deployed
@@ -13,10 +13,11 @@ exactly, including metadata. No production contract or Solidity test has changed
 After one rejected reviewer-service attempt, a narrower independent internal review completed.
 It found no demonstrated critical/high/medium/low defect or testnet blocker within v0 and
 checked the older authenticated AquaRouter helpers. See SECURITY_REVIEW_SEPOLIA. This closes
-the internal review gate, not external audit or real-value readiness. Sepolia wallet
-0x5103b15D636B315e45C6E580BfC2c1bfEBf69fD2 has 0.113 test ETH; deployment preparation
-uses an ignored local key and authenticated Aqua at the same Sepolia address. No public
-transaction has been sent yet. Submission remains deferred.
+the internal review gate, not external audit or real-value readiness. Clean source `17a6b99`
+deployed router/vault plus labelled demo tokens on Sepolia. All four are exact Sourcify
+creation/runtime matches. Twenty-two public transactions prove guarded rollback, protected
+fills, Aqua replenishment and both transfer directions; `pnpm check:sepolia` re-queries and
+passes code, receipts, logs, balances and allowances. See SEPOLIA_DEPLOYMENT. Submission remains deferred.
 
 The owner-approved `DESIGN.md` now locks the supplied `AquaQoS.svg` as the final logo and
 defines the blue-led marketing / calm application split. `docs/APP_REFACTOR_GUIDE.md` records
@@ -90,7 +91,7 @@ packaging, video, paper and dashboard work are on hold until product polish is c
   Raw schema v2 replaces historical v1 numbers at the same path. No protocol code changed.
 - Works: local Git initialized; requirements, protocol source map, candidate pins, phase gates,
   three domain skills and three read-only reviewer roles written. GitHub remote is configured
-  and currently private; no public deployment exists.
+  and currently private; public Sepolia deployment evidence is retained.
 - Protocol tests: 30 passing, including 256 fuzz runs each in three properties.
   Three reproduce raw Aqua failures, twenty-one exercise v0, two compare guarded
   rejections with reference settlement and four cover fee/callback boundaries.
@@ -118,10 +119,11 @@ packaging, video, paper and dashboard work are on hold until product polish is c
   case, matching A; C50 fills 9,000. This is policy/depth evidence, not a general
   efficiency improvement. Clean-source v2 evidence and corrected gas tables are in
   BENCHMARK_RESULTS; source/lock/method/checker hashes match.
-- Deployment: local-fork trial passed at Ethereum block 25,948,160. Uses authenticated
-  official AquaRouter at 0x499943e74fb0ce105688beee8ef2abec5d936d31; custom contracts are
-  deployed only locally. Clean-source replay and retained-evidence checks pass; no public
-  deployment. See deployments/ethereum-fork/report.json and FORK_PROOF.
+- Deployment: public Sepolia proof passed from clean source `17a6b99`: 22 receipts, four
+  exact-match custom deployments and live rechecks. The local-fork trial also passed at
+  Ethereum block 25,948,160 using authenticated official AquaRouter at
+  0x499943e74fb0ce105688beee8ef2abec5d936d31. See deployments/sepolia/report.json,
+  SEPOLIA_DEPLOYMENT and FORK_PROOF.
 - Blockers: no protocol-work blocker. Sandbox benchmark attempts hit the compiler-cache
   lock; approved host-context replay passed. Rotate the exposed Context7 key (M7);
   eligibility/provenance and publication actions remain in
@@ -167,12 +169,11 @@ packaging, video, paper and dashboard work are on hold until product polish is c
 
 ## Next three tasks
 
-1. Commit and dry-check the Sepolia deployment runner, then deploy the authenticated
-   AquaQoS router/vault plus labelled demo tokens and retain public receipts/source proofs.
-2. Resume the approved five-route Next.js refactor and expose fork/testnet evidence without
+1. Resume the approved five-route Next.js refactor and expose fork/testnet evidence without
    representing local receipts as public-chain transactions.
-3. After review/product gates, choose the practical testnet target and prepare deployment
-   for the owner's wallet/funding workflow. Submission remains deferred until polish.
+2. Complete an independent frontend evidence-path review after the refactor and resolve findings.
+3. Re-run full protocol, benchmark, browser and clean-checkout release gates against the
+   polished product. Submission remains deferred until polish.
 
 Historical Sep 8 continuation (superseded by the 52-candidate report above):
 standalone rejection replay and checker recreated all 30

@@ -18,17 +18,17 @@ path load-bearing.
 
 ## Current state
 
-This is a local Solidity prototype with reproducible transaction receipts, state checks,
-benchmarks and a Next.js capacity workspace. The supported domain is deliberately
+This is a Solidity prototype with reproducible transaction receipts, state checks,
+benchmarks, a public Sepolia proof and a Next.js capacity workspace. The supported domain is deliberately
 small: one immutable token pair, up to eight fee-free XYC strategies, standard ERC-20
 behavior and pinned Aqua/SwapVM code. It does not claim general solvency, profitability,
 hostile-token coverage or an external audit.
 
-The [local-fork proof](docs/FORK_PROOF.md) also exercises the authenticated Ethereum
+The [Sepolia proof](docs/SEPOLIA_DEPLOYMENT.md) records exact-match verified contracts and
+22 public transactions covering protected rejections, successful fills, replenishment and
+both transfer directions. The [local-fork proof](docs/FORK_PROOF.md) separately exercises the authenticated Ethereum
 Aqua deployment with DAI/WETH, retaining deployment code, receipts and execution traces.
-These transactions run on a local copy of Ethereum, not a public testnet. See
-[release verification](docs/RELEASE_VERIFICATION.md) for passing checks and the remaining
-additional independent-review gate.
+See [release verification](docs/RELEASE_VERIFICATION.md) for passing checks and accepted limits.
 
 ## Reproduce it
 
@@ -78,7 +78,7 @@ The frontend has its own lockfile; the protocol pins and benchmark hashes are un
 
 - `contracts/`, `test/`: protocol implementation and Solidity tests.
 - `scripts/`, `benchmarks/`, `benchmarks/raw/`: reproducible checks and retained evidence.
-- `deployments/`: local/fork runtime identities, receipts, source authentication and traces.
+- `deployments/`: local, fork and Sepolia runtime identities, receipts and source authentication.
 - `web/`: Next.js App Router workspace, evidence page and browser regression checks.
 - `docs/`: protocol, benchmark, security, requirements and release documentation.
 - `docs/AI_PROVENANCE.md`, `docs/prompts/`: AI attribution and sanitized planning evidence

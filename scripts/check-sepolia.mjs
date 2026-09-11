@@ -28,6 +28,12 @@ for (const deployed of report.deployments) {
   assert.equal(keccak256(await provider.getCode(deployed.address)), deployed.runtimeHash);
   const receipt = await provider.getTransactionReceipt(deployed.transactionHash);
   assert.ok(receipt && receipt.status === 1 && receipt.contractAddress.toLowerCase() === deployed.address.toLowerCase());
+  const verified = await fetch(`https://sourcify.dev/server/v2/contract/${config.chainId}/${deployed.address}`,
+    { signal: AbortSignal.timeout(30000) });
+  assert.equal(verified.ok, true, `${deployed.name}: Sourcify lookup failed`);
+  const match = await verified.json();
+  assert.equal(match.creationMatch, 'exact_match');
+  assert.equal(match.runtimeMatch, 'exact_match');
 }
 const transfer = new Interface(['event Transfer(address indexed from,address indexed to,uint256 value)']);
 for (const action of report.actions) {
@@ -55,4 +61,4 @@ for (const token of report.final) {
   assert.equal(allowance.toString(), token.vaultAllowance);
 }
 provider.destroy();
-console.log('Sepolia evidence passed: source identity, deployed code, receipts, transfers and final state.');
+console.log('Sepolia evidence passed: source identity, Sourcify matches, deployed code, receipts, transfers and final state.');

@@ -104,7 +104,8 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
   Aqua and custom deployed code. Historical AquaRouter source differences are explicit.
 - [x] Local fork demo uses DAI/WETH balance changes, receipts and detailed traces;
   separate clean-checkout replay succeeds. No public transaction claim is made.
-- [ ] Public transactions or deployment costs require authority; local test balances carry no market-value claim.
+- [x] Owner-authorized Sepolia deployment retains 22 public receipts, exact-match source
+  verification, real demo-token transfers and cost; test ETH/tokens carry no market-value claim.
 
 ## Documentation and submission
 

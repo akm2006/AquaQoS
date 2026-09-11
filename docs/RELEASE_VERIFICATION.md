@@ -1,7 +1,7 @@
 # v0 release verification
 
-Updated 2026-09-11. This record separates completed checks from the still-open
-additional independent review. It is not a production certification.
+Updated 2026-09-11. Internal review and public Sepolia proof are complete. This is not a
+production certification or external audit.
 
 ## Fresh-checkout checks
 
@@ -64,8 +64,19 @@ Correct code at those addresses is a deployment precondition, not something its
 constructor's getter check proves. Fork runtime authentication addresses that precondition
 for the recorded environment; additional review remains necessary for release approval.
 
-See [FORK_PROOF.md](FORK_PROOF.md) for traces, commands and deployment evidence.
-Submission work and testnet deployment remain deferred.
+## Public Sepolia proof
+
+Clean source `17a6b990f98016c71de6ab8210da3864ac9ac318` deployed the unchanged router,
+vault and two explicitly labelled demo tokens on chain `11155111`. Twenty-two public
+transactions cover setup, two guarded rejections, four successful swaps and Aqua
+replenishment. Sourcify reports exact creation/runtime matches for all four custom
+deployments. `pnpm check:sepolia` re-queries Sepolia and Sourcify and passed source,
+runtime, receipt, rollback, transfer, balance and allowance checks. See
+[SEPOLIA_DEPLOYMENT.md](SEPOLIA_DEPLOYMENT.md) and the retained
+[report](../deployments/sepolia/report.json).
+
+See [FORK_PROOF.md](FORK_PROOF.md) for the separate authenticated DAI/WETH fork proof.
+Submission work remains deferred until product polish is complete.
 
 ## Committed proof replay
 

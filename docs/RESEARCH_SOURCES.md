@@ -23,7 +23,8 @@
 - [Sourcify API v2](https://sourcify.dev/server/api-docs/): standard JSON verification,
   creation transaction binding and asynchronous job result schema. Source submission publicly
   archives code under Sourcify's stated display license; only already-public repository source
-  and retained upstream source are submitted.
+  and retained upstream source are submitted. All four Sepolia deployments now return exact
+  creation/runtime matches from `/v2/contract/{chainId}/{address}`.
 
 Bootstrap entries checked **2026-09-05**; pinned contract source was reinspected
 on **2026-09-06** for reproduction and guard design. Event pages were not all
