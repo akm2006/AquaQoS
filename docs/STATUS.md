@@ -55,7 +55,8 @@ deferred until the owner accepts the product.
   The Sepolia checker now falls back to a second public endpoint when the historical default
   RPC omits retained receipts.
 - Vercel is linked to `github / akm2006 / AquaQoS` with `main` as its production branch.
-  The next push is the first post-link automatic-deployment test.
+  Commit `b9ed57f` automatically deployed as production `dpl_KASUV7oKwAL6i9as2ty4UfEZbSti`,
+  with its alias at `https://aquaqos.vercel.app`; its GitHub CI run also passed.
 
 ## Supported claim and limits
 
