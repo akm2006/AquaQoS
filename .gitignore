@@ -30,6 +30,8 @@ __pycache__/
 
 # Local research/tool scratch; curated evidence belongs in docs or benchmarks
 .research/
+# Design reference only (v0 template, no license file); see docs/THIRD_PARTY.md
+/brutalist-ai-saa-s-landing-page/
 .tmp/
 .codex/.tmp/
 .DS_Store

@@ -32,3 +32,16 @@ requires the owner's approval. This records source terms, not a legal clearance 
 At dependency installation retain package notices and lockfiles. Mark copied template code
 with original SHA/path and modification date. The template is reference-only at bootstrap.
 Do not copy demo metrics, economic claims or whitepaper diagrams as our measured results.
+
+2026-09-12 design reference: `brutalist-ai-saa-s-landing-page/` is an owner-supplied v0 export
+("v0-design-brutalist-ai-saa-s") for a fictional AI product. It is kept on disk as a visual
+reference only and is git-ignored. Its layout language — dot-grid ground, 2px frames, section
+rules, bento grid, tier cards and marquee — informs the AquaQoS product surface (D025). No file,
+image, component, copy line or metric was copied into `web/`: the sections were reimplemented
+against AquaQoS evidence, its demo numbers and "SYS.INT" copy are absent, and its orange is
+replaced by the logo's matte light blue. Geist Mono and Geist Pixel are loaded from the installed
+`next/font/google`, not from the template.
+
+**The export ships no license file, so its reuse rights are unresolved.** Confirm them before any
+public publication of the product surface. This is a release gate alongside the component
+license mapping above, and it is not a legal clearance opinion.

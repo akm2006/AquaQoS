@@ -1,5 +1,36 @@
 # Decisions
 
+## 2026-09-12 — D025: Brutalist product surface on cream with the logo's matte light blue
+
+Decision: rebuild the product surfaces (`/`, `/workspace/`, `/live/`, `/proof/` and the shared
+404) on the layout language of the owner-supplied brutalist v0 template — cream ground with a
+dot grid, 2px ink frames, `// SECTION ─── 00N` rules, mono uppercase labels and Geist Pixel
+display type — replacing the template's orange with the logo's matte light blue. Per owner
+direction there is one cream theme and no dark toggle. Extend Tailwind CSS 4 to the `(site)`
+layer as well, moving the existing rules into `@layer base` (elements) and `@layer components`
+(classes) so utilities beat legacy classes and legacy classes beat preflight. No runtime
+dependency is added: Geist Mono and Geist Pixel already ship in the installed `next/font/google`,
+framer-motion becomes CSS keyframes plus one IntersectionObserver, and lucide becomes three
+inline SVGs.
+
+Alternatives: keep the blue-led marketing style of `DESIGN.md` §7–9; port the template wholesale
+with shadcn, framer-motion and lucide; or restyle only the landing and leave the app routes.
+Evidence: the template ships no license file and stays untracked and git-ignored, with nothing
+copied from it (see THIRD_PARTY.md); Tailwind 4.3.3 was already installed for `/docs/` (D024);
+measured contrast on cream is ink 17.5:1, muted ink 5.8:1, `--color-aq-deep` 5.06:1, ink on sky
+15.5:1, and the state colors 6.2:1 / 6.17:1 / 5.63:1; both browser suites pass unchanged.
+Reason: the owner asked for the template's design carrying AquaQoS content in the logo's colors.
+
+Consequences: for product surfaces this supersedes `DESIGN.md` §7–9, §11, §12 and §20; the logo,
+accessibility, copy and guaranteed/burst rules are unchanged, and `/docs/` keeps its dark theme.
+The planned green-700/amber-700 states were darkened to green-800/amber-800 to clear AA on cream.
+Uppercase is applied through CSS to labels, buttons, nav and table headers only, never to data
+the browser checks read, and every pseudo-element uses empty content so accessible names are
+unchanged. `CapacityBar`, `Metric`, `SectionHeading` and `TransactionTimeline` are deleted.
+Landing and proof numbers are derived at build time in `_lib/landing-evidence.ts`, which
+validates the checked report and manifest and fails the build if a published gas claim drifts
+from the report's medians. Template reuse rights remain unresolved and stay a publication gate.
+
 ## 2026-09-11 — D024: Fumadocs for curated `/docs/`, isolated from product styles
 
 Decision: build `/docs/` with Fumadocs (UI/Core 16.15.8, MDX 15.4.0) and Tailwind CSS 4, as

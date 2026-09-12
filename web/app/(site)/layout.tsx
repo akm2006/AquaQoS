@@ -1,9 +1,8 @@
-import type { Metadata } from "next";
-import Link from "next/link";
-import { BrandLogo } from "./_components/BrandLogo";
-import { ButtonLink } from "./_components/Button";
+import type { Metadata, Viewport } from "next";
+import { Footer } from "./_components/Footer";
+import { Navbar } from "./_components/Navbar";
 import { siteDescription } from "./_lib/copy";
-import { primaryNav, routes } from "./_lib/routes";
+import { fontVariables } from "./_lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -14,46 +13,19 @@ export const metadata: Metadata = {
   description: siteDescription,
 };
 
+// Matches --color-cream in globals.css.
+export const viewport: Viewport = { themeColor: "#f1efe9" };
+
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={fontVariables}>
       <body>
         <a href="#main" className="skip">
           Skip to content
         </a>
-        <header className="topbar">
-          <div className="nav-wrap">
-            <Link
-              href={routes.home}
-              prefetch={false}
-              className="brand"
-              aria-label="AquaQoS home"
-            >
-              <BrandLogo decorative />
-              AquaQoS
-            </Link>
-            <nav aria-label="Main navigation">
-              {primaryNav.map(({ href, label }) => (
-                <Link key={href} href={href} prefetch={false}>
-                  {label}
-                </Link>
-              ))}
-            </nav>
-            <ButtonLink href={routes.live} variant="primary">
-              Run live local demo
-            </ButtonLink>
-          </div>
-        </header>
+        <Navbar />
         {children}
-        <footer>
-          <span>
-            Powered by <strong>1inch Aqua + SwapVM</strong>
-          </span>
-          <span>Experimental v0 · No external audit · No mainnet deployment</span>
-          <Link href={routes.proof} prefetch={false}>
-            Scope & verification
-          </Link>
-        </footer>
+        <Footer />
       </body>
     </html>
   );

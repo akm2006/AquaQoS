@@ -38,8 +38,58 @@ export const workspaceEnvironment =
 export const liveEnvironment =
   "Fresh isolated EVM · Test maker and taker accounts · Mock tokens with no market value";
 
+// The guide's §1 sequence, worded against docs/CAPACITY_GUARD_SPEC.md.
+export const schedule = [
+  {
+    label: "Independent Aqua strategies",
+    detail: "Each strategy keeps its own virtual balance in Aqua.",
+  },
+  {
+    label: "One shared real inventory",
+    detail: "Every strategy settles against the same vault's ERC-20 balance.",
+  },
+  {
+    label: "CAPACITY_GUARD schedules access",
+    detail:
+      "A custom SwapVM instruction admits or rejects each fill before settlement.",
+  },
+  {
+    label: "Guaranteed capacity + controlled burst",
+    detail: "Sibling entitlements stay covered; inventory above them can burst.",
+  },
+  {
+    label: "Actual transfer receipt",
+    detail: "The receipt shows which real balances changed.",
+  },
+];
+
 // docs/BENCHMARK_RESULTS.md: eight strategies, low-contention successful swaps, median gas.
 export const measuredGas = { strategies: 8, guarded: 210_099, raw: 113_715 };
+
+// docs/BENCHMARK_RESULTS.md, same eight strategies under concentrated demand: rejecting
+// early costs more than letting settlement fail. Both medians are cross-checked at build
+// time in landing-evidence.ts.
+export const measuredRejectionGas = {
+  guard: 146_465,
+  rawSettlementFailure: 126_779,
+};
+
+// README "Current state": the supported domain is one token pair and up to eight strategies.
+export const maxStrategies = 8;
+
+// Pinned identities only, each traceable: package.json (Aqua, SwapVM, Hardhat),
+// hardhat.config.ts (Solidity), docs/CAPACITY_GUARD_SPEC.md (opcode),
+// deployments/sepolia/report.json (network, Sourcify status) and web/package.json (Next).
+export const builtOn = [
+  "1inch Aqua",
+  "SwapVM",
+  "CAPACITY_GUARD 0x05",
+  "Solidity 0.8.30",
+  "Hardhat 3.8.0",
+  "Ethereum Sepolia",
+  "Sourcify exact match",
+  "Next.js 16",
+];
 
 export const limitations = [
   "Smaller guarantees leave more inventory for burst. Higher fill volume at 50% protection is not an equal-protection efficiency claim.",

@@ -91,18 +91,24 @@ web/
     (docs)/                    # separate root layout: Fumadocs + Tailwind (D024)
       docs/[[...slug]]/        # renders curated web/content/docs/*.mdx
       api/search.json/         # static search index
-    _components/
-      BrandLogo.tsx
+    _components/                 # shared primitives, brutalist surface (D025)
+      BrandLogo.tsx              # master on an ink tile; never recolored
       Button.tsx
       StatusBadge.tsx
-      Metric.tsx
-      CapacityBar.tsx
-      TransactionTimeline.tsx
-      ReceiptPanel.tsx
-      SectionHeading.tsx
+      Navbar.tsx / NavLinks.tsx  # NavLinks is client-side for aria-current
+      Footer.tsx
+      SectionLabel.tsx           # decorative "// SECTION ─── 00N" rule
+      FrameCard.tsx              # 2px frame with a file-name header bar
+      KnownLimits.tsx            # shared by the landing and the proof page
+      Reveal.tsx / Scramble.tsx  # client, entrance motion only
+      icons.tsx                  # three inline SVGs, no icon dependency
+      landing/                   # Hero, ProblemSection, MechanismGrid,
+                                 # VerifyTiers, StackMarquee
     _lib/
       copy.ts                  # reviewed UI copy only
+      fonts.ts                 # Geist Mono + Geist Pixel via next/font
       format.ts                # units, addresses and receipt formatting
+      landing-evidence.ts      # server-only; derives landing/proof numbers
       routes.ts                # internal links, no duplicated strings
     evidence.ts                # checked report types and validation
     globals.css                # tokens and global primitives
@@ -252,7 +258,7 @@ The goal is a reliable product, not a showcase of dependencies.
 | `swr` 2.5.1 | Optional | Only if live polling/revalidation is added |
 | chart library | Avoid for now | Existing SVG/HTML charts are smaller and easier to audit |
 | Fumadocs UI/Core 16.15.8, MDX 15.4.0 | Adopted for `/docs/` (D024) | Owner-selected docs framework with static export and search |
-| Tailwind CSS 4.3.3 | Docs only (D024) | Required by Fumadocs UI; loaded only by the `(docs)` root layout |
+| Tailwind CSS 4.3.3 | Docs and product (D024, D025) | Fumadocs UI requires it; the product layer adds it with the existing rules moved into `@layer base`/`components` |
 | shadcn/Framer Motion legacy package | Avoid | Current CSS is established; no migration benefit yet |
 | Three.js/canvas/particle packages | Avoid | They conflict with the infrastructure-grade visual direction |
 

@@ -16,6 +16,10 @@ const source = readFileSync(
 );
 const report = JSON.parse(source);
 writeFileSync(new URL("report.json", output), JSON.stringify(report));
+// Summarise the public deployment so the app can cite it without shipping the full receipts.
+const sepolia = JSON.parse(
+  readFileSync(new URL("../../deployments/sepolia/report.json", import.meta.url)),
+);
 writeFileSync(
   new URL("manifest.json", output),
   JSON.stringify(
@@ -25,6 +29,10 @@ writeFileSync(
       kind: report.kind,
       verification: "check-benchmark.mjs passed before export",
       limitations: report.limitations,
+      sepolia: {
+        chainId: sepolia.chainId,
+        transactions: sepolia.transactions.length,
+      },
     },
     null,
     2,

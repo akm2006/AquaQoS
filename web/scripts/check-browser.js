@@ -6,6 +6,53 @@ async function verifyWorkspace(page) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = await page.evaluate(() => location.origin);
+
+  // Landing: one heading, every entry point resolvable, and no overflow at three widths.
+  await page.goto(origin + "/");
+  assert(
+    (await page.getByRole("heading", { level: 1 }).count()) === 1,
+    "landing has exactly one h1",
+  );
+  await page
+    .getByRole("heading", { name: "Shared liquidity, scheduled.", level: 1 })
+    .waitFor();
+  const landing = page.locator("main");
+  const href = (scope, name) =>
+    scope.getByRole("link", { name, exact: true }).getAttribute("href");
+  assert(
+    (await href(landing, "Run live local demo")) === "/live/",
+    "landing primary call to action targets the live route",
+  );
+  for (const [name, target] of [
+    ["Open the workspace", "/workspace/"],
+    ["Run the live session", "/live/"],
+    ["Read the evidence", "/proof/"],
+  ])
+    assert((await href(landing, name)) === target, `landing tier link ${name}`);
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  for (const [name, target] of [
+    ["Workspace", "/workspace/"],
+    ["Live", "/live/"],
+    ["Proof", "/proof/"],
+    ["Docs", "/docs/"],
+  ])
+    assert((await href(nav, name)) === target, `header nav reaches ${name}`);
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    assert(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `no landing overflow at ${width}`,
+    );
+    await page.screenshot({
+      path: `output/playwright/next-landing-${width}.png`,
+      fullPage: true,
+    });
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+
   await page.goto(origin + "/workspace/");
   await page
     .getByRole("button", { name: "Next transaction", exact: true })
@@ -230,5 +277,5 @@ async function verifyWorkspace(page) {
     .getByRole("button", { name: "Next transaction", exact: true })
     .waitFor();
   assert(errors.length === 0, `browser exceptions: ${errors.join("; ")}`);
-  return `Passed ${selections} policy/workload selections, recorded fill/reject/push assertions, 3 widths, evidence links and malformed-data recovery.`;
+  return `Passed landing structure at 3 widths, ${selections} policy/workload selections, recorded fill/reject/push assertions, 3 widths, evidence links and malformed-data recovery.`;
 }

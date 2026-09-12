@@ -1169,6 +1169,38 @@ Never let animation or styling delay working protocol evidence.
 
 ---
 
+# 28.1 Product Surface (D025)
+
+Owner direction, 2026-09-12. The product routes (`/`, `/workspace/`, `/live/`, `/proof/` and
+the shared 404) use the brutalist layout language of the supplied v0 template, carrying AquaQoS
+content in the logo's colors. For these surfaces this section supersedes §7–9, §11, §12 and §20.
+§10 (logo), §25 (accessibility), §26 (copy) and the guaranteed/burst rules of §14 are unchanged,
+and `/docs/` keeps the dark theme of D024.
+
+| Token | Value | Use |
+| --- | --- | --- |
+| `--color-cream` | `hsl(43 23% 93%)` | page and panel ground, with a `--color-dot` grid |
+| `--color-ink` | `#070707` | text, 2px frames, inverted blocks, the logo tile |
+| `--color-ink-soft` | `#5c5c5c` | secondary text (5.8:1 on cream) |
+| `--color-aq-sky` | `#9FEEFD` | fill only, always behind ink (15.5:1) |
+| `--color-aq-cyan` | `#31D7FD` | square liquidity units, outlined on cream |
+| `--color-aq-deep` | `#0A6E8A` | the only blue used as text or a chart stroke (5.06:1) |
+| states | green-800 / amber-800 / red-700 | allowed / constrained / rejected, always icon + text |
+
+- **Type.** Geist Pixel is display only; Geist Mono is the UI face. The wordmark stays "AquaQoS"
+  inside uppercase layouts.
+- **Geometry.** Radius 0, 2px ink frames, mono uppercase labels.
+- **Blue is a fill, not a tint.** Blue never carries text except `--color-aq-deep`.
+- **Uppercase is CSS only**, applied to labels, buttons, nav and table headers — never to
+  protocol data. Pseudo-elements carry no text content, so accessible names are exactly the
+  visible label.
+- **Motion** is CSS keyframes plus one IntersectionObserver `Reveal`; the logo never pulses, and
+  everything renders static under `prefers-reduced-motion`.
+- **Real values in HTML.** Server-rendered markup always holds the real number; the scramble is
+  decorative and carries the value in parallel screen-reader text.
+
+---
+
 # 29. Things We Explicitly Do Not Do
 
 ## Branding

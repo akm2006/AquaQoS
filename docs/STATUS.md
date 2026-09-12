@@ -33,7 +33,25 @@ horizontal overflow on docs or product pages at 390px or 320px.
 `tsc --noEmit` and full `pnpm build` pass. The build had been blocked because 17a6b99 changed
 root `package.json` after the benchmark report pinned its hash; the A/B/C report (source
 58ae957) and linked rejection replay (source 9fe8aaf) were re-run on Node 22.16.0 with
-unchanged outcomes, receipts and gas. Playwright suites were not run here.
+unchanged outcomes, receipts and gas.
+
+Product surface (branch `refactor`, 2026-09-12, D025): the landing, shared header/footer,
+workspace, live and proof routes were rebuilt on the owner-supplied brutalist v0 template's
+layout language — cream ground with a dot grid, 2px ink frames, mono uppercase labels and Geist
+Pixel display type — with the logo's matte light blue replacing the template's orange. Nothing
+was copied from the template and no runtime dependency was added; Tailwind CSS 4 now also backs
+the product layer, with the existing rules moved into `@layer base`/`components`. Workspace and
+live were restyled through CSS only, with no markup change, so every existing browser-check
+selector still matches. Landing and proof numbers are derived at build time by
+`web/app/(site)/_lib/landing-evidence.ts`, which revalidates the checked report and manifest and
+fails the build if a published gas median drifts from the report. Verification: `tsc --noEmit`,
+`pnpm --dir web build`, `pnpm --dir web audit --prod` (no known vulnerabilities),
+`check-browser.js` (landing structure at three widths, 72 policy/workload selections, evidence
+links, malformed-data recovery) and `check-live-browser.js` (setup, fills, rejection, sibling
+protection, replenishment, export, maker lifecycle, 1440/390/320) all pass, with no horizontal
+overflow at 1440/390/320 on `/`, `/workspace/`, `/live/` or `/proof/`, no console exceptions and
+no page errors under emulated reduced motion. The template folder is git-ignored and its reuse
+rights remain an open publication gate; see THIRD_PARTY.md.
 
 Sep 10 milestone complete: 30 Solidity tests pass, including three 256-run fuzz properties;
 the independent protocol review found no release-blocking defect in the documented v0 scope.

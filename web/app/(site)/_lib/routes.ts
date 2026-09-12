@@ -15,6 +15,9 @@ export const primaryNav = [
   { href: routes.docs, label: "Docs" },
 ] as const;
 
+// The product header links home through the brand; the docs header keeps primaryNav.
+export const productNav = primaryNav.filter(({ href }) => href !== routes.home);
+
 // Files copied into public/evidence/ by scripts/prepare-evidence.mjs.
 export type EvidenceDocument =
   | "PROBLEM_REPRODUCTION"

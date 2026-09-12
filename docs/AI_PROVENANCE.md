@@ -1,5 +1,23 @@
 # AI and work provenance
 
+2026-09-12 product surface: the owner supplied an untracked v0 brutalist landing template and
+asked for its design, in the logo's colors, to carry AquaQoS content across the landing, shared
+header/footer, live and proof routes. Claude Code (Claude Opus 5) planned and implemented D025:
+the Tailwind/layer foundation and cream/ink/matte-blue tokens, new shared primitives (Navbar,
+NavLinks, Footer, SectionLabel, FrameCard, KnownLimits, Reveal, Scramble, inline icons), the
+rebuilt landing and proof pages, and a CSS-only restyle of the workspace and live routes with no
+markup change. It added a landing block to `check-browser.js` and a Sepolia summary to the
+evidence manifest, and deleted the four superseded landing components. No file, image, component,
+copy line or metric was copied from the template, and no runtime dependency was added. Landing
+and proof figures are derived from the checked report and manifest at build time and
+cross-checked against the documented gas medians, so a drifted claim fails the build. Copy reuses
+previously reviewed text; the proof page's out-of-date "no public deployment" sentence was
+corrected to README's wording (public Sepolia proof, no external audit, no mainnet deployment).
+Verification was local and agent-run: typecheck, build, production audit, both browser suites and
+emulated reduced motion. The live suite timed out twice before passing unchanged; no root cause
+was established and no live code or assertion was modified. No independent review or human test
+execution is inferred.
+
 2026-09-11: owner requested final checks before fork evidence, with testnet afterward
 if practical. Codex authored release/trace and upstream-authentication scripts, ran
 clean-checkout checks and documented source drift. Receipts/traces are EVM-generated.
