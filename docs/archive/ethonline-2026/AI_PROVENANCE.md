@@ -5,7 +5,8 @@ logo and README images while changing public entry-point copy and deployment beh
 static `/live/` fallback now labels the localhost execution boundary and links to recorded and
 Sepolia evidence. Codex added repository-root Vercel configuration and a portable build mode;
 CI and normal local builds continue to authenticate historical benchmark sources. No hosted
-deployment, wallet interaction or new protocol claim is inferred from this pass.
+deployment, wallet interaction or new protocol claim is inferred from this pass. CI run
+`34690598304` passed the complete protocol/evidence gate and exact Vercel production build.
 
 2026-09-12 product polish integration: Anik (`ansu555`) supplied the Fumadocs, visual-surface,
 README and SVG work in refactor commits `d9bb690` through `0c3c126`. Codex selectively ported

@@ -32,6 +32,8 @@ until the owner accepts the product.
 - Product integration commit `7566c4b` repeated the frozen offline install, complete protocol,
   model, benchmark, rejection, release-evidence, bootstrap, typecheck and 19-page production
   build gates from a separate clean worktree.
+- Public-deployment commit `cdbee90` passed CI run `34690598304`, including the complete
+  protocol/evidence gate, TypeScript, and the exact portable production build used by Vercel.
 
 ## Product state
 
@@ -78,10 +80,11 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 
 ## Next three tasks
 
-1. Pass the new Vercel-equivalent build and browser flow in CI, then create a preview deployment.
+1. Create a Vercel preview deployment from the repository root.
 2. Verify all five preview routes, response headers, evidence links and mobile layouts before
    promotion to the public production URL.
-3. Obtain owner visual acceptance and confirm the visual-reference boundary before public release.
+3. Obtain owner visual acceptance and confirm the visual-reference boundary before production
+   promotion.
 
 Historical milestone detail is retained in
 [STATUS_HISTORY.md](archive/development/STATUS_HISTORY.md).
