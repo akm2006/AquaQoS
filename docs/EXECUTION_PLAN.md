@@ -20,13 +20,16 @@ Steps 1–7 are complete within the documented v0 scope. Step 8 is active.
 
 ## Active milestone: product surface
 
-The approved five-route Next.js application must provide:
+The public Next.js application must provide:
 
 - `/`: product thesis, architecture, measured result, limitations, and clear calls to action;
 - `/workspace/`: retained A/B/C/C100 comparisons without implying live execution;
-- `/live/`: fresh isolated local-EVM transactions and maker lifecycle controls;
+- `/onchain/`: public Sepolia contracts, source verification and representative receipts;
 - `/proof/`: source, test, receipt, benchmark, and deployment verification;
 - `/docs/`: curated public protocol documentation backed by repository sources.
+
+The contributor-only `/live/` lab retains fresh local-EVM transactions and maker lifecycle
+controls but is not a primary public navigation destination.
 
 The final logo and product system are defined in
 [`product/DESIGN_SYSTEM.md`](product/DESIGN_SYSTEM.md); implementation and browser gates are

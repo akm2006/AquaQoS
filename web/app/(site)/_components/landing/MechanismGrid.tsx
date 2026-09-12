@@ -92,7 +92,7 @@ function GasMetrics() {
           </div>
         ))}
         <p className="caption">
-          Measured · recorded local EVM · {measuredGas.strategies} strategies.
+          Measured · retained benchmark receipts · {measuredGas.strategies} strategies.
           Guard rejection can cost more than failed settlement.
         </p>
       </div>

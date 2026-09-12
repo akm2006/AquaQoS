@@ -42,27 +42,27 @@ const TIERS: Tier[] = [
     ],
   },
   {
-    id: "live",
-    name: "LIVE_LOCAL",
-    kind: "live",
-    path: routes.live,
-    href: routes.live,
-    tag: "RUN LOCALLY",
+    id: "onchain",
+    name: "ONCHAIN",
+    kind: "testnet",
+    path: routes.onchain,
+    href: routes.onchain,
+    tag: "PUBLIC SEPOLIA",
     highlighted: true,
-    description: "Run a fresh isolated chain and trigger the guard yourself.",
-    cta: "Run the live session",
+    description: "Inspect deployed contracts and the transactions that exercise the guard.",
+    cta: "Inspect Sepolia deployment",
     features: [
-      { text: "Fresh isolated local EVM", included: true },
-      { text: "Test maker and taker accounts", included: true },
-      { text: "Real quotes, fills and receipts", included: true },
+      { text: `${num(sepolia.transactions)} public transactions`, included: true },
+      { text: "Protected rejections and settled fills", included: true },
+      { text: "Exact-match custom contracts", included: true },
+      { text: "Production deployment", included: false },
       { text: "Tokens with market value", included: false },
-      { text: "Public chain", included: false },
     ],
   },
   {
     id: "proof",
     name: "PROOF",
-    kind: "testnet",
+    kind: "recorded",
     path: routes.proof,
     href: routes.proof,
     description: "Read the specification, the review and the public deployment.",
@@ -132,8 +132,8 @@ export function VerifyTiers() {
       </Reveal>
       <p className="tier-note">
         <ArrowRight size={12} />
-        Recorded evidence is replayed, live sessions are executed, and the public
-        proof is linked to its transactions.
+        Recorded evidence is replayable, and every public-chain claim links to its
+        Sepolia transaction or verified contract.
       </p>
     </section>
   );

@@ -8,14 +8,9 @@ async function verifyWorkspace(page) {
   const origin = await page.evaluate(() => location.origin);
   const badResponses = [];
   page.on("response", (response) => {
-    const pathname = new URL(response.url()).pathname;
-    const expectedMissingLocalApi =
-      response.status() === 404 &&
-      (pathname === "/api/state" || pathname === "/api/state/");
     if (
       response.url().startsWith(origin) &&
-      response.status() >= 400 &&
-      !expectedMissingLocalApi
+      response.status() >= 400
     )
       badResponses.push(`${response.status()} ${response.url()}`);
   });
@@ -51,8 +46,8 @@ async function verifyWorkspace(page) {
   const href = (scope, name) =>
     scope.getByRole("link", { name, exact: true }).getAttribute("href");
   assert(
-    (await href(landing, "Verify public proof")) === "/proof/",
-    "landing primary call to action targets public proof",
+    (await href(landing, "View onchain proof")) === "/onchain/",
+    "landing primary call to action targets public deployment",
   );
   assert(
     (await href(landing, "Explore the workspace")) === "/workspace/",
@@ -60,14 +55,14 @@ async function verifyWorkspace(page) {
   );
   for (const [name, target] of [
     ["Open the workspace", "/workspace/"],
-    ["Run the live session", "/live/"],
+    ["Inspect Sepolia deployment", "/onchain/"],
     ["Read the evidence", "/proof/"],
   ])
     assert((await href(landing, name)) === target, `landing tier link ${name}`);
   const nav = page.getByRole("navigation", { name: "Main navigation" });
   for (const [name, target] of [
     ["Workspace", "/workspace/"],
-    ["Live", "/live/"],
+    ["Onchain", "/onchain/"],
     ["Proof", "/proof/"],
     ["Docs", "/docs/"],
   ])
@@ -88,22 +83,21 @@ async function verifyWorkspace(page) {
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
 
-  await page.goto(origin + "/live/");
-  await page.getByRole("heading", { name: "Put capacity to work." }).waitFor();
-  await page
-    .getByText("The public site shows verified evidence", { exact: false })
-    .waitFor();
+  await page.goto(origin + "/onchain/");
+  await page.getByRole("heading", { name: "Proof onchain." }).waitFor();
   assert(
-    (await href(page.locator("main"), "Verify public Sepolia proof")) ===
-      "/proof/",
-    "public live fallback reaches Sepolia proof",
+    (await page.getByRole("link", { name: "Open on Etherscan" }).count()) === 4,
+    "all custom contracts link to Etherscan",
   );
   assert(
-    (await href(page.locator("main"), "Explore recorded transactions")) ===
-      "/workspace/",
-    "public live fallback reaches recorded evidence",
+    (await page.getByRole("link", { name: "Verify source on Sourcify" }).count()) === 4,
+    "all custom contracts link to exact-match source",
   );
-  await auditBasics("public live fallback");
+  assert(
+    (await page.locator(".onchain-action").count()) === 7,
+    "representative Sepolia receipt sequence",
+  );
+  await auditBasics("onchain proof");
 
   await page.goto(origin + "/workspace/");
   await page
@@ -375,5 +369,5 @@ async function verifyWorkspace(page) {
     badResponses.length === 0,
     `unexpected browser responses: ${badResponses.join("; ")}`,
   );
-  return `Passed landing structure at 3 widths, ${selections} policy/workload selections, recorded fill/reject/push assertions, responsive proof/docs, static docs navigation/search, evidence links and malformed-data recovery.`;
+  return `Passed landing structure at 3 widths, Sepolia contracts/receipts, ${selections} policy/workload selections, recorded fill/reject/push assertions, responsive proof/docs, static docs navigation/search, evidence links and malformed-data recovery.`;
 }

@@ -6,11 +6,26 @@ import { fontVariables } from "./_lib/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://aquaqos.vercel.app"),
   title: {
     default: "AquaQoS · Shared liquidity, scheduled",
     template: "%s · AquaQoS",
   },
   description: siteDescription,
+  openGraph: {
+    title: "AquaQoS · Shared liquidity, scheduled",
+    description: siteDescription,
+    url: "/",
+    siteName: "AquaQoS",
+    type: "website",
+    images: [{ url: "/brand/AquaQoS.svg", alt: "AquaQoS" }],
+  },
+  twitter: {
+    card: "summary",
+    title: "AquaQoS · Shared liquidity, scheduled",
+    description: siteDescription,
+    images: ["/brand/AquaQoS.svg"],
+  },
 };
 
 // Matches --color-cream in globals.css.

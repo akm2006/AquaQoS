@@ -9,7 +9,8 @@
 **Implementation update (2026-09-12):** the app now uses `(site)` and `(docs)` route groups
 with separate root layouts. This is the one justified exception to the flat structure below:
 the Fumadocs/Tailwind documentation surface stays isolated from the interactive product shell.
-The five public routes and their evidence boundaries are unchanged.
+The public navigation now prioritizes Sepolia evidence. The local execution lab remains an
+unpromoted contributor tool linked from the reproduction guide.
 
 This guide turns the design direction into a focused, evidence-first product. It is an
 implementation contract, not a request to add every possible page, package or animation.
@@ -50,15 +51,18 @@ deployment or a market result.
 
 ## 2. Final route map
 
-Ship five public product routes:
+Ship five primary public product routes:
 
 | Route | Job | Primary action |
 | --- | --- | --- |
-| `/` | Landing and orientation | Run the live demo |
+| `/` | Landing and orientation | View onchain proof |
 | `/workspace/` | Recorded comparison explorer | Step through a scenario |
-| `/live/` | Interactive execution | Configure, execute and inspect |
+| `/onchain/` | Public deployment evidence | Inspect contracts and receipts |
 | `/proof/` | Independent verification | Open receipts and commands |
 | `/docs/` | Curated public documentation | Understand the protocol |
+
+`/live/` is retained as a contributor-only local execution lab. It is linked from
+`/docs/reproduce/`, not from the primary navigation or landing page.
 
 System routes are not product pages:
 
@@ -140,12 +144,12 @@ Order:
 5. Mechanism: guarantees protect sibling capacity; unused capacity can burst.
 6. Evidence strip with links, not unsupported superlatives.
 7. Measured trade-off: protection has gas cost and bounded scope.
-8. Live-demo CTA.
+8. Public onchain-proof CTA.
 9. Limitations and source links.
 
 Hero copy must not claim solvency, profitability, safety or production deployment. The public
 primary CTA opens verified Sepolia proof; the local execution lab remains available through
-the `Live` route without being presented as a remotely hosted chain.
+the reproduction guide and is never presented as a remotely hosted chain.
 
 ### 4.2 Recorded workspace `/workspace/`
 
@@ -158,7 +162,14 @@ Keep the main comparison visible and move hashes, raw JSON, allowances and detai
 behind disclosure panels. The first viewport should answer: what was requested, what was
 allowed/rejected, and what real balance changed?
 
-### 4.3 Live execution `/live/`
+### 4.3 Public deployment `/onchain/`
+
+Lead with chain identity, deployed router/vault addresses and exact source matches. Then show
+the representative protected rejection, admitted fills, replenishment and reverse-direction
+receipts. Every item links directly to Etherscan or Sourcify and is derived from the checked
+deployment report at build time.
+
+### 4.4 Contributor execution lab `/live/`
 
 Keep the existing local API contract. Present it as a five-step flow:
 
@@ -173,7 +184,7 @@ On a static public deployment, absence of the localhost-only API is an expected 
 than an application error: link to public Sepolia proof and recorded transactions, then show
 the exact local launch commands.
 
-### 4.4 Proof `/proof/`
+### 4.5 Proof `/proof/`
 
 This is a verification surface, not another landing page. It should answer in this order:
 
@@ -189,7 +200,7 @@ Use evidence badges such as `SOURCE-PINNED`, `MEASURED`, `LOCAL RECEIPT` and `SC
 Do not display placeholder addresses or hardcode a test count in visual copy when the value
 can be read from the checked manifest.
 
-### 4.5 Curated docs `/docs/`
+### 4.6 Curated docs `/docs/`
 
 Build one static, presentable documentation page with a sticky table of contents and
 anchor sections. Write a concise narrative from the repository’s validated material; do

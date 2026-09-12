@@ -4,5 +4,5 @@ import LiveSession from "./LiveSession";
 export const metadata: Metadata = { title: "Live local execution" };
 
 export default function LivePage() {
-  return <LiveSession />;
+  return <LiveSession publicSurface={process.env.VERCEL === "1"} />;
 }

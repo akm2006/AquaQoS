@@ -374,7 +374,7 @@ export default function Workspace() {
       </div>
       <p className="source-line">
         Source <code>{report.sourceCommit}</code> · Raw mock-token units ·
-        Recorded local execution
+        Recorded benchmark execution
       </p>
     </>
   );

@@ -2,6 +2,7 @@
 export const routes = {
   home: "/",
   workspace: "/workspace/",
+  onchain: "/onchain/",
   live: "/live/",
   proof: "/proof/",
   docs: "/docs/",
@@ -10,7 +11,7 @@ export const routes = {
 export const primaryNav = [
   { href: routes.home, label: "Overview" },
   { href: routes.workspace, label: "Workspace" },
-  { href: routes.live, label: "Live" },
+  { href: routes.onchain, label: "Onchain" },
   { href: routes.proof, label: "Proof" },
   { href: routes.docs, label: "Docs" },
 ] as const;

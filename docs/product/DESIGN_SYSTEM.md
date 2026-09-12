@@ -933,15 +933,12 @@ Keep the product navigation compact.
 Suggested public app navigation:
 
 ```text
-AquaQoS    Overview   Workspace   Live   Proof   Docs
+AquaQoS    Overview   Workspace   Onchain   Proof   Docs
                                                    [GitHub]
 ```
 
-When connected/deployed:
-
-```text
-[Network] [Wallet]
-```
+The public testnet page shows its network as evidence, not as a wallet control. Add wallet
+connection only when a real user-authorized transaction flow exists.
 
 Do not mimic the exact 1inch navigation shell.
 

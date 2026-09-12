@@ -1,8 +1,17 @@
 # AquaQoS capacity workspace
 
-The Next.js app in `web/` replaces the earlier HTML replay. `/` is the recorded capacity
-workspace; `/live/` is a fresh local-EVM execution workspace; `/proof/` links the protocol
-specification, benchmark, limitations and downloadable evidence.
+The Next.js app in `web/` is publicly available at <https://aquaqos.vercel.app>. `/onchain/`
+shows the Sepolia contracts and representative receipts, `/workspace/` replays the checked
+benchmark, `/proof/` maps claims to evidence, and `/docs/` explains the protocol.
+
+For a first-time reviewer, use this order:
+
+1. Landing — understand the shared-inventory problem.
+2. Onchain — inspect the public contracts and transaction sequence.
+3. Workspace — compare raw Aqua with guarded scheduling.
+4. Proof/docs — inspect scope, methodology and limitations.
+
+The remaining instructions are for contributors reproducing the evidence locally.
 
 Start it locally:
 

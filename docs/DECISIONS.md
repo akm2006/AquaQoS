@@ -6,11 +6,12 @@ Status note: the original brief was later removed from the current tree and all 
 public Git history; its useful direction was replaced by validated specifications and this
 decision record. The evidence-first rule remains active.
 
-Decision: preserve the winning brief unchanged as lowest-priority provenance; claims remain
-hypotheses until verified. Alternatives: implement the brief literally. Evidence: official
-source contains callback and version differences absent from the brief. Reason: prevent
-design-by-marketing. Consequence: no protocol/frontend implementation in bootstrap; separate
-reproduction and specification gates. AI/human provenance is a hard event requirement.
+Decision: treat the initial product brief only as untrusted input; claims remain hypotheses
+until verified. The brief was later removed from the tree and reachable public history after
+its validated direction had been captured in specifications and decisions. Alternatives:
+implement it literally. Evidence: official source contains callback and version differences
+absent from the early plan. Reason: prevent design-by-marketing. Consequence: reproduction and
+specification gates precede implementation. AI/human provenance remains an event requirement.
 
 ## 2026-09-05 — D002: Direct current official packages, template as reference
 
@@ -362,3 +363,15 @@ the benchmark source commit is older than that default history. Reason: publish 
 reproducible evidence surface without weakening the canonical CI gate or pretending a hosted
 static page is a live chain. Consequences: `/live/` treats an absent localhost API as expected,
 public CTAs lead to Sepolia proof, and CI executes the same portable web-build command as Vercel.
+
+## 2026-09-12 — D028: Public product leads with Sepolia, local lab stays reproducible
+
+Decision: replace the primary `Live` destination with `/onchain/`, generated from the checked
+Sepolia report, while retaining `/live/` only through the reproduction guide. Remove stale
+machine-specific audit/history documents whose durable facts already live in Git and current
+status. Alternatives: delete the local lab, continue presenting localhost as a product feature,
+or duplicate deployment facts by hand. Evidence: the hosted static route cannot execute its
+local API, while the repository already contains 22 public receipts and exact source matches.
+Reason: make the first public path useful and credible without weakening reproducibility.
+Consequences: the public app has five primary destinations; contributor tooling, raw evidence,
+source pins, licenses and required AI provenance remain retained but unpromoted.

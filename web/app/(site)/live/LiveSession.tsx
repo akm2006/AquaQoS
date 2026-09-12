@@ -62,7 +62,11 @@ type ResponseState = {
   state: LiveState | null;
 };
 
-export default function LiveSession() {
+export default function LiveSession({
+  publicSurface = false,
+}: {
+  publicSurface?: boolean;
+}) {
   const [connection, setConnection] = useState<ResponseState | null>(null);
   const [serviceAvailable, setServiceAvailable] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false),
@@ -110,8 +114,12 @@ export default function LiveSession() {
     }
   }
   useEffect(() => {
+    if (publicSurface) {
+      setServiceAvailable(false);
+      return;
+    }
     void load();
-  }, []);
+  }, [publicSurface]);
   async function act(operation: string, fields: Record<string, unknown> = {}) {
     if (!connection || busy || stale) return;
     setBusy(true);

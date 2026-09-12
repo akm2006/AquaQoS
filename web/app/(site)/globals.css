@@ -1460,6 +1460,9 @@
     width: 100%;
     height: auto;
   }
+  .hero-diagram-mobile {
+    display: none;
+  }
   .hero-diagram text {
     fill: var(--color-ink);
     font-family: var(--font-mono);
@@ -1940,6 +1943,70 @@
     text-underline-offset: 4px;
   }
 
+  /* Public-chain evidence reuses the proof page's austere frame language. */
+  .onchain-card code {
+    margin-bottom: 18px;
+    font-size: 10px;
+    overflow-wrap: anywhere;
+  }
+  .onchain-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .onchain-links {
+    display: grid;
+    gap: 10px;
+    margin-top: auto;
+  }
+  .onchain-links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    min-height: 44px;
+    border-top: 1px solid var(--color-rule);
+  }
+  .onchain-timeline {
+    margin-bottom: 18px;
+    border: 2px solid var(--color-ink);
+  }
+  .onchain-action {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 16px;
+    min-height: 72px;
+    padding: 12px 16px 12px 0;
+    border-top: 1px solid var(--color-rule);
+  }
+  .onchain-action:first-child {
+    border-top: 0;
+  }
+  .onchain-action:hover {
+    background: var(--color-aq-sky);
+  }
+  .onchain-index {
+    display: grid;
+    align-self: stretch;
+    place-items: center;
+    border-right: 1px solid var(--color-rule);
+    color: var(--color-ink-soft);
+  }
+  .onchain-action strong,
+  .onchain-action code {
+    display: block;
+  }
+  .onchain-action strong {
+    text-transform: uppercase;
+  }
+  .onchain-action code {
+    color: var(--color-ink-soft);
+    font-size: 10px;
+  }
+  .onchain-result {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-align: right;
+  }
+
   /* 005 — pinned sources */
   .marquee {
     overflow: hidden;
@@ -2005,14 +2072,26 @@
     .hero-line {
       font-size: clamp(30px, 11vw, 54px);
     }
-    /* The 800-unit viewBox scales to about 0.45 of a phone width, so the diagram's type has
-       to grow in user units to stay readable. */
-    .hero-diagram text {
-      font-size: 19px;
+    .hero-diagram {
+      display: none;
     }
-    .hero-diagram .guard-label {
-      font-size: 15px;
-      letter-spacing: 0.06em;
+    .hero-diagram-mobile {
+      display: grid;
+      gap: 8px;
+      width: 100%;
+      margin: 16px 0;
+      padding: 14px;
+      border: 2px solid var(--color-ink);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+    }
+    .hero-diagram-mobile strong {
+      padding: 10px;
+      background: var(--color-ink);
+      color: var(--color-cream);
+    }
+    .hero-diagram-mobile b {
+      line-height: 1;
     }
     .hero-actions {
       width: 100%;
@@ -2028,6 +2107,13 @@
     }
     .proof-grid {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .onchain-action {
+      grid-template-columns: 40px minmax(0, 1fr);
+    }
+    .onchain-result {
+      grid-column: 2;
+      text-align: left;
     }
     .tier-cta {
       margin: 0 16px 16px;

@@ -24,14 +24,28 @@ validateReport(report);
 type Manifest = {
   sourceCommit: string;
   originalReportSHA256: string;
-  sepolia: { chainId: number; transactions: number };
+  sepolia: {
+    chainId: number;
+    transactions: number;
+    sourceCommit: string;
+    officialAqua: string;
+    contracts: {
+      name: string;
+      address: string;
+      explorer: string;
+      sourcify: string;
+    }[];
+    actions: { name: string; hash: string; explorer: string }[];
+  };
 };
 const manifest = read("manifest.json") as Manifest;
 if (
   manifest.sourceCommit !== report.sourceCommit ||
   !/^[a-f0-9]{64}$/.test(manifest.originalReportSHA256) ||
   !Number.isInteger(manifest.sepolia?.chainId) ||
-  !(manifest.sepolia?.transactions > 0)
+  !(manifest.sepolia?.transactions > 0) ||
+  manifest.sepolia.contracts?.length !== 4 ||
+  manifest.sepolia.actions?.length !== 7
 )
   throw Error("Evidence manifest does not match the checked report.");
 

@@ -71,7 +71,7 @@ const records = [
 const scope = [
   "CAPACITY_GUARD · 0x05",
   "Canonical XYC",
-  "Local receipts",
+  "Public Sepolia receipts",
   "Sourcify exact match",
 ];
 
@@ -87,8 +87,8 @@ export default function Proof() {
             result.
           </p>
         </div>
-        <ButtonLink href={routes.workspace} variant="primary">
-          Open workspace
+        <ButtonLink href={routes.onchain} variant="primary">
+          View onchain proof
         </ButtonLink>
       </div>
 
@@ -127,9 +127,9 @@ export default function Proof() {
                 settlement.
               </p>
               <p>
-                The recorded comparisons use pinned, fee-free XYC programs and
-                honest TokenMocks on a local EVM. A public Ethereum Sepolia
-                deployment records exact-match verified contracts and{" "}
+                The comparisons use pinned, fee-free XYC programs and retained
+                receipts. A public Ethereum Sepolia deployment records exact-match
+                verified contracts and{" "}
                 {num(sepolia.transactions)} transactions. There is no external
                 audit and no mainnet deployment.
               </p>
@@ -209,7 +209,7 @@ export default function Proof() {
           </div>
         </div>
         <p className="source-line">
-          Report source <code>{sourceCommit}</code> · recorded local execution
+          Report source <code>{sourceCommit}</code> · authenticated recorded evidence
         </p>
       </section>
     </main>

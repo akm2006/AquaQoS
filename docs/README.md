@@ -40,7 +40,7 @@ certification.
 
 - [Design system](product/DESIGN_SYSTEM.md)
 - [Application architecture](product/APP_ARCHITECTURE.md)
-- [Local workspace guide](product/DEMO.md)
+- [Product and reproduction guide](product/DEMO.md)
 
 ## Project record
 
@@ -48,7 +48,6 @@ certification.
 - [Execution plan](EXECUTION_PLAN.md)
 - [Primary research sources](RESEARCH_SOURCES.md)
 - [Third-party provenance](THIRD_PARTY.md)
-- [Historical development record](archive/development/STATUS_HISTORY.md)
 - [ETHOnline 2026 provenance and requirements](archive/ethonline-2026/)
 
 Raw machine-readable benchmark and deployment evidence remains in `benchmarks/raw/` and

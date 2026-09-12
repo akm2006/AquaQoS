@@ -28,6 +28,17 @@ writeFileSync(new URL("report.json", output), JSON.stringify(report));
 const sepolia = JSON.parse(
   readFileSync(new URL("../../deployments/sepolia/report.json", import.meta.url)),
 );
+const publicTransactions = sepolia.transactions.filter(({ name }) =>
+  [
+    "reject 600 to protect sibling",
+    "first protected 500",
+    "reject sibling 501",
+    "sibling protected 500",
+    "replenish first strategy",
+    "restored protected 500",
+    "reverse replenishment 100",
+  ].includes(name),
+);
 writeFileSync(
   new URL("manifest.json", output),
   JSON.stringify(
@@ -42,6 +53,18 @@ writeFileSync(
       sepolia: {
         chainId: sepolia.chainId,
         transactions: sepolia.transactions.length,
+        sourceCommit: sepolia.sourceCommit,
+        officialAqua: sepolia.addresses.aqua,
+        contracts: sepolia.deployments.map(({ name, address, explorer }) => ({
+          name:
+            name === "TokenMock"
+              ? `Demo token ${address === sepolia.addresses.tokens[0] ? "aqA" : "aqB"}`
+              : name,
+          address,
+          explorer,
+          sourcify: `https://repo.sourcify.dev/${sepolia.chainId}/${address}`,
+        })),
+        actions: publicTransactions,
       },
     },
     null,

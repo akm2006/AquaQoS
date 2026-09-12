@@ -8,7 +8,7 @@ Today is September 5, 2026 and ETHOnline has already started, so work created fr
 
 The repository currently contains a planning document named approximately:
 
-`AquaQoS_ETHOnline_2026_Winning_Package.md`
+an initial product brief
 
 Read it completely before doing anything else.
 
@@ -61,9 +61,9 @@ Use this priority when resolving technical disagreements:
 2. Current official 1inch Aqua / SwapVM documentation, repositories, SDKs, whitepapers and templates.
 3. Actual behavior proven by source code and executable tests.
 4. AquaQoS project decisions recorded after validation.
-5. `AquaQoS_ETHOnline_2026_Winning_Package.md`.
+5. The initial product brief.
 
-Never preserve an idea from the winning-package document merely because it sounds good if source code or testing disproves it.
+Never preserve an idea from the initial brief merely because it sounds good if source code or testing disproves it.
 
 Seed your research from at least these official sources and follow their current canonical links:
 
@@ -131,7 +131,7 @@ Never commit:
 * generated caches
 * unnecessary build outputs
 
-Preserve the existing winning-package markdown as planning provenance.
+Preserve the initial brief as planning provenance until validated decisions replace it.
 
 Create coherent commits throughout development. Never accumulate the entire hackathon into one giant final commit.
 
@@ -175,7 +175,7 @@ It should include at least:
 * rule to avoid sponsor-integration soup
 * rule to make the 1inch/Aqua integration load-bearing
 
-Do NOT copy the entire winning package into `AGENTS.md`.
+Do NOT copy the entire initial brief into `AGENTS.md`.
 
 Instead link to durable project docs.
 
@@ -709,7 +709,7 @@ Plan the repository so we can reliably produce:
 For THIS FIRST TURN:
 
 1. audit the environment and current Codex capabilities
-2. read the full winning-package markdown
+2. read the full initial product brief
 3. research current official ETHOnline/1inch requirements
 4. inspect current official Aqua/SwapVM/template/SDK sources sufficiently to establish the starting baseline
 5. initialize/fix Git hygiene

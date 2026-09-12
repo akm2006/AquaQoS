@@ -14,11 +14,11 @@
 </p>
 
 <p align="center">
-  <a href="docs/CAPACITY_GUARD_SPEC.md">Guard specification</a> &nbsp;·&nbsp;
-  <a href="docs/SEPOLIA_DEPLOYMENT.md">Sepolia proof</a> &nbsp;·&nbsp;
+  <a href="https://aquaqos.vercel.app"><b>Live app</b></a> &nbsp;·&nbsp;
+  <a href="https://aquaqos.vercel.app/onchain/">Onchain proof</a> &nbsp;·&nbsp;
+  <a href="https://aquaqos.vercel.app/docs/">Documentation</a> &nbsp;·&nbsp;
   <a href="docs/BENCHMARK_RESULTS.md">Benchmarks</a> &nbsp;·&nbsp;
-  <a href="docs/SECURITY_REVIEW_RELEASE.md">Security review</a> &nbsp;·&nbsp;
-  <a href="docs/STATUS.md">Status</a>
+  <a href="docs/CAPACITY_GUARD_SPEC.md">Specification</a>
 </p>
 
 ---
@@ -41,6 +41,15 @@ AquaQoS adds a `CAPACITY_GUARD` SwapVM instruction (opcode `0x05`) and a restric
 vault. The guard checks configured capacity before canonical Aqua settlement, records
 transaction-scoped reservations, and leaves the official Aqua accounting and settlement path
 load-bearing. AquaQoS decides admission — nothing else.
+
+```mermaid
+flowchart LR
+    S[Independent Aqua strategies] --> R[AquaQoS router<br/>CAPACITY_GUARD 0x05]
+    R --> V[Restricted maker vault<br/>shared ERC-20 inventory]
+    R --> A[Official Aqua<br/>virtual accounting + settlement]
+    V --> A
+    A --> T[Final token transfers]
+```
 
 <div align="center">
   <img src="docs/assets/capacity-guard.svg" alt="Three independent Aqua strategies feed one CAPACITY_GUARD block, which schedules each fill as guaranteed, burst or rejected against one shared vault inventory." width="880">
@@ -85,6 +94,17 @@ The retained checks behind those claims:
 
 These are scoped engineering results, not an external audit or production certification.
 
+### Public deployment
+
+| Component | Ethereum Sepolia |
+| --- | --- |
+| Official Aqua | [`0x4999…6d31`](https://sepolia.etherscan.io/address/0x499943e74fb0ce105688beee8ef2abec5d936d31) |
+| AquaQoS router | [`0xE2EE…5496`](https://sepolia.etherscan.io/address/0xE2EE332421bb0aE4177d0dE764ce5969bA0A5496) · [exact source match](https://repo.sourcify.dev/11155111/0xE2EE332421bb0aE4177d0dE764ce5969bA0A5496) |
+| AquaQoS vault | [`0x22a3…C252`](https://sepolia.etherscan.io/address/0x22a305FDB19C8856a427f4AEaB3264618Ca5C252) · [exact source match](https://repo.sourcify.dev/11155111/0x22a305FDB19C8856a427f4AEaB3264618Ca5C252) |
+
+[Open the seven-step public transaction story](https://aquaqos.vercel.app/onchain/) or read the
+[complete 22-transaction deployment record](docs/SEPOLIA_DEPLOYMENT.md).
+
 ## The measured cost
 
 The guard reads sibling state on every fill, and that is not free. At eight strategies, the
@@ -124,10 +144,11 @@ Full methodology and every fixture are in the [benchmark results](docs/BENCHMARK
   the same transaction.
 - Extreme upstream input-ledger values can quote and then revert atomically during settlement.
 
-## Reproduce it
+## Verify from source
 
 Exact source identities are pinned in [sources.lock.json](sources.lock.json) and the dependency
-lockfile. With Node 22.16.0 and pnpm 11.10.0:
+lockfile. With Node 22.16.0 and pnpm 11.10.0, the core gate recompiles the protocol and runs
+30 Solidity tests:
 
 ```sh
 pnpm install --frozen-lockfile --ignore-scripts
@@ -135,56 +156,33 @@ pnpm build
 pnpm test
 ```
 
-Then the full evidence sweep — each command re-derives its own claim rather than trusting a
-committed report:
+For the full model, benchmark and deployment verification matrix, follow the
+[reproduction guide](https://aquaqos.vercel.app/docs/reproduce/). `pnpm check:sepolia`
+re-queries Sepolia and Sourcify rather than trusting the committed report.
 
-```sh
-node scripts/check-capacity-model.mjs             # 327,168 bounded settlement cases
-pnpm check:benchmark                              # recomputes the 72 comparative fixtures
-node scripts/check-rejections.mjs --self-test     # rejection replay against the unguarded router
-node scripts/check-release-evidence.mjs --self-test
-pnpm check:bootstrap                              # source pins, local links, skill files
-```
+## Product surfaces
 
-`pnpm check:sepolia` additionally re-queries Sepolia and Sourcify, so it needs network access.
-Raw machine-readable evidence is retained under `benchmarks/raw/` and `deployments/`.
+The [public Next.js app](https://aquaqos.vercel.app) is the product and developer entry point:
 
-## Capacity workspace
-
-The [Next.js app](web/) compares raw or conservative Aqua with two AquaQoS protection policies.
-Explore 2/4/8 strategies, replay synchronized transactions, inspect protected capacity, and open
-real balance changes and receipt logs.
-
-| Public deployment | Local verification |
+| Surface | Purpose |
 | --- | --- |
-| Landing, recorded workspace, public Sepolia proof, documentation and evidence downloads | Fresh isolated EVM, executable maker controls and newly generated local receipts |
+| [Landing](https://aquaqos.vercel.app) | Understand the shared-inventory problem and mechanism |
+| [Workspace](https://aquaqos.vercel.app/workspace/) | Compare checked A/B/C benchmark transactions across 2/4/8 strategies |
+| [Onchain](https://aquaqos.vercel.app/onchain/) | Inspect Sepolia contracts, source matches and representative receipts |
+| [Proof](https://aquaqos.vercel.app/proof/) | Trace claims to specifications, tests and raw evidence |
+| [Docs](https://aquaqos.vercel.app/docs/) | Read the curated protocol, security and reproduction guide |
 
-The public site does not simulate a live chain in the browser. Its `/live/` page links to public
-proof and explains how to start the genuine local execution lab.
+The public site does not pretend recorded evidence is a live wallet. A separate local execution
+lab remains available to contributors through the [reproduction guide](web/content/docs/reproduce.mdx).
 
 ```sh
 pnpm --dir web install --frozen-lockfile --ignore-scripts
+pnpm --dir web build
+pnpm --dir web dev
 ```
 
-| Surface | Command | Open |
-| --- | --- | --- |
-| Recorded comparison, `/proof/` and `/docs/` | `pnpm proof:serve` | `http://127.0.0.1:4173/` |
-| Live local session | `pnpm --dir web build` then `node scripts/serve-live.mjs` | `http://127.0.0.1:4174/live/` |
-
-`/live/` runs the same protocol against a fresh isolated local EVM with actual receipts, maker
-controls, and token transfers. It uses test accounts and mock tokens only; no wallet, testnet,
-or public deployment is implied.
-
-`pnpm --dir web build` also validates the evidence and produces the static Next.js build. Run
-`node scripts/check-live.mjs` for the API self-check, and
-`playwright-cli -s=aqua-live run-code --filename=web/scripts/check-live-browser.js` for the
-browser flow. The frontend has its own lockfile; the protocol pins and benchmark hashes are
-unchanged.
-
-For Vercel, import the repository root. The committed `vercel.json` installs both frozen
-dependency sets, performs portable transaction and metric validation, and publishes `web/out`.
-Full historical source authentication remains enforced by CI and normal local builds because
-Vercel checks out only recent Git history.
+The static export revalidates its benchmark evidence before building. The committed Vercel
+configuration needs no runtime secret or blockchain RPC.
 
 ## Repository map
 
@@ -196,13 +194,12 @@ Vercel checks out only recent Git history.
 | `deployments/` | Local, fork, and Sepolia runtime identities, receipts, and source authentication |
 | `web/` | Next.js App Router workspace, evidence page, and Fumadocs documentation (`web/content/docs/`) |
 | `docs/` | Protocol, benchmark, security, requirements, and release documentation |
-| [`docs/archive/ethonline-2026/AI_PROVENANCE.md`](docs/archive/ethonline-2026/AI_PROVENANCE.md), `docs/archive/ethonline-2026/prompts/` | AI attribution and sanitized planning evidence, retained for ETHOnline transparency; not runtime dependencies |
-| `.agents/`, `.codex/` | Optional project-local Codex skills and read-only reviewer roles; they do not affect `pnpm build` or `pnpm test` |
+| `docs/archive/` | Development history and event-required provenance, outside the product documentation path |
 | `LICENSES/` | Retained upstream and dependency license texts and notices |
 
-The public technical path is this README, [`docs/STATUS.md`](docs/STATUS.md), the verification
-page, and the reproduction and benchmark commands above. Maintainer and AI-process material is
-retained in the documentation tree so it stays auditable without obscuring the protocol path.
+The public technical path is this README, the [app](https://aquaqos.vercel.app), and the curated
+[documentation](https://aquaqos.vercel.app/docs/). Maintainer records stay archived and auditable
+without appearing in the primary product path.
 
 ## Licensing and provenance
 
