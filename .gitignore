@@ -24,6 +24,7 @@ test-results/
 output/
 playwright-report/
 .playwright-cli/
+.vercel/
 *.log
 __pycache__/
 .venv/

@@ -79,10 +79,10 @@ export function Hero() {
       </p>
       <p className="hero-sub">{productLine}</p>
       <div className="button-row hero-actions">
-        <ButtonLink href={routes.live} variant="primary">
-          Run live local demo
+        <ButtonLink href={routes.proof} variant="primary">
+          Verify public proof
         </ButtonLink>
-        <ButtonLink href={routes.proof}>Open the receipts</ButtonLink>
+        <ButtonLink href={routes.workspace}>Explore the workspace</ButtonLink>
       </div>
     </section>
   );

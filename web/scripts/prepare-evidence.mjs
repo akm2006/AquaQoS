@@ -4,17 +4,25 @@ import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../../", import.meta.url));
-// Reuse the protocol's full checker before copying evidence into the web build.
-execFileSync(process.execPath, ["scripts/check-benchmark.mjs"], {
-  cwd: root,
-  stdio: "inherit",
-});
 const output = new URL("../public/evidence/", import.meta.url);
 mkdirSync(output, { recursive: true });
 const source = readFileSync(
   new URL("../../benchmarks/raw/a-b-c-v1.json", import.meta.url),
 );
 const report = JSON.parse(source);
+const portable = process.argv.includes("--portable");
+if (portable) {
+  // Vercel checks out only recent Git history. Recheck every retained transaction and
+  // metric here; CI remains responsible for authenticating the historical source commit.
+  const { checkBenchmark } = await import("../../scripts/check-benchmark.mjs");
+  checkBenchmark(report);
+} else {
+  // Local and CI builds authenticate the report against its exact historical sources.
+  execFileSync(process.execPath, ["scripts/check-benchmark.mjs"], {
+    cwd: root,
+    stdio: "inherit",
+  });
+}
 writeFileSync(new URL("report.json", output), JSON.stringify(report));
 // Summarise the public deployment so the app can cite it without shipping the full receipts.
 const sepolia = JSON.parse(
@@ -27,7 +35,9 @@ writeFileSync(
       sourceCommit: report.sourceCommit,
       originalReportSHA256: createHash("sha256").update(source).digest("hex"),
       kind: report.kind,
-      verification: "check-benchmark.mjs passed before export",
+      verification: portable
+        ? "transaction and metric checks passed during export; historical source authentication is enforced by CI"
+        : "full benchmark and historical source authentication passed before export",
       limitations: report.limitations,
       sepolia: {
         chainId: sepolia.chainId,

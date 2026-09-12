@@ -64,6 +64,7 @@ type ResponseState = {
 
 export default function LiveSession() {
   const [connection, setConnection] = useState<ResponseState | null>(null);
+  const [serviceAvailable, setServiceAvailable] = useState<boolean | null>(null);
   const [busy, setBusy] = useState(false),
     [error, setError] = useState("");
   const [count, setCount] = useState("2"),
@@ -92,11 +93,18 @@ export default function LiveSession() {
       )
         throw Error("Unexpected local service response.");
       setConnection(data);
+      setServiceAvailable(true);
       setError("");
       setStale(false);
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Local connection failed.");
-      setStale(true);
+      setServiceAvailable(false);
+      if (connection) {
+        setError(e instanceof Error ? e.message : "Local connection failed.");
+        setStale(true);
+      } else {
+        setError("");
+        setStale(false);
+      }
     } finally {
       setBusy(false);
     }
@@ -179,7 +187,9 @@ export default function LiveSession() {
           <strong>
             {state
               ? `Local chain ${state.chainId} · Block ${state.blockNumber}`
-              : "Connect to your local execution server"}
+              : serviceAvailable === null
+                ? "Checking for the local execution server"
+                : "Local execution lab"}
           </strong>
           <p>
             Fresh isolated EVM · Test maker and taker accounts · Mock tokens
@@ -187,7 +197,7 @@ export default function LiveSession() {
           </p>
         </div>
         <button className="button" onClick={load} disabled={busy}>
-          {connection ? "Refresh state" : "Reconnect"}
+          {connection ? "Refresh state" : "Check local server"}
         </button>
       </section>
       {error && (
@@ -202,7 +212,9 @@ export default function LiveSession() {
             ? "Displayed state may be stale. Actions are paused until refresh."
             : state
               ? "Balances below were read after the latest confirmed local transaction."
-              : "Create a group to begin."}
+              : serviceAvailable === false
+                ? "The public site shows verified evidence; start the local server to execute a fresh session."
+                : "Create a group to begin."}
       </p>
       {!connection && (
         <section className="panel live-instructions">
@@ -215,6 +227,14 @@ export default function LiveSession() {
             and uses its test accounts. No wallet setup is needed. Closing it
             ends the session.
           </p>
+          <div className="button-row">
+            <Link className="button primary" href={routes.proof} prefetch={false}>
+              Verify public Sepolia proof
+            </Link>
+            <Link className="button" href={routes.workspace} prefetch={false}>
+              Explore recorded transactions
+            </Link>
+          </div>
         </section>
       )}
       <section className="panel live-section">

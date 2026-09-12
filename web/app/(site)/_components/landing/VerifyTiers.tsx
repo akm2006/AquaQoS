@@ -47,7 +47,7 @@ const TIERS: Tier[] = [
     kind: "live",
     path: routes.live,
     href: routes.live,
-    tag: "START HERE",
+    tag: "RUN LOCALLY",
     highlighted: true,
     description: "Run a fresh isolated chain and trigger the guard yourself.",
     cta: "Run the live session",

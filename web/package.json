@@ -7,6 +7,7 @@
   "scripts": {
     "dev": "node scripts/prepare-evidence.mjs && next dev --hostname 127.0.0.1",
     "build": "node scripts/prepare-evidence.mjs && next build",
+    "build:vercel": "node scripts/prepare-evidence.mjs --portable && next build",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

@@ -18,8 +18,8 @@ export function Navbar() {
           AquaQoS
         </Link>
         <NavLinks />
-        <ButtonLink href={routes.live} variant="primary">
-          Run live local demo
+        <ButtonLink href={routes.proof} variant="primary">
+          Verify public proof
         </ButtonLink>
       </div>
     </header>

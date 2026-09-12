@@ -155,6 +155,13 @@ The [Next.js app](web/) compares raw or conservative Aqua with two AquaQoS prote
 Explore 2/4/8 strategies, replay synchronized transactions, inspect protected capacity, and open
 real balance changes and receipt logs.
 
+| Public deployment | Local verification |
+| --- | --- |
+| Landing, recorded workspace, public Sepolia proof, documentation and evidence downloads | Fresh isolated EVM, executable maker controls and newly generated local receipts |
+
+The public site does not simulate a live chain in the browser. Its `/live/` page links to public
+proof and explains how to start the genuine local execution lab.
+
 ```sh
 pnpm --dir web install --frozen-lockfile --ignore-scripts
 ```
@@ -173,6 +180,11 @@ or public deployment is implied.
 `playwright-cli -s=aqua-live run-code --filename=web/scripts/check-live-browser.js` for the
 browser flow. The frontend has its own lockfile; the protocol pins and benchmark hashes are
 unchanged.
+
+For Vercel, import the repository root. The committed `vercel.json` installs both frozen
+dependency sets, performs portable transaction and metric validation, and publishes `web/out`.
+Full historical source authentication remains enforced by CI and normal local builds because
+Vercel checks out only recent Git history.
 
 ## Repository map
 

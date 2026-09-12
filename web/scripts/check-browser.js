@@ -8,7 +8,13 @@ async function verifyWorkspace(page) {
   const origin = await page.evaluate(() => location.origin);
   const badResponses = [];
   page.on("response", (response) => {
-    if (response.url().startsWith(origin) && response.status() >= 400)
+    const expectedMissingLocalApi =
+      response.status() === 404 && response.url() === origin + "/api/state";
+    if (
+      response.url().startsWith(origin) &&
+      response.status() >= 400 &&
+      !expectedMissingLocalApi
+    )
       badResponses.push(`${response.status()} ${response.url()}`);
   });
   const auditBasics = async (label) => {
@@ -43,8 +49,12 @@ async function verifyWorkspace(page) {
   const href = (scope, name) =>
     scope.getByRole("link", { name, exact: true }).getAttribute("href");
   assert(
-    (await href(landing, "Run live local demo")) === "/live/",
-    "landing primary call to action targets the live route",
+    (await href(landing, "Verify public proof")) === "/proof/",
+    "landing primary call to action targets public proof",
+  );
+  assert(
+    (await href(landing, "Explore the workspace")) === "/workspace/",
+    "landing secondary call to action targets recorded evidence",
   );
   for (const [name, target] of [
     ["Open the workspace", "/workspace/"],
@@ -75,6 +85,23 @@ async function verifyWorkspace(page) {
     });
   }
   await page.setViewportSize({ width: 1440, height: 1000 });
+
+  await page.goto(origin + "/live/");
+  await page.getByRole("heading", { name: "Put capacity to work." }).waitFor();
+  await page
+    .getByText("The public site shows verified evidence", { exact: false })
+    .waitFor();
+  assert(
+    (await href(page.locator("main"), "Verify public Sepolia proof")) ===
+      "/proof/",
+    "public live fallback reaches Sepolia proof",
+  );
+  assert(
+    (await href(page.locator("main"), "Explore recorded transactions")) ===
+      "/workspace/",
+    "public live fallback reaches recorded evidence",
+  );
+  await auditBasics("public live fallback");
 
   await page.goto(origin + "/workspace/");
   await page

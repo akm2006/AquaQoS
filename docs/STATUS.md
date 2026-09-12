@@ -1,8 +1,8 @@
 # AquaQoS handoff
 
 Updated 2026-09-12. Current phase: polished five-route Next.js and Fumadocs product surface
-integrated and verified from committed source. Submission packaging remains deferred until the
-owner accepts the product.
+adapted for an evidence-first public Vercel deployment. Submission packaging remains deferred
+until the owner accepts the product.
 
 ## Verified state
 
@@ -42,6 +42,12 @@ owner accepts the product.
 - The landing, `/workspace/`, `/live/`, `/proof/`, and curated `/docs/` routes are implemented.
   The supplied logo remains byte-identical, and the public pages distinguish recorded, live-local,
   and Sepolia evidence.
+- Public entry points lead to verified proof and recorded evidence. On static hosting, `/live/`
+  treats the absent localhost-only API as expected and gives direct proof/workspace links; its
+  real local-EVM controls remain unchanged under `scripts/serve-live.mjs`.
+- Root `vercel.json` installs both frozen dependency sets and exports `web/out`. Its portable
+  build rechecks all benchmark transactions and metrics without relying on Vercel's shallow Git
+  history; canonical source-commit authentication remains in CI and normal local builds.
 - The integrated browser checks pass 72 comparison selections, all eight proof records, static
   Fumadocs search/navigation, malformed-evidence recovery, real local fills/rejections/
   replenishment/exit, and 1440/390/320px layouts without console or HTTP errors. Production
@@ -72,10 +78,10 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 
 ## Next three tasks
 
-1. Obtain owner visual acceptance and confirm the visual-reference boundary.
-2. When reviewer capacity is available, obtain the independent UI pass that produced no report
-   during this milestone.
-3. Prepare the owner-approved public `v0.1.0` prerelease only after those gates are accepted.
+1. Pass the new Vercel-equivalent build and browser flow in CI, then create a preview deployment.
+2. Verify all five preview routes, response headers, evidence links and mobile layouts before
+   promotion to the public production URL.
+3. Obtain owner visual acceptance and confirm the visual-reference boundary before public release.
 
 Historical milestone detail is retained in
 [STATUS_HISTORY.md](archive/development/STATUS_HISTORY.md).

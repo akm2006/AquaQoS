@@ -143,8 +143,9 @@ Order:
 8. Live-demo CTA.
 9. Limitations and source links.
 
-Hero copy must not claim solvency, profitability, safety or production deployment. Keep
-`Run live local demo` for the interactive path and link the verified Sepolia proof separately.
+Hero copy must not claim solvency, profitability, safety or production deployment. The public
+primary CTA opens verified Sepolia proof; the local execution lab remains available through
+the `Live` route without being presented as a remotely hosted chain.
 
 ### 4.2 Recorded workspace `/workspace/`
 
@@ -168,6 +169,9 @@ Configure maker → Quote → Execute → Inspect receipt → Manage lifecycle
 Always show chain ID, local/mock status, revision/staleness state and receipt status. Keep
 wallet connection controls out of the page until a real deployment and authorization model
 exist. A reset/new-session action is preferable to silently reusing stale state.
+On a static public deployment, absence of the localhost-only API is an expected state rather
+than an application error: link to public Sepolia proof and recorded transactions, then show
+the exact local launch commands.
 
 ### 4.4 Proof `/proof/`
 

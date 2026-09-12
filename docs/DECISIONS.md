@@ -349,3 +349,16 @@ rendering or a new documentation service. Evidence: the static export has no run
 the underlying records already exist in the repository. Consequences: docs remain a readable
 layer, not the source of truth; static search and navigation must work through the local export
 server without API or RSC prefetch errors.
+
+## 2026-09-12 — D027: Static public deployment with CI-authenticated evidence
+
+Decision: deploy the checked static export from the repository root and keep the stateful
+local-EVM service local. The public build revalidates every retained benchmark transaction and
+metric but does not require historical Git objects; CI and normal local builds retain the full
+source-commit authentication. Alternatives: run Hardhat in a serverless function, commit a
+second seven-megabyte report copy, or fetch deeper Git history during every deployment.
+Evidence: Next.js export mode has no runtime server, and Vercel Git builds use a shallow clone;
+the benchmark source commit is older than that default history. Reason: publish an honest,
+reproducible evidence surface without weakening the canonical CI gate or pretending a hosted
+static page is a live chain. Consequences: `/live/` treats an absent localhost API as expected,
+public CTAs lead to Sepolia proof, and CI executes the same portable web-build command as Vercel.
