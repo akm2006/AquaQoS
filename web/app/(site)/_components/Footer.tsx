@@ -19,9 +19,8 @@ export function Footer() {
           <BrandLogo tile size="compact" decorative />
           AquaQoS
         </span>
-        <span>
-          Powered by <strong>1inch Aqua + SwapVM</strong>
-        </span>
+        <span>Powered by Aqua — © Degensoft Ltd 2025.</span>
+        <span>Powered by SwapVM — © Degensoft Ltd 2025.</span>
         <small>Experimental v0 · Public Sepolia deployment</small>
       </div>
       <nav aria-label="Footer">

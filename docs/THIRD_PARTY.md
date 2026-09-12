@@ -38,3 +38,9 @@ product's high-level layout language. No reference files, images, components, co
 were copied into `web/`; AquaQoS reimplements its own evidence-backed surface with the supplied
 logo and project colors. The owner must confirm that this limited reference use is permitted
 before public release. This is a release gate, not a legal clearance opinion.
+
+2026-09-13 branding decision: AquaQoS remains the only product logo in the app and README.
+Third-party services are named in text links where their contracts or source verification are
+shown. No 1inch, Sourcify, Etherscan or other provider logo is included because written
+permission has not been obtained; retain this boundary unless current brand terms clearly
+authorize a specific use. The app footer includes the Aqua and SwapVM attribution notices above.

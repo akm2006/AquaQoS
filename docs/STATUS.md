@@ -45,6 +45,10 @@ deferred until the owner accepts the product.
 - The local documentation cleanup now makes `/docs/` the public explanation layer and `/proof/`
   the verification path. Raw Markdown is no longer exported by the app; repository links remain
   the source-material surface. The refreshed app has not yet been pushed or deployed.
+- The app and README use AquaQoS branding only; provider logos are omitted pending permission.
+  The app footer now carries the full Aqua and SwapVM attribution notices.
+- Verification after the footer change: `pnpm --dir web typecheck` and the Vercel-mode static
+  build passed (22 pages). The build retains the known non-blocking Geist Pixel fallback warning.
 
 ## Supported claim and limits
 
