@@ -34,6 +34,8 @@ until the owner accepts the product.
   build gates from a separate clean worktree.
 - Public-deployment commit `cdbee90` passed CI run `34690598304`, including the complete
   protocol/evidence gate, TypeScript, and the exact portable production build used by Vercel.
+- Vercel deployment `dpl_GqM1eU3EyJ65SEf3bU3Qa2vKYyGW` completed the same 19-page static
+  build and is publicly aliased at `https://aquaqos.vercel.app`.
 
 ## Product state
 
@@ -50,6 +52,8 @@ until the owner accepts the product.
 - Root `vercel.json` installs both frozen dependency sets and exports `web/out`. Its portable
   build rechecks all benchmark transactions and metrics without relying on Vercel's shallow Git
   history; canonical source-commit authentication remains in CI and normal local builds.
+- Root `.vercelignore` excludes secrets, wallet material, dependencies, caches and local tooling;
+  the accepted deployment source upload was 18.5 MB rather than the rejected 505.8 MB draft.
 - Post-CI browser verification loaded all five routes, confirmed the public `/live/` fallback
   links and absence of an alert state, found no horizontal overflow at the checked viewport, and
   reported no browser warnings or errors on the documentation surface.
@@ -77,19 +81,16 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 - Rotate the previously exposed Context7 credential; no secret value is needed in this repo.
 - Confirm the permitted visual-reference boundary recorded in `THIRD_PARTY.md` before public
   product release; no reference files are committed or deployed.
-- Vercel CLI 51.4.0 is installed, but its saved credential is expired. The owner must complete
-  `vercel login` before Codex can create and verify a preview deployment.
 - Repository visibility, GitHub security settings, release publication, wallet custody, video,
   and ETHGlobal dashboard actions require the owner. See
   [manual actions](archive/ethonline-2026/MANUAL_ACTIONS.md).
 
 ## Next three tasks
 
-1. After owner Vercel login, create a preview deployment from the repository root.
-2. Verify all five preview routes, response headers, evidence links and mobile layouts before
-   promotion to the public production URL.
-3. Obtain owner visual acceptance and confirm the visual-reference boundary before production
-   promotion.
+1. Verify all five hosted routes, response headers, evidence links and mobile layouts at the
+   public Vercel alias.
+2. Obtain owner visual acceptance and confirm the visual-reference boundary.
+3. Keep submission packaging deferred until the product and evidence surfaces are accepted.
 
 Historical milestone detail is retained in
 [STATUS_HISTORY.md](archive/development/STATUS_HISTORY.md).

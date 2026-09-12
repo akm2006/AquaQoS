@@ -1,0 +1,33 @@
+# Secrets and local credentials
+.env
+.env.*
+*.key
+*.pem
+keystore/
+secrets/
+
+# Dependencies, caches and generated output
+node_modules/
+.pnpm-store/
+.playwright-cli/
+.research/
+.tmp/
+.codex/
+.agents/
+.git/
+.vercel/
+artifacts/
+cache/
+out/
+output/
+broadcast/
+coverage/
+dist/
+build/
+.next/
+test-results/
+playwright-report/
+*.log
+
+# Local archives
+AquaQoS.zip

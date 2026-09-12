@@ -8,8 +8,11 @@ CI and normal local builds continue to authenticate historical benchmark sources
 deployment, wallet interaction or new protocol claim is inferred from this pass. CI run
 `34690598304` passed the complete protocol/evidence gate and exact Vercel production build.
 Codex then verified all five local public routes in a browser, including the static `/live/`
-fallback and clean documentation console. A Vercel preview was not created because the locally
-saved Vercel credential had expired; this is recorded as owner action M9.
+fallback and clean documentation console. After the owner re-authenticated Vercel, Codex added
+an explicit deployment ignore boundary, created project `aquaqos`, and deployed build
+`dpl_GqM1eU3EyJ65SEf3bU3Qa2vKYyGW` to `https://aquaqos.vercel.app`. The CLI targeted and aliased
+this first deployment as production even though the command omitted `--prod`; no wallet or
+protocol state changed.
 
 2026-09-12 product polish integration: Anik (`ansu555`) supplied the Fumadocs, visual-surface,
 README and SVG work in refactor commits `d9bb690` through `0c3c126`. Codex selectively ported
