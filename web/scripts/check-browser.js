@@ -8,8 +8,10 @@ async function verifyWorkspace(page) {
   const origin = await page.evaluate(() => location.origin);
   const badResponses = [];
   page.on("response", (response) => {
+    const pathname = new URL(response.url()).pathname;
     const expectedMissingLocalApi =
-      response.status() === 404 && response.url() === origin + "/api/state";
+      response.status() === 404 &&
+      (pathname === "/api/state" || pathname === "/api/state/");
     if (
       response.url().startsWith(origin) &&
       response.status() >= 400 &&

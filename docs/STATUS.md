@@ -50,6 +50,9 @@ until the owner accepts the product.
 - Root `vercel.json` installs both frozen dependency sets and exports `web/out`. Its portable
   build rechecks all benchmark transactions and metrics without relying on Vercel's shallow Git
   history; canonical source-commit authentication remains in CI and normal local builds.
+- Post-CI browser verification loaded all five routes, confirmed the public `/live/` fallback
+  links and absence of an alert state, found no horizontal overflow at the checked viewport, and
+  reported no browser warnings or errors on the documentation surface.
 - The integrated browser checks pass 72 comparison selections, all eight proof records, static
   Fumadocs search/navigation, malformed-evidence recovery, real local fills/rejections/
   replenishment/exit, and 1440/390/320px layouts without console or HTTP errors. Production
@@ -74,13 +77,15 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 - Rotate the previously exposed Context7 credential; no secret value is needed in this repo.
 - Confirm the permitted visual-reference boundary recorded in `THIRD_PARTY.md` before public
   product release; no reference files are committed or deployed.
+- Vercel CLI 51.4.0 is installed, but its saved credential is expired. The owner must complete
+  `vercel login` before Codex can create and verify a preview deployment.
 - Repository visibility, GitHub security settings, release publication, wallet custody, video,
   and ETHGlobal dashboard actions require the owner. See
   [manual actions](archive/ethonline-2026/MANUAL_ACTIONS.md).
 
 ## Next three tasks
 
-1. Create a Vercel preview deployment from the repository root.
+1. After owner Vercel login, create a preview deployment from the repository root.
 2. Verify all five preview routes, response headers, evidence links and mobile layouts before
    promotion to the public production URL.
 3. Obtain owner visual acceptance and confirm the visual-reference boundary before production

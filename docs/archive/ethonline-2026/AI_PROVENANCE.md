@@ -7,6 +7,9 @@ Sepolia evidence. Codex added repository-root Vercel configuration and a portabl
 CI and normal local builds continue to authenticate historical benchmark sources. No hosted
 deployment, wallet interaction or new protocol claim is inferred from this pass. CI run
 `34690598304` passed the complete protocol/evidence gate and exact Vercel production build.
+Codex then verified all five local public routes in a browser, including the static `/live/`
+fallback and clean documentation console. A Vercel preview was not created because the locally
+saved Vercel credential had expired; this is recorded as owner action M9.
 
 2026-09-12 product polish integration: Anik (`ansu555`) supplied the Fumadocs, visual-surface,
 README and SVG work in refactor commits `d9bb690` through `0c3c126`. Codex selectively ported
