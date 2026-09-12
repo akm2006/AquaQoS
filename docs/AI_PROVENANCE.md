@@ -1,5 +1,21 @@
 # AI and work provenance
 
+2026-09-12 documentation surface: the owner asked for `/docs/` to carry the landing page's design
+language, keeping the existing page structure, and to offer light and dark modes. Claude Code
+(Claude Opus 5) implemented D026: a rewritten `web/app/(docs)/docs.css` mapping the Fumadocs
+token set onto the D025 brutalist palette for both themes, radius pinned to 0, the product's dot
+grid and Geist Mono/Pixel faces, plus frame, label and button primitives mirroring the product
+stylesheet; the six docs-only MDX components (`DocsHero`, `Stats`, `Truth`, `Verify`,
+`CapacitySplit`, `ScheduleFlow`) restyled onto theme-aware tokens; `forcedTheme` removed in
+favour of a system-default theme switch; and the header logo seated on the ink tile the product
+header already uses. No content, no page tree entry and no navigation target changed, and no
+dependency was added — the docs root layout now loads the product surface's font module instead
+of Geist Sans. The nineteen foreground/background pairs across the two themes were computed and
+all meet WCAG AA, the lowest at 4.80:1. Rendering was not visually verified: no browser
+automation is installed in this environment, and the repository's Playwright checks run through
+an external CLI.
+
+
 2026-09-12 product surface: the owner supplied an untracked v0 brutalist landing template and
 asked for its design, in the logo's colors, to carry AquaQoS content across the landing, shared
 header/footer, live and proof routes. Claude Code (Claude Opus 5) planned and implemented D025:

@@ -17,8 +17,8 @@ export function Truth({ kind }: { kind: keyof typeof labels }) {
   const quiet = kind === "planned" || kind === "scope";
   return (
     <span
-      className={`inline-flex items-center gap-1.5 whitespace-nowrap rounded-md border px-1.5 py-px align-middle font-mono text-[11px] uppercase tracking-wide ${
-        quiet ? "border-fd-border text-fd-muted-foreground" : "border-aq-cyan/30 text-aq-sky"
+      className={`inline-flex items-center gap-1.5 whitespace-nowrap border px-1.5 py-px align-middle font-mono text-[10px] uppercase tracking-[0.15em] ${
+        quiet ? "border-rule text-fd-muted-foreground" : "border-aq-text text-aq-text"
       }`}
     >
       <span

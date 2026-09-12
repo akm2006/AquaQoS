@@ -2,14 +2,14 @@
 import { RootProvider } from "fumadocs-ui/provider/next";
 import SearchDialog from "./search";
 
-// Dark only: the logo master needs a dark surface. Search reads the exported static index.
+// Light and dark both ship (D026): the logo master sits on an ink tile on cream, so the
+// dark-only constraint of D024 no longer applies. System preference decides on first visit.
 export function DocsProvider({ children }: { children: React.ReactNode }) {
   return (
     <RootProvider
       theme={{
-        forcedTheme: "dark",
-        defaultTheme: "dark",
-        enableSystem: false,
+        defaultTheme: "system",
+        enableSystem: true,
         hotKey: false,
       }}
       search={{ SearchDialog }}

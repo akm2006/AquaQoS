@@ -377,10 +377,18 @@ Do not use green/red as brand colors.
 
 ## 7.4 Documentation palette
 
-Owner direction, 2026-09-11 (D024): `/docs/` is dark-only. It uses the ink surface `#070707`
-with the logo's own light cyan (`#31D7FD`, `#9FEEFD`) as its only accent: matte and light,
-with no `#0000FF` fields, gradients or glow. Dark-only keeps the master's white chevron legible.
-State colors stay functional, lightened to sit on ink.
+Owner direction, 2026-09-12 (D026, superseding the dark-only clause of D024): `/docs/` uses the
+brutalist product palette of §28.1 and ships both themes, switchable in the header and defaulting
+to the system preference. Light is the product surface unchanged — cream `hsl(43 23% 93%)` under
+the dot grid, ink text and 2px frames. Dark is that palette inverted: ink `#070707` ground, cream
+text, `--color-on-ink-soft` `#B0AEA8` for secondary copy. The logo's light cyan (`#31D7FD`,
+`#9FEEFD`) stays matte with no `#0000FF` fields, gradients or glow.
+
+The blue rule carries across both: cyan and sky are **fills that always carry ink content**, and
+the only blue used as text or a chart stroke is the theme-aware `--color-aq-text` — aq-deep
+`#0A6E8A` on cream (5.06:1), aq-sky `#9FEEFD` on ink (15.47:1). State colors stay functional,
+darkened for cream and lightened for ink. Dark-only is retired because the ink tile of §28.1
+already keeps the master's white chevron legible on cream; the master is still never recolored.
 
 ---
 
@@ -1174,8 +1182,8 @@ Never let animation or styling delay working protocol evidence.
 Owner direction, 2026-09-12. The product routes (`/`, `/workspace/`, `/live/`, `/proof/` and
 the shared 404) use the brutalist layout language of the supplied v0 template, carrying AquaQoS
 content in the logo's colors. For these surfaces this section supersedes §7–9, §11, §12 and §20.
-§10 (logo), §25 (accessibility), §26 (copy) and the guaranteed/burst rules of §14 are unchanged,
-and `/docs/` keeps the dark theme of D024.
+§10 (logo), §25 (accessibility), §26 (copy) and the guaranteed/burst rules of §14 are unchanged.
+`/docs/` adopts this same language under D026, adding an inverted dark theme (§7.4).
 
 | Token | Value | Use |
 | --- | --- | --- |

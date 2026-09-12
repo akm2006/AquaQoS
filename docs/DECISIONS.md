@@ -1,5 +1,36 @@
 # Decisions
 
+## 2026-09-12 — D026: `/docs/` adopts the brutalist product surface, with light and dark themes
+
+Decision: per owner direction, restyle `/docs/` in the D025 product language — cream ground
+under the same 24px dot grid, radius 0, 2px frames with uppercase mono head bars, Geist Mono
+as the UI face and Geist Pixel for display type — and ship both a light and a dark theme with
+a header switch defaulting to the system preference. This supersedes the dark-only clause of
+D024; the rest of D024 (Fumadocs, the separate `(docs)` root layout, curated MDX, static
+search) is unchanged, and the page tree, navigation and content are untouched. The dark theme
+is the same palette inverted rather than a second palette: it is the landing's `frame-invert`
+block promoted to a whole surface, so ink ground carries cream text and `--color-on-ink-soft`
+for secondary copy. Alternatives: keep docs dark-only and accept two visual languages across
+one product; make docs light-only to match the landing exactly, which loses the reading
+preference Fumadocs already supports. Evidence: D024 justified dark-only by the logo master's
+white chevron needing a dark ground, but D025 had already solved that for cream with the ink
+tile (`BrandLogo`, tile side = 1.2 x logo width), so the constraint no longer binds and the
+master is still never recolored. The D025 blue rule is preserved in both themes: aq-cyan and
+aq-sky stay fills that carry ink content, and the only blue used as text is `--color-aq-text`,
+which resolves to aq-deep on cream (5.06:1) and aq-sky on ink (15.47:1). All nineteen
+foreground/background pairs across the two themes were computed at AA or better, the lowest
+being ink-soft on the cream code panel at 4.80:1. Reason: one design language across the
+product and its documentation, without giving up a dark reading mode. Consequences: Fumadocs'
+soft borders and rounded panels are overridden rather than forked — Tailwind's `--radius-*`
+scale is pinned to 0 so every `rounded-*` in the library's own markup computes square, and
+`--font-sans` resolves to Geist Mono so the library's sans components inherit the product
+voice (one line to revert if long-form prose needs a sans face). The docs root layout drops
+Geist Sans and loads the product surface's font module instead, so both roots serve identical
+font files and one fewer family is downloaded. `forcedTheme` is removed, so `.dark` is applied
+by next-themes on the client; theme vars are set in `@theme` and overridden in an unlayered
+`.dark` block, which wins because unlayered rules beat `@layer theme`.
+
+
 ## 2026-09-12 — D025: Brutalist product surface on cream with the logo's matte light blue
 
 Decision: rebuild the product surfaces (`/`, `/workspace/`, `/live/`, `/proof/` and the shared

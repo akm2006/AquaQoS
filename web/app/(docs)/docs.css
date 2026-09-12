@@ -2,44 +2,128 @@
 @import "fumadocs-ui/css/preset.css";
 
 /*
- * AquaQoS docs theme. Colors come from the logo master (#31D7FD, #9FEEFD, white) on the
- * near-black ink surface from DESIGN.md: light, matte accents only, no deep blue fields,
- * gradients or glow. Docs render dark-only because the master's white chevron needs a dark
- * ground (DESIGN.md §6.3).
+ * AquaQoS docs theme (docs/DECISIONS.md D026, superseding the dark-only clause of D024).
+ * Same brutalist language as the product surface (D025): cream ground under a dot grid,
+ * radius 0, 2px frames with uppercase mono head bars, Geist Mono as the UI face and Geist
+ * Pixel for display type. Docs additionally carry a dark theme, which is this palette
+ * inverted — the landing's `frame-invert` block promoted to a whole surface — so the two
+ * surfaces stay one system rather than two themes that merely share an accent.
+ *
+ * The blue rule of D025 holds in both themes: aq-cyan/aq-sky are fills that always carry ink
+ * content, and the only blue used as text or a chart stroke is --color-aq-text (aq-deep on
+ * cream, aq-sky on ink). The logo master is never recolored; on cream it sits on the ink tile
+ * the product header already uses, which is what retires D024's dark-only constraint.
  */
+
 @theme {
+  /* Brand palette, identical values to the product surface. */
+  --color-cream: hsl(43 23% 93%);
+  --color-cream-deep: hsl(40 10% 85%);
+  --color-ink: #070707;
+  --color-ink-soft: #5c5c5c;
+  --color-on-ink-soft: #b0aea8;
   --color-aq-cyan: #31d7fd;
   --color-aq-sky: #9feefd;
+  --color-aq-deep: #0a6e8a;
   --color-aq-steel: #7c98a5;
-  --color-aq-ink: #070707;
 
-  --color-fd-background: #070707;
-  --color-fd-foreground: #e8f0f3;
-  --color-fd-muted: #101213;
-  --color-fd-muted-foreground: #95a4ab;
-  --color-fd-popover: #0c0e0f;
-  --color-fd-popover-foreground: #e8f0f3;
-  --color-fd-card: #0b0d0e;
-  --color-fd-card-foreground: #e8f0f3;
-  --color-fd-border: rgb(159 238 253 / 0.1);
-  --color-fd-primary: #9feefd;
-  --color-fd-primary-foreground: #070707;
-  --color-fd-secondary: #111416;
-  --color-fd-secondary-foreground: #e8f0f3;
-  --color-fd-accent: rgb(49 215 253 / 0.08);
-  --color-fd-accent-foreground: #d4f7fe;
-  --color-fd-ring: rgb(49 215 253 / 0.55);
-  --color-fd-overlay: rgb(0 0 0 / 0.6);
+  /*
+   * Semantic pair that flips with the theme. Fills and the ink content on top of them are
+   * the same in both themes because aq-cyan/aq-sky are light: only text-blue and the
+   * grounds invert.
+   */
+  --color-aq-fill: #31d7fd;
+  --color-aq-fill-soft: #9feefd;
+  --color-aq-on-fill: #070707;
+  --color-aq-text: #0a6e8a;
+  --color-aq-line: #0a6e8a;
+  --color-dot: #c4c2b8;
+  --color-rule: hsl(0 0% 75%);
+  --color-frame: #070707;
 
+  /* Fumadocs surface tokens — light. */
+  --color-fd-background: hsl(43 23% 93%);
+  --color-fd-foreground: #070707;
+  --color-fd-muted: hsl(40 10% 85%);
+  --color-fd-muted-foreground: #5c5c5c;
+  --color-fd-popover: hsl(43 23% 93%);
+  --color-fd-popover-foreground: #070707;
+  --color-fd-card: hsl(43 23% 93%);
+  --color-fd-card-foreground: #070707;
+  --color-fd-border: #070707;
+  --color-fd-primary: #0a6e8a;
+  --color-fd-primary-foreground: hsl(43 23% 93%);
+  --color-fd-secondary: hsl(40 10% 85%);
+  --color-fd-secondary-foreground: #070707;
+  --color-fd-accent: hsl(40 10% 85%);
+  --color-fd-accent-foreground: #070707;
+  --color-fd-ring: #070707;
+  --color-fd-overlay: rgb(7 7 7 / 0.45);
+
+  /* State colors — AA on cream (DESIGN.md §7.3, §25). */
+  --color-fd-info: #0a6e8a;
+  --color-fd-warning: #92400e;
+  --color-fd-error: #b91c1c;
+  --color-fd-success: #166534;
+  --color-fd-idea: #0a6e8a;
+  --color-fd-diff-remove: rgb(185 28 28 / 0.1);
+  --color-fd-diff-remove-symbol: #b91c1c;
+  --color-fd-diff-add: rgb(22 101 52 / 0.1);
+  --color-fd-diff-add-symbol: #166534;
+
+  /* Radius 0 is a D025 rule: neutralise Tailwind's scale so every rounded-* is square. */
+  --radius-xs: 0px;
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
+  --radius-4xl: 0px;
+
+  /*
+   * Geist Mono is the UI face on every AquaQoS surface, so --font-sans resolves to it and
+   * Fumadocs' own sans-serif components inherit the product's voice. Switch this one line
+   * back to a sans stack if long-form prose ever needs it; nothing else depends on the face.
+   */
   --font-sans:
-    var(--font-geist-sans), Geist, Inter, ui-sans-serif, system-ui, -apple-system,
-    BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-mono:
+    var(--font-geist-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-pixel: var(--font-geist-pixel), var(--font-geist-mono), ui-monospace, monospace;
 }
 
-/* State colors stay functional (DESIGN.md §7.3), lightened to sit on ink. */
-@theme static {
-  --color-fd-info: #31d7fd;
+/*
+ * Dark theme: the same palette inverted. next-themes sets .dark on <html>; Fumadocs reads
+ * dark as `&:where(.dark, .dark *)`, so reassigning the vars here is all that is needed.
+ */
+.dark {
+  --color-aq-text: #9feefd;
+  --color-aq-line: #7c98a5;
+  --color-dot: #1b1b1b;
+  --color-rule: rgb(232 228 217 / 0.22);
+  --color-frame: hsl(43 23% 93%);
+
+  --color-fd-background: #070707;
+  --color-fd-foreground: hsl(43 23% 93%);
+  --color-fd-muted: #101010;
+  --color-fd-muted-foreground: #b0aea8;
+  --color-fd-popover: #0b0b0b;
+  --color-fd-popover-foreground: hsl(43 23% 93%);
+  --color-fd-card: #0b0b0b;
+  --color-fd-card-foreground: hsl(43 23% 93%);
+  --color-fd-border: rgb(232 228 217 / 0.26);
+  --color-fd-primary: #9feefd;
+  --color-fd-primary-foreground: #070707;
+  --color-fd-secondary: #101010;
+  --color-fd-secondary-foreground: hsl(43 23% 93%);
+  --color-fd-accent: rgb(232 228 217 / 0.08);
+  --color-fd-accent-foreground: hsl(43 23% 93%);
+  --color-fd-ring: #9feefd;
+  --color-fd-overlay: rgb(0 0 0 / 0.65);
+
+  /* Lightened to sit on ink, still functional rather than decorative. */
+  --color-fd-info: #9feefd;
   --color-fd-warning: #fcd34d;
   --color-fd-error: #fca5a5;
   --color-fd-success: #86efac;
@@ -52,17 +136,238 @@
 
 :root {
   --fd-layout-width: 1400px;
+  color-scheme: light;
+  /* Geist Pixel ELSH (element shape) axis, matching the product surface. */
+  --pixel-shape: 0;
 }
 
-::selection {
-  background: rgb(49 215 253 / 0.28);
-  color: #ffffff;
+.dark {
+  color-scheme: dark;
 }
 
-.prose :where(h1, h2, h3, h4) {
-  letter-spacing: -0.02em;
+@layer base {
+  html {
+    background-color: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+  }
+
+  /* The product surface's dot grid, same 24px cell, so the two grounds line up. */
+  body {
+    font-synthesis: none;
+    background-color: var(--color-fd-background);
+    background-image: radial-gradient(circle, var(--color-dot) 1px, transparent 1px);
+    background-size: 24px 24px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-fd-ring);
+    outline-offset: 3px;
+  }
+
+  ::selection {
+    background: var(--color-aq-sky);
+    color: var(--color-ink);
+  }
+}
+
+@layer components {
+  /*
+   * Frame primitive, mirroring .frame/.frame-head in the product stylesheet: a 2px border
+   * with an uppercase mono head bar. Used by the docs-only MDX components.
+   */
+  .doc-frame {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    border: 2px solid var(--color-fd-border);
+    background: var(--color-fd-card);
+  }
+
+  .doc-frame-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 16px;
+    border-bottom: 2px solid var(--color-fd-border);
+    color: var(--color-fd-muted-foreground);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  /* The template's "// LABEL ─── 00N" rule. Decorative; headings carry the real structure. */
+  .doc-label {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--color-fd-muted-foreground);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .doc-rule {
+    flex: 1;
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .doc-display {
+    font-family: var(--font-pixel);
+    font-variation-settings: "ELSH" var(--pixel-shape);
+  }
+
+  /* Same spec as .button on the product surface; hover inverts ground and text. */
+  .doc-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 44px;
+    padding: 8px 16px;
+    border: 2px solid var(--color-frame);
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    transition:
+      background-color 0.15s,
+      color 0.15s;
+  }
+
+  .doc-button:hover {
+    background: var(--color-frame);
+    color: var(--color-fd-background);
+  }
+
+  .doc-button-primary {
+    background: var(--color-frame);
+    color: var(--color-fd-background);
+  }
+
+  .doc-button-primary:hover {
+    background: var(--color-fd-background);
+    color: var(--color-fd-foreground);
+  }
+}
+
+/*
+ * Fumadocs chrome. The library ships soft borders and rounded panels; these rules restore
+ * the hard geometry without touching its markup or behaviour.
+ */
+#nd-sidebar {
+  border-right-width: 2px;
+  background: transparent;
+}
+
+#nd-subnav,
+#nd-docs-layout > header {
+  border-bottom-width: 2px;
+}
+
+#nd-toc [role="separator"],
+#nd-sidebar hr {
+  border-color: var(--color-rule);
+}
+
+/* Sidebar and TOC read as mono index lines, like the product nav. */
+#nd-sidebar a,
+#nd-toc a {
+  border-radius: 0;
+  font-size: 12.5px;
+  letter-spacing: 0.01em;
+}
+
+#nd-toc h3,
+#nd-sidebar p[class*="font-medium"] {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+/* Prose: mono face, square rules, the landing's heading scale. */
+.prose {
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.prose :where(h1, h2, h3, h4, h5, h6) {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.prose :where(h2) {
+  font-size: 22px;
+}
+
+.prose :where(h3) {
+  font-size: 18px;
+}
+
+.prose :where(h4) {
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+}
+
+.prose :where(a) {
+  color: var(--color-aq-text);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.prose :where(hr) {
+  border-color: var(--color-rule);
+}
+
+.prose :where(blockquote) {
+  border-inline-start-width: 2px;
+  border-color: var(--color-fd-border);
+  font-style: normal;
 }
 
 .prose :where(table) {
   font-variant-numeric: tabular-nums;
+  font-size: 13px;
+}
+
+.prose :where(th) {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-fd-muted-foreground);
+}
+
+.prose :where(th, td) {
+  border-color: var(--color-rule);
+}
+
+/* Code: inset panel on cream, flat block on ink — square in both. */
+.prose :where(pre),
+figure[data-rehype-pretty-code-figure] pre {
+  border: 2px solid var(--color-fd-border);
+  background: var(--color-fd-muted) !important;
+}
+
+.prose :where(:not(pre) > code) {
+  border: 1px solid var(--color-rule);
+  background: var(--color-fd-muted);
+  font-size: 0.9em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
