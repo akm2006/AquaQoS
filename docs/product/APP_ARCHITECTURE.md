@@ -194,7 +194,7 @@ This is a verification surface, not another landing page. It should answer in th
 4. Which transfer receipts and state deltas prove it.
 5. What the benchmark measured, including losing gas cases.
 6. What remains outside the supported domain.
-7. How to reproduce it.
+7. Where to find the developer reproduction guide and raw source material.
 
 Use evidence badges such as `SOURCE-PINNED`, `MEASURED`, `LOCAL RECEIPT` and `SCOPE LIMIT`.
 Do not display placeholder addresses or hardcode a test count in visual copy when the value
@@ -217,7 +217,7 @@ Required sections:
 - Security model and explicit limitations.
 - Benchmark methodology and interpretation.
 - Reproduction commands.
-- Source pins, licenses, provenance and links to raw documents.
+- Source pins, licenses and links to repository source material.
 
 Every section ends with a `Source` or `Verify` link to the relevant contract, test, report or
 official 1inch source. The docs page explains; the proof page demonstrates.

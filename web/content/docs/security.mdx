@@ -51,6 +51,20 @@ follow-up reviewer confirmed M1 closed under the supported token and dependency 
 | 2026-09-10 | Independent internal source review | No release-blocking defect in the v0 domain |
 | 2026-09-11 | Independent internal review before Sepolia | No critical, high, medium or low defect demonstrated in v0 scope |
 
+## Threat model and residual risk [#threats]
+
+The most important residual risks are owner-key compromise, admitting a token outside the
+supported standard-ERC-20 domain, callback sequences beyond the tested depth, and the bounded
+cost of reading sibling state. The deployment is intentionally non-production: its public
+Sepolia tokens are valueless and owner-mintable.
+
+| Boundary | Current control | Residual condition |
+| --- | --- | --- |
+| Owner lifecycle | Immutable owner, paused-state exit, no generic call or upgrade path | A compromised owner can pause, dock and withdraw the group |
+| Token semantics | Immutable pair and real-balance/allowance checks | Rebasing, fee-on-transfer, callback-bearing and malicious tokens are unsupported |
+| Nested execution | Transient reservations, per-order locks and rollback tests | Mixed-direction and deeper nesting need broader coverage before scope expands |
+| Evidence and release | Pinned inputs, retained receipts and source-match checks | Public testnet proof is not an external audit or authorization for real-value use |
+
 ## Accepted limitations [#limitations]
 
 | Limit | Consequence |
@@ -71,6 +85,7 @@ demonstrated defects.
 
 <Verify
   items={[
+    { label: "Full threat model", path: "docs/THREAT_MODEL.md" },
     { label: "v0 implementation review", path: "docs/SECURITY_REVIEW_V0.md" },
     { label: "Release review", path: "docs/SECURITY_REVIEW_RELEASE.md" },
     { label: "Review before Sepolia", path: "docs/SECURITY_REVIEW_SEPOLIA.md" },

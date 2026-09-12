@@ -3,68 +3,54 @@ import { KnownLimits } from "../_components/KnownLimits";
 import { Reveal } from "../_components/Reveal";
 import { SectionLabel } from "../_components/SectionLabel";
 import { ButtonLink } from "../_components/Button";
-import { sepolia, sourceCommit, totals } from "../_lib/landing-evidence";
+import { sepolia, totals } from "../_lib/landing-evidence";
 import { num } from "../_lib/format";
-import { evidence, routes } from "../_lib/routes";
+import { routes } from "../_lib/routes";
 
 export const metadata: Metadata = { title: "Proof" };
 
 const records = [
   {
     n: "01",
-    title: "Problem reproduction",
+    title: "Problem and mechanism",
     description:
-      "Independent virtual ledgers compete for shared real inventory. The baseline isolates inventory and allowance failures.",
-    file: "PROBLEM_REPRODUCTION",
+      "Why independent virtual ledgers can compete for one shared ERC-20 inventory, and where the guard enters the SwapVM path.",
+    href: "/docs/problem/",
   },
   {
     n: "02",
-    title: "Capacity specification",
+    title: "Capacity model",
     description:
-      "The exact invariant, guarantee consumption, replenishment and restricted vault boundary.",
-    file: "CAPACITY_GUARD_SPEC",
+      "The admission invariant, allowance floor, protected entitlement and burst semantics.",
+    href: "/docs/capacity/",
   },
   {
     n: "03",
     title: "Measured trade-offs",
     description:
       "Conservative Aqua, raw overcommitment and two protection policies across 2, 4 and 8 strategies.",
-    file: "BENCHMARK_RESULTS",
+    href: "/docs/benchmarks/",
   },
   {
     n: "04",
-    title: "Benchmark methodology",
+    title: "Security model and limits",
     description:
-      "Shared demand, initial backing, seeds, receipt checks and limits of the comparisons.",
-    file: "BENCHMARK_METHODOLOGY",
+      "Trust boundaries, internal review scope, remaining risks and explicit prototype limits.",
+    href: "/docs/security/",
   },
   {
     n: "05",
-    title: "Security review",
+    title: "Public Sepolia receipts",
     description:
-      "Internal review findings, the allowance correction, callback coverage and accepted prototype limits.",
-    file: "SECURITY_REVIEW_V0",
+      "Exact-match verified contracts and representative protected-capacity transactions.",
+    href: routes.onchain,
   },
   {
     n: "06",
-    title: "Sepolia deployment",
+    title: "Sources and licenses",
     description:
-      "Twenty-two public transactions, exact-match source verification and live receipt rechecks.",
-    file: "SEPOLIA_DEPLOYMENT",
-  },
-  {
-    n: "07",
-    title: "Threat model",
-    description:
-      "Trust boundaries, attacker capabilities, abuse paths, existing controls and residual risk.",
-    file: "THREAT_MODEL",
-  },
-  {
-    n: "08",
-    title: "Source & attribution",
-    description:
-      "Pinned upstream components, custom source licenses and required notices.",
-    file: "THIRD_PARTY",
+      "Pinned official dependencies, retained notices and source material behind the product.",
+    href: "/docs/sources/",
   },
 ] as const;
 
@@ -144,24 +130,24 @@ export default function Proof() {
       </section>
 
       <section className="landing-section" aria-labelledby="documents">
-        <SectionLabel index="002">{"// SECTION: SOURCE_DOCUMENTS"}</SectionLabel>
+        <SectionLabel index="002">{"// SECTION: VERIFY"}</SectionLabel>
         <h2 id="documents" className="section-title">
-          Every claim has a document.
+          Follow the evidence path.
         </h2>
         <Reveal>
           <div className="proof-grid">
-            {records.map(({ n, title, description, file }) => (
-              <a key={n} className="frame proof-record" href={evidence.doc(file)}>
+            {records.map(({ n, title, description, href }) => (
+              <a key={n} className="frame proof-record" href={href}>
                 <span className="frame-head">
                   <span>
-                    {n} / SOURCE_DOCUMENT
+                    {n} / CURATED_EVIDENCE
                   </span>
-                  <span>{file}.md</span>
+                  <span>OPEN</span>
                 </span>
                 <span className="proof-record-body">
                   <strong>{title}</strong>
                   <span className="proof-record-detail">{description}</span>
-                  <span className="arrow-link">Read Markdown document</span>
+                  <span className="arrow-link">Open evidence</span>
                 </span>
               </a>
             ))}
@@ -177,40 +163,6 @@ export default function Proof() {
         <Reveal>
           <KnownLimits />
         </Reveal>
-      </section>
-
-      <section className="landing-section" aria-labelledby="reproduce">
-        <SectionLabel index="004">{"// SECTION: REPRODUCE"}</SectionLabel>
-        <h2 id="reproduce" className="section-title">
-          Start from the recorded source.
-        </h2>
-        <div className="evidence-banner">
-          <div>
-            <span className="eyebrow">REPRODUCIBLE BY DESIGN</span>
-            <p>
-              The web build runs the existing benchmark checker before exporting
-              its evidence. The manifest retains the original report hash and
-              source commit.
-            </p>
-            <pre className="terminal-block">
-              node scripts/check-benchmark.mjs{"\n"}pnpm test
-            </pre>
-          </div>
-          <div className="download-links">
-            <a className="button" href={evidence.report} download>
-              Download raw report
-            </a>
-            <a className="button" href={evidence.manifest}>
-              View provenance manifest
-            </a>
-            <a href={evidence.doc("AI_PROVENANCE")}>
-              Development provenance
-            </a>
-          </div>
-        </div>
-        <p className="source-line">
-          Report source <code>{sourceCommit}</code> · authenticated recorded evidence
-        </p>
       </section>
     </main>
   );

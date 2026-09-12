@@ -19,23 +19,9 @@ export const primaryNav = [
 // The product header links home through the brand; the docs header keeps primaryNav.
 export const productNav = primaryNav.filter(({ href }) => href !== routes.home);
 
-// Files copied into public/evidence/ by scripts/prepare-evidence.mjs.
-export type EvidenceDocument =
-  | "PROBLEM_REPRODUCTION"
-  | "CAPACITY_GUARD_SPEC"
-  | "BENCHMARK_RESULTS"
-  | "BENCHMARK_METHODOLOGY"
-  | "SECURITY_REVIEW_V0"
-  | "SEPOLIA_DEPLOYMENT"
-  | "THREAT_MODEL"
-  | "THIRD_PARTY"
-  | "AI_PROVENANCE"
-  | "DEMO";
-
 export const evidence = {
   report: "/evidence/report.json",
   manifest: "/evidence/manifest.json",
-  doc: (name: EvidenceDocument) => `/evidence/${name}.md`,
 } as const;
 
 export const external = {

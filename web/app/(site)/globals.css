@@ -1859,8 +1859,7 @@
     text-transform: uppercase;
   }
 
-  /* Proof: the same frames, with each record as one link so its accessible name is the
-     whole card rather than six identical "Read Markdown document" links. */
+  /* Proof: each record remains one link so its accessible name covers the whole card. */
   .proof-page .landing-section {
     padding-block: 0 48px;
   }

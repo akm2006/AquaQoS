@@ -1,4 +1,4 @@
-import { readFileSync, mkdirSync, writeFileSync } from "node:fs";
+import { readFileSync, mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { fileURLToPath } from "node:url";
@@ -6,6 +6,9 @@ import { fileURLToPath } from "node:url";
 const root = fileURLToPath(new URL("../../", import.meta.url));
 const output = new URL("../public/evidence/", import.meta.url);
 mkdirSync(output, { recursive: true });
+for (const name of readdirSync(output)) {
+  if (name.endsWith(".md")) rmSync(new URL(name, output));
+}
 const source = readFileSync(
   new URL("../../benchmarks/raw/a-b-c-v1.json", import.meta.url),
 );
@@ -71,21 +74,4 @@ writeFileSync(
     2,
   ),
 );
-for (const [name, path] of [
-  ["CAPACITY_GUARD_SPEC"],
-  ["BENCHMARK_RESULTS"],
-  ["BENCHMARK_METHODOLOGY"],
-  ["PROBLEM_REPRODUCTION"],
-  ["SECURITY_REVIEW_V0"],
-  ["THREAT_MODEL"],
-  ["SEPOLIA_DEPLOYMENT"],
-  ["THIRD_PARTY"],
-  ["AI_PROVENANCE", "../../docs/archive/ethonline-2026/AI_PROVENANCE.md"],
-  ["DEMO", "../../docs/product/DEMO.md"],
-]) {
-  writeFileSync(
-    new URL(`${name}.md`, output),
-    readFileSync(new URL(path ?? `../../docs/${name}.md`, import.meta.url)),
-  );
-}
-console.log("Prepared checked local evidence for the Next.js app.");
+console.log("Prepared checked JSON evidence for the Next.js app.");

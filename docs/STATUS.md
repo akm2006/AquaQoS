@@ -42,6 +42,9 @@ deferred until the owner accepts the product.
 - Public documentation now separates curated product evidence from a concise event-compliance
   archive. Required sanitized prompts remain retained; operational credential and tool-diagnostic
   details are not tracked in public documentation.
+- The local documentation cleanup now makes `/docs/` the public explanation layer and `/proof/`
+  the verification path. Raw Markdown is no longer exported by the app; repository links remain
+  the source-material surface. The refreshed app has not yet been pushed or deployed.
 
 ## Supported claim and limits
 

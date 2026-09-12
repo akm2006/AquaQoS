@@ -1,10 +1,9 @@
 import { limitations } from "../_lib/copy";
-import { evidence } from "../_lib/routes";
 
 const sources = [
-  { href: evidence.doc("SECURITY_REVIEW_V0"), label: "Security review" },
-  { href: evidence.doc("BENCHMARK_METHODOLOGY"), label: "Benchmark methodology" },
-  { href: evidence.doc("THIRD_PARTY"), label: "Sources and attribution" },
+  { href: "/docs/security/", label: "Security model" },
+  { href: "/docs/benchmarks/", label: "Benchmark methodology" },
+  { href: "/docs/sources/", label: "Sources and licenses" },
 ];
 
 export function KnownLimits() {

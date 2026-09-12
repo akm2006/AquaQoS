@@ -1,7 +1,6 @@
 import { maxStrategies } from "../../_lib/copy";
 import { recordedStep, sepolia, totals } from "../../_lib/landing-evidence";
 import { num } from "../../_lib/format";
-import { evidence } from "../../_lib/routes";
 import { FrameHead } from "../FrameCard";
 import { Reveal } from "../Reveal";
 import { Scramble } from "../Scramble";
@@ -97,8 +96,8 @@ export function ProblemSection() {
                   </div>
                 ))}
               </div>
-              <a className="arrow-link" href={evidence.doc("PROBLEM_REPRODUCTION")}>
-                Read the reproduction
+              <a className="arrow-link" href="/docs/problem/">
+                Explore the problem
               </a>
             </div>
           </div>

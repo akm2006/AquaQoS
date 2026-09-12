@@ -34,7 +34,7 @@ export function DocsHero() {
               Read the capacity model
             </Link>
             <Link href="/docs/reproduce/" className="doc-button">
-              Reproduce it
+              Developer reproduction
             </Link>
             <a
               href={routes.proof}
