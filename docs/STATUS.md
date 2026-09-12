@@ -1,8 +1,8 @@
 # AquaQoS handoff
 
-Updated 2026-09-12. Current phase: final integration of the polished five-route Next.js and
-Fumadocs product surface. Submission packaging remains deferred until the owner accepts the
-product and the release gates are repeated from the committed source.
+Updated 2026-09-12. Current phase: polished five-route Next.js and Fumadocs product surface
+integrated and verified from committed source. Submission packaging remains deferred until the
+owner accepts the product.
 
 ## Verified state
 
@@ -29,6 +29,9 @@ product and the release gates are repeated from the committed source.
 - Public-release rehearsal: clean commit `8710918` installed with frozen dependencies, passed
   the complete protocol/evidence gates and production web build, and remained Git-clean. The
   staged release diff also passed Gitleaks 8.30.1 with zero findings.
+- Product integration commit `7566c4b` repeated the frozen offline install, complete protocol,
+  model, benchmark, rejection, release-evidence, bootstrap, typecheck and 19-page production
+  build gates from a separate clean worktree.
 
 ## Product state
 
@@ -69,8 +72,9 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 
 ## Next three tasks
 
-1. Commit this integration and repeat the frozen-install/build/evidence gates from a fresh worktree.
-2. Obtain owner visual acceptance and, when reviewer capacity is available, an independent UI pass.
+1. Obtain owner visual acceptance and confirm the visual-reference boundary.
+2. When reviewer capacity is available, obtain the independent UI pass that produced no report
+   during this milestone.
 3. Prepare the owner-approved public `v0.1.0` prerelease only after those gates are accepted.
 
 Historical milestone detail is retained in
