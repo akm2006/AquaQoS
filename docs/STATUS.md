@@ -1,8 +1,9 @@
 # AquaQoS handoff
 
-Updated 2026-09-13. Current phase: public product and repository release polish. Protocol,
-benchmarks, local/fork proof and Sepolia deployment are complete within the documented v0 scope.
-Submission packaging remains deferred until the owner accepts the product.
+Updated 2026-09-13. Current phase: public product and repository release polish complete;
+owner-controlled publication decisions remain. Protocol, benchmarks, local/fork proof and
+Sepolia deployment are complete within the documented v0 scope. Submission packaging remains
+deferred until the owner accepts the product.
 
 ## Verified protocol state
 
@@ -35,8 +36,9 @@ Submission packaging remains deferred until the owner accepts the product.
   22-page Vercel-mode export passed. The browser suite passed all primary routes, Sepolia links,
   72 comparison selections, evidence downloads, malformed-data recovery and 1440/390/320px
   layouts without application errors or overflow.
-- The currently hosted `https://aquaqos.vercel.app` still serves commit `e9563ce`; redeployment of
-  this presentation polish is pending the final repository gate.
+- Public presentation commit `0f04456` is pushed to `main`. Vercel production deployment
+  `dpl_DSqMaeCjJ6BJwVPkJ2he9hF2HF3i` completed its 22-page build and is aliased at
+  `https://aquaqos.vercel.app`.
 
 ## Supported claim and limits
 
@@ -60,7 +62,6 @@ scenario bounds; broader prior art and an external audit remain open.
 
 ## Next three tasks
 
-1. Run the full repository gates and a secret/generated-file audit on the polished tree.
-2. Commit, push, redeploy Vercel and verify the hosted primary routes.
-3. Obtain owner visual acceptance and visual-reference confirmation; keep submission packaging
-   deferred until then.
+1. Confirm GitHub public-release timing and the visual-reference permission boundary.
+2. Review the deployed product on a real phone/desktop and record owner visual acceptance.
+3. Keep submission packaging deferred until the product and evidence surfaces are accepted.
