@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 680" width="1120" height="680" role="img" aria-label="Three independent Aqua strategies feed one CAPACITY_GUARD block, which schedules each fill as guaranteed, burst or rejected against one shared vault inventory.">
+  <title>How CAPACITY_GUARD schedules a fill</title>
+  <desc>Three strategies keep independent Aqua virtual balances and converge on CAPACITY_GUARD, a SwapVM instruction that runs before Aqua settlement. It admits a fill only when the vault's real transferable inventory covers the requested debit plus every registered strategy's remaining entitlement, so each fill leaves as guaranteed, burst or rejected.</desc>
+
+  <defs>
+    <pattern id="aq-dots-d" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1" fill="#C4C2B8"/>
+    </pattern>
+  </defs>
+
+  <rect width="1120" height="680" fill="#F1EFE9"/>
+  <rect width="1120" height="680" fill="url(#aq-dots-d)"/>
+  <rect x="10" y="10" width="1100" height="660" fill="none" stroke="#070707" stroke-width="3"/>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+
+    <!-- Scheduling -->
+    <text x="52" y="58" font-size="12" letter-spacing="2.6" fill="#5C5C5C">SCHEDULING</text>
+
+    <g fill="none" stroke="#5C5C5C" stroke-width="1.25">
+      <path d="M228 120 H376 V185"/>
+      <path d="M228 185 H376"/>
+      <path d="M228 250 H376 V185"/>
+      <path d="M376 185 H460"/>
+      <path d="M660 185 H744"/>
+      <path d="M744 185 V120 H892"/>
+      <path d="M744 185 H892"/>
+      <path d="M744 185 V250 H892"/>
+    </g>
+
+    <g fill="none" stroke="#070707" stroke-width="2">
+      <rect x="52" y="100" width="176" height="40"/>
+      <rect x="52" y="165" width="176" height="40"/>
+      <rect x="52" y="230" width="176" height="40"/>
+      <rect x="892" y="100" width="176" height="40"/>
+      <rect x="892" y="165" width="176" height="40"/>
+      <rect x="892" y="230" width="176" height="40"/>
+    </g>
+
+    <g font-size="12" letter-spacing="1" fill="#070707" text-anchor="middle">
+      <text x="140" y="125">STRATEGY 1</text>
+      <text x="140" y="190">STRATEGY 2</text>
+      <text x="140" y="255">STRATEGY 3</text>
+      <text x="980" y="125">GUARANTEED</text>
+      <text x="980" y="190">BURST</text>
+      <text x="980" y="255">REJECTED</text>
+    </g>
+
+    <g stroke="#070707" stroke-width="1.25" fill="#31D7FD">
+      <rect x="250.5" y="115.5" width="9" height="9"/>
+      <rect x="250.5" y="180.5" width="9" height="9"/>
+      <rect x="250.5" y="245.5" width="9" height="9"/>
+      <rect x="851.5" y="115.5" width="9" height="9"/>
+      <rect x="851.5" y="180.5" width="9" height="9"/>
+      <rect x="851.5" y="245.5" width="9" height="9" fill="none"/>
+    </g>
+
+    <!-- Guard block on the approved ink surface -->
+    <rect x="460" y="125" width="200" height="120" fill="#070707"/>
+    <g transform="translate(508 141) scale(0.416)">
+      <path d="M40.8093 40.7002V64.3326H118.313L174.211 150H203.704L134.431 40.7002H40.8093Z" fill="#31D7FD"/>
+      <path d="M40.8093 82.3851V105.361H99.7942L128.258 150H159.122L115.226 82.3851H40.8093Z" fill="#31D7FD"/>
+      <path d="M40.8093 124.07V150H110.082L95.3361 124.07H40.8093Z" fill="#31D7FD"/>
+      <path d="M24.6914 124.07V150H0V124.07H24.6914Z" fill="#9FEEFD"/>
+      <path d="M24.6914 82.3851V105.361H0V82.3851H24.6914Z" fill="#9FEEFD"/>
+      <path d="M24.6914 40.7002V64.3326H0V40.7002H24.6914Z" fill="#9FEEFD"/>
+      <path d="M67.5583 25.93L82.9904 0H159.122L250 150H217.078L139.575 25.93H67.5583Z" fill="#FFFFFF"/>
+    </g>
+    <text x="560" y="230" font-size="11" letter-spacing="1.6" fill="#F1EFE9" text-anchor="middle">CAPACITY_GUARD</text>
+    <text x="560" y="288" font-size="11.5" letter-spacing="0.6" fill="#5C5C5C" text-anchor="middle">SwapVM instruction 0x05 &#183; runs before Aqua settlement</text>
+
+    <!-- Admission rule -->
+    <text x="52" y="336" font-size="12" letter-spacing="2.6" fill="#5C5C5C">ADMISSION RULE</text>
+    <rect x="52" y="352" width="1016" height="104" fill="none" stroke="#070707" stroke-width="2"/>
+    <text x="76" y="398" font-size="15" fill="#070707" xml:space="preserve">admit d   if and only if   I &gt;= sum r[i] + d + sum remaining(i)</text>
+    <text x="76" y="428" font-size="12" fill="#5C5C5C">I = min(balanceOf, allowance) &#8212; the vault's real transferable inventory, re-read on every fill.</text>
+
+    <!-- Shared inventory -->
+    <text x="52" y="496" font-size="12" letter-spacing="2.6" fill="#5C5C5C">SHARED INVENTORY</text>
+    <rect x="52" y="512" width="1016" height="110" fill="none" stroke="#070707" stroke-width="2"/>
+
+    <g stroke="#070707" stroke-width="1.5">
+      <rect x="76.75"  y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="107.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="138.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="169.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+
+      <rect x="211.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="242.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="273.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="304.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+
+      <rect x="346.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="377.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="408.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+      <rect x="439.75" y="538.75" width="22.5" height="22.5" fill="#31D7FD"/>
+
+      <rect x="481.75" y="538.75" width="22.5" height="22.5" fill="none"/>
+      <rect x="512.75" y="538.75" width="22.5" height="22.5" fill="none"/>
+      <rect x="543.75" y="538.75" width="22.5" height="22.5" fill="none"/>
+      <rect x="574.75" y="538.75" width="22.5" height="22.5" fill="none"/>
+    </g>
+    <g font-size="11.5" letter-spacing="1.2" fill="#5C5C5C">
+      <text x="76"  y="592">g[1]</text>
+      <text x="211" y="592">g[2]</text>
+      <text x="346" y="592">g[3]</text>
+      <text x="481" y="592">BURSTABLE</text>
+    </g>
+
+    <text x="660" y="556" font-size="12.5" fill="#070707">Configured entitlements stay covered.</text>
+    <text x="660" y="580" font-size="12.5" fill="#5C5C5C">Inventory above their sum bursts to whoever needs it.</text>
+
+  </g>
+</svg>

@@ -1,0 +1,102 @@
+---
+title: The shared-inventory problem
+description: Independent virtual ledgers can each look funded while competing for the same final token transfer.
+---
+
+Aqua lets one maker back several strategies without moving tokens. `ship` records a virtual
+balance for each strategy; the real tokens stay with the maker until settlement pulls them.
+Each strategy's ledger is accounted for independently, and nothing onchain adds those
+ledgers up against the maker's real balance. The official Aqua documentation describes this
+independent accounting and the resulting double commitment explicitly.
+
+That is the feature: one balance can back many positions. It is also the hazard: several
+strategies can quote correctly against their own ledgers and still compete for the same
+final transfer.
+
+## Reproduced with official Aqua [#reproduction]
+
+`test/SharedInventoryReproduction.t.sol` runs this against the pinned official Aqua and SwapVM
+sources, with no AquaQoS code involved.
+
+<Steps>
+<Step>
+
+### Two strategies share one balance
+
+Same maker, same token pair, same XYC program, different salts. Each strategy is shipped
+with virtual balances `(1000, 1000)`. The maker holds only `1000` units of the output token.
+
+</Step>
+<Step>
+
+### The first fill succeeds
+
+Strategy A requests `600` output. It settles: only A's virtual balances change, to
+`(2500, 400)`, and the maker's real output balance falls to `400`.
+
+</Step>
+<Step>
+
+### The sibling still quotes
+
+Strategy B's ledger is untouched at `(1000, 1000)`, so it correctly quotes `500` output for
+`1000` input. The quote reads virtual balances; it cannot see A's fill.
+
+</Step>
+<Step>
+
+### Settlement fails
+
+B's swap reverts because the maker cannot transfer `500`. The official SafeERC20 wrapper
+reports `SafeTransferFromFailed()`. The input transfer, the Aqua push and both virtual
+ledgers roll back atomically.
+
+</Step>
+</Steps>
+
+Separate tests prove the preconditions through balances and allowances, then repair only the
+missing inventory, or only the missing Aqua allowance, and replay the same fill successfully.
+Both are real failure modes: transferable inventory is the smaller of balance and allowance.
+
+## Why splitting the balance is not free [#conservative]
+
+The safe baseline is to split real backing evenly: each of `N` strategies advertises `B/N`.
+Nothing can be double-committed, but every strategy quotes from a shallower ledger. Under
+concentrated demand in the recorded benchmark, that conservative policy fills 6,000 of
+18,000 offered output units at two strategies, while raw overcommitment fills 9,000 and
+fails settlement on 6,000 more.
+
+| Policy | Advertised per strategy | What goes wrong |
+| --- | --- | --- |
+| Conservative Aqua (A) | `B/N` | Nothing overcommits, but quotes are shallower and demand is refused at quote time |
+| Raw overcommitment (B) | `B` | Siblings compete for one balance; excess demand fails in settlement |
+| AquaQoS (C, C100) | `B` | The guard rejects fills that would break a sibling's protected capacity, before any transfer |
+
+## What AquaQoS changes [#change]
+
+AquaQoS moves the decision before settlement and makes it protective. A fill that would
+consume a sibling's configured entitlement is rejected by `CAPACITY_GUARD` with
+`InsufficientCapacity(available, required)`. The sibling's own fill then succeeds, because its
+entitlement was still backed.
+
+<Callout title="A rejection is not a success">
+  Guard rejections are counted as unsuccessful demand in every summary. Rejecting earlier
+  protects siblings; it does not manufacture a zero-failure result.
+</Callout>
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Reproduction test", path: "test/SharedInventoryReproduction.t.sol" },
+    { label: "Reproduction notes", path: "docs/PROBLEM_REPRODUCTION.md" },
+    {
+      label: "Official Aqua inventory documentation",
+      href: "https://business.1inch.com/portal/documentation/aqua/liquidity-layer/access-resolvers-and-pathfinder",
+    },
+    {
+      label: "Aqua.sol at the pinned commit",
+      href: "https://github.com/1inch/aqua/blob/81c26e4619ce21556ab02b3284ee2685de21fb18/src/Aqua.sol",
+    },
+  ]}
+/>

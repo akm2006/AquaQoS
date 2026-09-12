@@ -6,10 +6,81 @@ async function verifyWorkspace(page) {
   const errors = [];
   page.on("pageerror", (error) => errors.push(error.message));
   const origin = await page.evaluate(() => location.origin);
+  const badResponses = [];
+  page.on("response", (response) => {
+    if (response.url().startsWith(origin) && response.status() >= 400)
+      badResponses.push(`${response.status()} ${response.url()}`);
+  });
+  const auditBasics = async (label) => {
+    const result = await page.evaluate(() => ({
+      lang: document.documentElement.lang,
+      headings: document.querySelectorAll("h1").length,
+      imagesWithoutAlt: document.querySelectorAll("img:not([alt])").length,
+      unlabeledFields: [...document.querySelectorAll("input, select, textarea")]
+        .filter((field) =>
+          !field.labels?.length &&
+          !field.getAttribute("aria-label") &&
+          !field.getAttribute("aria-labelledby"),
+        ).length,
+    }));
+    assert(result.lang === "en", `${label} language`);
+    assert(result.headings === 1, `${label} has exactly one h1`);
+    assert(result.imagesWithoutAlt === 0, `${label} image alternatives`);
+    assert(result.unlabeledFields === 0, `${label} form labels`);
+  };
+
+  // Landing: one heading, every entry point resolvable, and no overflow at three widths.
+  await page.goto(origin + "/");
+  assert(
+    (await page.getByRole("heading", { level: 1 }).count()) === 1,
+    "landing has exactly one h1",
+  );
+  await page
+    .getByRole("heading", { name: "Shared liquidity, scheduled.", level: 1 })
+    .waitFor();
+  await auditBasics("landing");
+  const landing = page.locator("main");
+  const href = (scope, name) =>
+    scope.getByRole("link", { name, exact: true }).getAttribute("href");
+  assert(
+    (await href(landing, "Run live local demo")) === "/live/",
+    "landing primary call to action targets the live route",
+  );
+  for (const [name, target] of [
+    ["Open the workspace", "/workspace/"],
+    ["Run the live session", "/live/"],
+    ["Read the evidence", "/proof/"],
+  ])
+    assert((await href(landing, name)) === target, `landing tier link ${name}`);
+  const nav = page.getByRole("navigation", { name: "Main navigation" });
+  for (const [name, target] of [
+    ["Workspace", "/workspace/"],
+    ["Live", "/live/"],
+    ["Proof", "/proof/"],
+    ["Docs", "/docs/"],
+  ])
+    assert((await href(nav, name)) === target, `header nav reaches ${name}`);
+  for (const width of [1440, 390, 320]) {
+    await page.setViewportSize({ width, height: 1000 });
+    await page.evaluate(() => window.scrollTo(0, 0));
+    assert(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= innerWidth,
+      ),
+      `no landing overflow at ${width}`,
+    );
+    await page.screenshot({
+      path: `output/playwright/next-landing-${width}.png`,
+      fullPage: true,
+    });
+  }
+  await page.setViewportSize({ width: 1440, height: 1000 });
+
   await page.goto(origin + "/workspace/");
   await page
     .getByRole("button", { name: "Next transaction", exact: true })
     .waitFor();
+  await auditBasics("workspace");
   await page
     .getByRole("button", { name: "Show recorded step 3", exact: true })
     .click();
@@ -188,6 +259,7 @@ async function verifyWorkspace(page) {
     .getByRole("link", { name: "Proof", exact: true })
     .click();
   await page.getByRole("heading", { name: "Open the receipts." }).waitFor();
+  await auditBasics("proof");
   assert(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
@@ -205,32 +277,46 @@ async function verifyWorkspace(page) {
     path: "output/playwright/next-proof-desktop.png",
     fullPage: true,
   });
+
   await page.setViewportSize({ width: 320, height: 1000 });
-  await page.getByRole("link", { name: "Docs", exact: true }).click();
+  await page.goto(origin + "/docs/");
   await page
-    .getByRole("heading", { name: "How AquaQoS protects shared capacity." })
+    .getByRole("heading", { name: "Shared liquidity, scheduled.", level: 1 })
     .waitFor();
+  await auditBasics("docs");
   assert(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= innerWidth,
     ),
     "docs mobile overflow",
   );
-  for (const link of await page.locator('main a[href^="/evidence/"]').all()) {
-    const response = await page.request.get(
-      origin + (await link.getAttribute("href")),
-    );
-    assert(response.ok(), "docs evidence download must exist");
-  }
+  const searchIndex = await page.request.get(origin + "/api/search.json");
+  assert(searchIndex.ok(), "docs search index must exist");
+  assert(
+    (await searchIndex.text()).includes("Capacity model"),
+    "docs search index contains capacity documentation",
+  );
+  await page.getByRole("button", { name: "Open Search" }).click();
+  await page.getByRole("textbox", { name: "Search" }).fill("capacity guard");
+  await page
+    .getByRole("button")
+    .filter({ hasText: "Capacity model" })
+    .first()
+    .waitFor();
+  await page.getByRole("button", { name: "Close Search" }).click();
+  await page.getByRole("link", { name: "Read the capacity model" }).click();
+  await page.getByRole("heading", { name: "Capacity model", level: 1 }).waitFor();
   await page.screenshot({
     path: "output/playwright/next-docs-mobile.png",
     fullPage: true,
   });
   await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto(origin + "/docs/");
   await page.screenshot({
     path: "output/playwright/next-docs-desktop.png",
     fullPage: true,
   });
+
   await page.route("**/evidence/report.json", (route) =>
     route.fulfill({
       status: 200,
@@ -256,5 +342,9 @@ async function verifyWorkspace(page) {
     .getByRole("button", { name: "Next transaction", exact: true })
     .waitFor();
   assert(errors.length === 0, `browser exceptions: ${errors.join("; ")}`);
-  return `Passed ${selections} policy/workload selections, recorded fill/reject/push assertions, 3 widths, proof/docs evidence links and malformed-data recovery.`;
+  assert(
+    badResponses.length === 0,
+    `unexpected browser responses: ${badResponses.join("; ")}`,
+  );
+  return `Passed landing structure at 3 widths, ${selections} policy/workload selections, recorded fill/reject/push assertions, responsive proof/docs, static docs navigation/search, evidence links and malformed-data recovery.`;
 }

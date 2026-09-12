@@ -1,0 +1,128 @@
+---
+title: Benchmarks
+description: Conservative Aqua, raw overcommitment and two AquaQoS policies on equal backing and identical demand.
+---
+
+**The question.** Can a protected-capacity scheduler let several Aqua strategies share one
+inventory with fewer settlement failures than raw overcommitment, while keeping the conservative
+allocation's protected capacity and making the price and gas trade-offs visible?
+
+<Truth kind="recorded" /> Clean retained report with `dirty=false`, Node 22.16.0,
+Hardhat 3.8.0, solc 0.8.30, Cancun, viaIR and optimizer 700. Local test tokens only.
+
+<Stats>
+  <Stat value="72" label="fresh EVM fixtures" />
+  <Stat value="616" label="offered swaps, all retained" />
+  <Stat value="12" label="replenishment pushes" />
+  <Stat value="52" label="guard rejections replayed" />
+</Stats>
+
+## Systems under test [#systems]
+
+Every system uses the same pinned code, compiler, EVM, token pair, fee-free XYC program,
+exact-output demand and accounts. Each fixture starts with `B = 10,000` raw units of each token.
+
+| System | Virtual per strategy | Guarantee | Custody |
+| --- | --- | --- | --- |
+| A · conservative Aqua | `B/N` | None | Maker EOA |
+| B · raw overcommitment | `B` | None | Maker EOA |
+| C · AquaQoS | `B` | `B/2N` | AquaQoS vault |
+| C100 · matched AquaQoS | `B` | `B/N` | AquaQoS vault |
+
+C100's guarantees equal A's initial split, which isolates the guarantee ratio. Quote depth and
+custody still differ from A and are not controlled away.
+
+## Workloads [#workloads]
+
+Group sizes of 2, 4 and 8 strategies, six workloads each, every swap mined as its own transaction:
+
+- **Low contention:** one strategy active at a time.
+- **Concentrated overload**, forward and reverse: one strategy consumes its guarantee and burst
+  before siblings are offered demand.
+- **Replenishment:** fixed `Aqua.push` deposits at documented steps.
+- **Balanced round-robin** and **seeded shuffle:** every strategy trades once in each
+  direction; both orders share one demand multiset.
+
+Demand is never reduced after a failure, and taker balances are never topped up mid-run.
+
+## Outcomes [#outcomes]
+
+Every offered swap has exactly one primary outcome. Guard rejections and settlement failures
+are never counted as successful volume.
+
+| Outcome | Meaning |
+| --- | --- |
+| `success` | Receipt succeeds and ERC-20 and Aqua deltas match |
+| `quote_rejection` | The program cannot admit the output, for example on shallow virtual depth |
+| `guard_rejection` | AquaQoS rejects before any token moves |
+| `settlement_failure` | Raw Aqua reaches settlement, the transfer fails, and everything rolls back |
+
+## Results [#results]
+
+Successful over offered output units. `q`, `g` and `f` are quote-rejected, guard-rejected and
+settlement-failed units.
+
+| Strategies | Workload | A | B | C | C100 |
+| ---: | --- | --- | --- | --- | --- |
+| 2 | Concentrated | 6,000/18,000 (q 12,000) | 9,000/18,000 (q 3,000; f 6,000) | 9,000/18,000 (g 9,000) | 6,000/18,000 (g 12,000) |
+| 4 | Concentrated | 6,000/13,500 (q 7,500) | 9,000/13,500 (f 4,500) | 9,000/13,500 (g 4,500) | 6,000/13,500 (g 7,500) |
+| 8 | Concentrated | 6,000/12,000 (q 6,000) | 9,750/12,000 (f 2,250) | 9,750/12,000 (g 2,250) | 6,000/12,000 (g 6,000) |
+| 2 | Replenishment | 7,500/10,000 (q 2,500) | 10,000/10,000 | 10,000/10,000 | 10,000/10,000 |
+| 8 | Replenishment | 1,875/2,500 (q 625) | 2,500/2,500 | 2,500/2,500 | 2,500/2,500 |
+
+Low-contention, balanced and shuffled workloads fill all offered demand under every policy.
+No configured-capacity violation was found in any recorded C or C100 post-action state.
+
+<Callout type="idea" title="How to read this">
+  At equal protection, C100 fills exactly what conservative Aqua fills: 6,000. C's extra
+  volume comes from its smaller guarantees, not from the guard itself. The guard's
+  contribution is *where* excess demand fails: before settlement, with sibling guarantees
+  intact, instead of as a raw inventory shortage.
+</Callout>
+
+## Gas: the losing case [#gas]
+
+Median transaction gas at eight strategies:
+
+| Case | A / B | C | C100 |
+| --- | ---: | ---: | ---: |
+| Low-contention success | 113,715 | 210,099 | 210,099 |
+| Concentrated: raw settlement failure | 126,779 | | |
+| Concentrated: guard rejection | | 146,465 | 147,137 |
+
+Guarded success costs 96,384 more gas at eight strategies, about 84.8% overhead, because every
+admission reads each sibling. Guard rejection is also more expensive than raw settlement
+failure. Earlier rejection does not mean cheaper rejection. Trade sizes change with group size,
+so these medians are not a controlled per-sibling slope.
+
+## Were the rejections necessary? [#replay]
+
+Every one of the 52 C and C100 guard rejections was rebuilt from its recorded pre-state and
+executed through the official unguarded router.
+
+<Stats>
+  <Stat value="17" label="would fail in settlement" />
+  <Stat value="35" label="would settle but breach configured capacity" />
+  <Stat value="0" label="safe fills rejected in this sample" />
+  <Stat value="12" label="successful controls reproduced" />
+</Stats>
+
+<Truth kind="scope" /> This covers the static, fee-free, maximum-allowance TokenMock cases in
+this report. It does not measure same-transaction or finite-allowance conservatism, where safe
+fills can be rejected, and it does not claim every rejection outside this scope was necessary.
+
+## What this does not show [#limits]
+
+Mainnet liquidity, economic value, profitability or universal solvency; a single-strategy
+group; token diversity; broader shuffled overload; or universal worst-case gas.
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Methodology", path: "docs/BENCHMARK_METHODOLOGY.md" },
+    { label: "Results and review", path: "docs/BENCHMARK_RESULTS.md" },
+    { label: "Raw comparative report", path: "benchmarks/raw/a-b-c-v1.json" },
+    { label: "Raw rejection replay", path: "benchmarks/raw/rejections-v1.json" },
+  ]}
+/>

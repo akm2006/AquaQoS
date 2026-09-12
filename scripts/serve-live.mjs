@@ -8,6 +8,14 @@ import { createLiveSession, json } from './live-session.mjs';
 const output = resolve(fileURLToPath(new URL('../web/out/', import.meta.url)));
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css',
   '.json': 'application/json', '.svg': 'image/svg+xml', '.txt': 'text/plain', '.md': 'text/plain; charset=utf-8', '.ico': 'image/x-icon' };
+function rscExportPath(pathname) {
+  const slash = pathname.lastIndexOf('/');
+  const file = pathname.slice(slash + 1);
+  if (!file.startsWith('__next.') || !file.endsWith('.txt')) return null;
+  const parts = file.slice('__next.'.length, -'.txt'.length).split('.');
+  if (parts.length < 2) return null;
+  return resolve(output, `.${pathname.slice(0, slash + 1)}`, `__next.${parts[0]}`, ...parts.slice(1, -1), `${parts.at(-1)}.txt`);
+}
 export async function startLiveServer(port = 4174) {
   if (!Number.isInteger(port) || port < 0 || port > 65535) throw Error('Invalid local port.');
   let session = null, revision = 0, busy = false;
@@ -19,6 +27,13 @@ export async function startLiveServer(port = 4174) {
       // This process controls only its own in-memory chain. Reject rebinding and cross-origin writes.
       if (req.headers.host !== `127.0.0.1:${server.address().port}`) return reply(403, { error: 'Invalid local host.' });
       const url = new URL(req.url, origin);
+      // Fumadocs emits this static index for the exported docs search client. It is data, not
+      // a live-session endpoint, so serve it before the intentionally narrow API router below.
+      if (['GET', 'HEAD'].includes(req.method) && url.pathname === '/api/search.json') {
+        const data = await readFile(resolve(output, 'api/search.json'));
+        res.writeHead(200, { 'Content-Type': mime['.json'], 'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store' });
+        return res.end(req.method === 'HEAD' ? undefined : data);
+      }
       if (url.pathname.startsWith('/api/')) {
         if (req.headers.origin && req.headers.origin !== origin) return reply(403, { error: 'Local origin required.' });
         if (busy) return reply(409, { error: 'A local operation is in progress. Refresh shortly.' });
@@ -57,7 +72,14 @@ export async function startLiveServer(port = 4174) {
       if (!path.startsWith(output + sep) && path !== output) return reply(403, { error: 'Invalid path.' });
       let file = path;
       try { if ((await stat(file)).isDirectory()) file = resolve(file, 'index.html'); }
-      catch { return reply(404, { error: 'Page unavailable. Build the Next.js app first.' }); }
+      catch {
+        // Next 16's static export stores RSC prefetch files in directories, while its client
+        // requests a flattened filename. Translate only that emitted filename shape.
+        file = rscExportPath(url.pathname);
+        if (!file || (!file.startsWith(output + sep) && file !== output)) return reply(404, { error: 'Page unavailable. Build the Next.js app first.' });
+        try { if (!(await stat(file)).isFile()) return reply(404, { error: 'Page unavailable. Build the Next.js app first.' }); }
+        catch { return reply(404, { error: 'Page unavailable. Build the Next.js app first.' }); }
+      }
       const data = await readFile(file);
       res.writeHead(200, { 'Content-Type': mime[extname(file)] ?? 'application/octet-stream',
         'X-Content-Type-Options': 'nosniff', 'Cache-Control': 'no-store' });

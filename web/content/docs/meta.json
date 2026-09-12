@@ -1,0 +1,19 @@
+{
+  "title": "AquaQoS",
+  "pages": [
+    "index",
+    "---Protocol---",
+    "problem",
+    "inventory",
+    "architecture",
+    "capacity",
+    "lifecycle",
+    "---Assurance---",
+    "security",
+    "benchmarks",
+    "deployments",
+    "---Build---",
+    "reproduce",
+    "sources"
+  ]
+}

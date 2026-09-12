@@ -8,6 +8,12 @@
 **Status:** Adopted frontend design direction; owner-supplied logo locked
 **Last updated:** September 2026
 
+**Implementation update (2026-09-12):** the current product surface uses a cream/ink grid,
+square frames and the supplied logo's matte light blue. This supersedes older blue-led surface
+guidance where it conflicts; the logo, evidence-first copy rules, accessibility requirements and
+route map remain authoritative. `/docs/` uses the same language with an optional dark reading
+theme.
+
 ---
 
 ## 1. Design Objective

@@ -6,6 +6,11 @@
 **Design authority:** [`DESIGN_SYSTEM.md`](DESIGN_SYSTEM.md)
 **Product authority:** [`docs/STATUS.md`](../STATUS.md), [`docs/ACCEPTANCE_CRITERIA.md`](../ACCEPTANCE_CRITERIA.md)
 
+**Implementation update (2026-09-12):** the app now uses `(site)` and `(docs)` route groups
+with separate root layouts. This is the one justified exception to the flat structure below:
+the Fumadocs/Tailwind documentation surface stays isolated from the interactive product shell.
+The five public routes and their evidence boundaries are unchanged.
+
 This guide turns the design direction into a focused, evidence-first product. It is an
 implementation contract, not a request to add every possible page, package or animation.
 The app must make AquaQoS understandable in ten seconds, verifiable in two minutes and

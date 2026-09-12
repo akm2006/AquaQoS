@@ -1,0 +1,139 @@
+---
+title: Capacity model
+description: The admission invariant, the allowance floor, and how guarantees are consumed, replenished and burst.
+---
+
+For one group and one output token, `CAPACITY_GUARD` admits a fill only when transferable
+inventory can cover that fill **and** every strategy's remaining configured entitlement.
+Inventory above all remaining entitlements is burst: any strategy may use it, but no fill may
+eat into a sibling's protected share.
+
+## Terms [#terms]
+
+| Symbol | Definition |
+| --- | --- |
+| `S` | The active registered strategies, at most eight |
+| `v[i]` | Live Aqua virtual balance of strategy `i` in the output token |
+| `g[i]` | Configured guarantee; activation requires `g[i] <= v[i]` |
+| `b[i]` | Baseline surplus fixed at activation: `v[i] - g[i]` |
+| `r[i]` | Transient reservation held by an in-progress fill |
+| `I` | Transferable inventory: `min(balanceOf(vault), allowance(vault, Aqua))` |
+| `d` | Final maker debit of the current fill; `amountOut` in v0 |
+
+## The admission invariant [#invariant]
+
+For a fill of strategy `j`, the guard first requires `d <= v[j]`, rejecting a virtual-balance
+shortage itself instead of admitting a fill Aqua would later fail. It then admits and reserves
+`d` only if:
+
+```text title="CAPACITY_GUARD admission"
+remaining(i, extra) = min(g[i], max(v[i] - b[i] - r[i] - extra, 0))
+
+I >= sum(r[i]) + d + sum(remaining(i, i == j ? d : 0))
+```
+
+In words: count every pending reservation, add the proposed debit, and still cover what each
+strategy is owed after its own pending consumption. The filling strategy's own entitlement is
+counted after its debit, so it consumes its guarantee first and bursts beyond it only into
+inventory nobody else is owed.
+
+Activation must be feasible for both tokens: `I >= sum(g[i])`.
+
+### The allowance floor [#allowance-floor]
+
+Every guarded output also requires:
+
+```text
+allowance(vault, Aqua) >= sum(g[i]) + sum(r[i]) + d
+```
+
+Activation establishes this floor and every output preserves it, so a permissionless
+`Aqua.push` can never make restored entitlement look transferable when the allowance is gone.
+The cost is conservatism: an allowance exactly equal to the guarantee sum blocks every
+positive output. There is no reapproval API; the owner can pause, dock all and withdraw to migrate.
+
+## Guaranteed and burst [#policies]
+
+The benchmark compares two guarantee policies over the same real backing. Both advertise the
+full backing on every strategy; they differ only in how much of it is protected.
+
+<CapacitySplit
+  label="Policy C · half backing guaranteed, g = B / 2N"
+  backing={10000}
+  guarantees={[2500, 2500]}
+  note="Two strategies. Half the backing is protected; the other half can burst to whichever strategy fills."
+/>
+
+<CapacitySplit
+  label="Policy C100 · full backing guaranteed, g = B / N"
+  backing={10000}
+  guarantees={[5000, 5000]}
+  note="Two strategies. Guarantees match conservative Aqua's split; there is no initial burst headroom."
+/>
+
+## Worked example [#example]
+
+Two strategies with `g = 500`, virtual balances of `1000` each, and a vault holding `1000`
+output tokens. Each row is a separate transaction, so no reservation is pending.
+
+| Step | Request | `I` | Required | Result |
+| --- | --- | ---: | --- | --- |
+| 1 | S1 outputs 600 | 1,000 | 600 + 0 + 500 = 1,100 | Rejected: `InsufficientCapacity(1000, 1100)` |
+| 2 | S1 outputs 500 | 1,000 | 500 + 0 + 500 = 1,000 | Admitted |
+| 3 | S2 outputs 501 | 500 | 501 + 0 + 0 = 501 | Rejected: `InsufficientCapacity(500, 501)` |
+| 4 | S2 outputs 500 | 500 | 500 + 0 + 0 = 500 | Admitted |
+
+In step 1, S1's own remaining entitlement after the debit is zero, but S2 is still owed 500,
+and 1,100 exceeds the 1,000 available. After step 2 the real balance is 500 and only S2 is
+owed anything, so step 3 fails by exactly one unit.
+
+The local transaction replay and the public Sepolia run execute this sequence and record these
+error arguments. The public run used larger raw amounts.
+
+With `g = 250` instead, the step-1 request is admitted: `600 + 0 + 250 = 850 <= 1000`.
+S1 may take up to 750, its own 250 plus 500 of burst, while S2's 250 stays covered.
+
+## Consumption and replenishment [#consumption]
+
+- **Consumption.** A successful output lowers the strategy's virtual balance toward its
+  baseline, so its remaining entitlement falls naturally, down to zero.
+- **Replenishment.** Input pushed into a strategy, by a reverse swap or a direct
+  `Aqua.push`, raises its virtual balance. Entitlement recovers automatically, capped at `g`.
+- **Quotes.** A quote is a same-state eligibility result. It creates no reservation, and the
+  swap rechecks against current state.
+- **Pausing.** Pausing makes every check reject and ends the commitment. Reactivation resets
+  every baseline together and must pass feasibility again.
+
+```solidity title="contracts/AquaQoSVault.sol — checkCapacity"
+for (uint256 i; i < hashes.length; i++) {
+    bytes32 sibling = hashes[i];
+    Strategy storage s = strategies[sibling];
+    uint256 reserved = reservation(sibling, token);
+    required += reserved;
+    uint256 available = _subtract(_virtual(sibling, token), token == tokenA ? s.baselineA : s.baselineB);
+    available = _subtract(available, reserved);
+    if (sibling == hash) available = _subtract(available, debit);
+    uint256 guarantee = token == tokenA ? s.guaranteeA : s.guaranteeB;
+    allowanceRequired += guarantee + reserved;
+    required += available < guarantee ? available : guarantee;
+}
+_requireCapacity(token, required);
+```
+
+<Callout title="Model check, not a proof">
+  `node scripts/check-capacity-model.mjs` passes 327,168 bounded settlement cases plus explicit
+  consumption, burst and replenishment boundaries. It checks the arithmetic; it does not prove
+  Solidity overflow behavior, lifecycle safety or EVM integration. Those are covered by the
+  Solidity tests and transaction replays.
+</Callout>
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "CAPACITY_GUARD specification", path: "docs/CAPACITY_GUARD_SPEC.md" },
+    { label: "Vault checkCapacity()", path: "contracts/AquaQoSVault.sol#L149-L174" },
+    { label: "Bounded arithmetic model check", path: "scripts/check-capacity-model.mjs" },
+    { label: "Separate-transaction validation", path: "docs/TRANSACTION_VALIDATION.md" },
+  ]}
+/>

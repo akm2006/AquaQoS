@@ -16,6 +16,10 @@ const source = readFileSync(
 );
 const report = JSON.parse(source);
 writeFileSync(new URL("report.json", output), JSON.stringify(report));
+// Summarise the public deployment so the app can cite it without shipping the full receipts.
+const sepolia = JSON.parse(
+  readFileSync(new URL("../../deployments/sepolia/report.json", import.meta.url)),
+);
 writeFileSync(
   new URL("manifest.json", output),
   JSON.stringify(
@@ -25,12 +29,16 @@ writeFileSync(
       kind: report.kind,
       verification: "check-benchmark.mjs passed before export",
       limitations: report.limitations,
+      sepolia: {
+        chainId: sepolia.chainId,
+        transactions: sepolia.transactions.length,
+      },
     },
     null,
     2,
   ),
 );
-for (const [name, path = `../../docs/${name}.md`] of [
+for (const [name, path] of [
   ["CAPACITY_GUARD_SPEC"],
   ["BENCHMARK_RESULTS"],
   ["BENCHMARK_METHODOLOGY"],
@@ -44,7 +52,7 @@ for (const [name, path = `../../docs/${name}.md`] of [
 ]) {
   writeFileSync(
     new URL(`${name}.md`, output),
-    readFileSync(new URL(path, import.meta.url)),
+    readFileSync(new URL(path ?? `../../docs/${name}.md`, import.meta.url)),
   );
 }
 console.log("Prepared checked local evidence for the Next.js app.");

@@ -1,3 +1,6 @@
 packages:
   - .
+# esbuild's install script only verifies the platform binary pnpm already installs.
+allowBuilds:
+  esbuild: false
 storeDir: ../.pnpm-store

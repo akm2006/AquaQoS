@@ -32,3 +32,10 @@ requires the owner's approval. This records source terms, not a legal clearance 
 At dependency installation retain package notices and lockfiles. Mark copied template code
 with original SHA/path and modification date. The template is reference-only at bootstrap.
 Do not copy demo metrics, economic claims or whitepaper diagrams as our measured results.
+
+2026-09-12 design reference: an owner-supplied, untracked v0 export named
+`brutalist-ai-saa-s-landing-page/` informed the product's layout language only. No template
+files, images, components, copy or metrics were copied into `web/`; AquaQoS reimplements its
+own evidence-backed surface with the supplied logo and project colors. The reference had no
+license file, so its reuse rights remain unresolved. Confirm that boundary before public
+release; this is a release gate, not a legal clearance opinion.

@@ -331,3 +331,21 @@ policy; existing path-bound checkers make broad evidence moves risky. Reason: im
 trust and navigation without weakening reproducibility. Consequences: original AquaQoS files
 without separate notices remain all-rights-reserved until the owner selects a broader license;
 raw evidence paths and protocol bytecode remain unchanged.
+
+## 2026-09-12 — D025: Evidence-first brutalist product surface
+
+Decision: use a cream, ink and logo-blue product surface across the landing, workspace, live
+and proof routes. Reimplement the owner-supplied visual reference with AquaQoS copy, data and
+components; keep the supplied logo unchanged. Alternatives: retain the prior blue-led surface,
+copy the template, or add an animation/UI library. Evidence: contrast tokens, the checked
+benchmark manifest and existing browser flows. Consequences: the product uses CSS motion only,
+preserves its evidence contracts, and tracks the reference's unresolved license separately.
+
+## 2026-09-12 — D026: Static curated docs with the same visual language
+
+Decision: add a separate static Fumadocs root for `/docs/`, including searchable curated MDX,
+light/dark reading themes and links back to repository evidence. Alternatives: raw Markdown
+rendering or a new documentation service. Evidence: the static export has no runtime server and
+the underlying records already exist in the repository. Consequences: docs remain a readable
+layer, not the source of truth; static search and navigation must work through the local export
+server without API or RSC prefetch errors.

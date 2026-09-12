@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 400" width="1200" height="400" role="img" aria-label="AquaQoS — Shared liquidity, scheduled.">
+  <title>AquaQoS — Shared liquidity, scheduled.</title>
+  <!-- Brutalist product surface: cream ground, 24px dot grid, 2px ink frames (web/app/(site)/globals.css).
+       The mark is the unchanged master geometry from AquaQoS.svg, placed on the approved
+       near-black surface #070707 (DESIGN.md 6.3) so its white fill keeps contrast. -->
+  <defs>
+    <pattern id="aq-dots" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="12" cy="12" r="1" fill="#C4C2B8"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="400" fill="#F1EFE9"/>
+  <rect width="1200" height="400" fill="url(#aq-dots)"/>
+  <rect x="10" y="10" width="1180" height="380" fill="none" stroke="#070707" stroke-width="3"/>
+
+  <!-- Mark on the approved ink surface -->
+  <rect x="64" y="92" width="236" height="216" fill="#070707"/>
+  <g transform="translate(97 149) scale(0.68)">
+    <path d="M40.8093 40.7002V64.3326H118.313L174.211 150H203.704L134.431 40.7002H40.8093Z" fill="#31D7FD"/>
+    <path d="M40.8093 82.3851V105.361H99.7942L128.258 150H159.122L115.226 82.3851H40.8093Z" fill="#31D7FD"/>
+    <path d="M40.8093 124.07V150H110.082L95.3361 124.07H40.8093Z" fill="#31D7FD"/>
+    <path d="M24.6914 124.07V150H0V124.07H24.6914Z" fill="#9FEEFD"/>
+    <path d="M24.6914 82.3851V105.361H0V82.3851H24.6914Z" fill="#9FEEFD"/>
+    <path d="M24.6914 40.7002V64.3326H0V40.7002H24.6914Z" fill="#9FEEFD"/>
+    <path d="M67.5583 25.93L82.9904 0H159.122L250 150H217.078L139.575 25.93H67.5583Z" fill="#FFFFFF"/>
+  </g>
+
+  <text x="348" y="196" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="86" font-weight="700" letter-spacing="-2.2" fill="#070707">AquaQoS</text>
+  <text x="350" y="242" font-family="'Helvetica Neue', Helvetica, Arial, sans-serif" font-size="26" fill="#070707">Shared liquidity, scheduled.</text>
+  <text x="351" y="286" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" letter-spacing="2.8" fill="#5C5C5C">GUARANTEED LIQUIDITY &#183; BURSTABLE CAPITAL</text>
+
+  <!-- Capacity units: filled square = guaranteed, open square = burstable -->
+  <text x="812" y="112" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="2.4" fill="#5C5C5C">ONE SHARED INVENTORY</text>
+  <rect x="812" y="124" width="271" height="2" fill="#070707"/>
+
+  <g stroke="#070707" stroke-width="1.5">
+    <rect x="812.75" y="148.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="847.75" y="148.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="882.75" y="148.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="917.75" y="148.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="952.75" y="148.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="987.75" y="148.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="1022.75" y="148.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="1057.75" y="148.75" width="24.5" height="24.5" fill="none"/>
+
+    <rect x="812.75" y="192.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="847.75" y="192.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="882.75" y="192.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="917.75" y="192.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="952.75" y="192.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="987.75" y="192.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="1022.75" y="192.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="1057.75" y="192.75" width="24.5" height="24.5" fill="none"/>
+
+    <rect x="812.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="847.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="882.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="917.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="952.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="987.75" y="236.75" width="24.5" height="24.5" fill="#31D7FD"/>
+    <rect x="1022.75" y="236.75" width="24.5" height="24.5" fill="none"/>
+    <rect x="1057.75" y="236.75" width="24.5" height="24.5" fill="none"/>
+  </g>
+
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" letter-spacing="1.4" fill="#5C5C5C">
+    <rect x="812.75" y="282.75" width="13.5" height="13.5" fill="#31D7FD" stroke="#070707" stroke-width="1.5"/>
+    <text x="836" y="294">GUARANTEED</text>
+    <rect x="948.75" y="282.75" width="13.5" height="13.5" fill="none" stroke="#070707" stroke-width="1.5"/>
+    <text x="972" y="294">BURSTABLE</text>
+  </g>
+</svg>

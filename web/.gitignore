@@ -1,3 +1,5 @@
 /public/evidence/
 *.tsbuildinfo
 next-env.d.ts
+# fumadocs-mdx build cache
+.source/

@@ -1,0 +1,213 @@
+/* Same order as globals.css, in case this chunk loads first. */
+@layer theme, base, components, utilities;
+
+/* Live local execution on the shared product tokens (docs/DECISIONS.md D025). Markup and
+   class hooks are unchanged; web/scripts/check-live-browser.js relies on them. */
+@layer components {
+  .live-page .live-notice {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    margin-bottom: 14px;
+    padding: 18px 22px;
+    background: var(--color-ink);
+    color: var(--color-cream);
+  }
+  .live-page .live-notice p {
+    margin: 6px 0 0;
+    color: var(--color-on-ink-soft);
+    font-size: 12px;
+  }
+  .live-page .live-notice .button {
+    border-color: var(--color-cream);
+    background: var(--color-cream);
+    color: var(--color-ink);
+  }
+  .live-page .live-notice .button:hover:not(:disabled) {
+    border-color: var(--color-aq-sky);
+    background: var(--color-aq-sky);
+    color: var(--color-ink);
+  }
+  .live-page .live-notice :focus-visible {
+    outline-color: var(--color-aq-sky);
+  }
+  .live-page .page-heading .button {
+    max-width: 100%;
+    text-align: center;
+    white-space: normal;
+  }
+  .live-section,
+  .live-instructions {
+    margin: 24px 0;
+    padding: 24px;
+  }
+  .live-section > .panel-heading {
+    margin: -24px -24px 20px;
+    padding: 14px 24px;
+  }
+  .live-instructions h2 {
+    margin-bottom: 14px;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+  .live-form {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 16px;
+    margin: 18px 0;
+  }
+  .live-form label {
+    display: grid;
+    flex: 1 1 180px;
+    gap: 8px;
+    color: var(--color-ink-soft);
+    font-size: 10px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .live-form input,
+  .live-form select {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 2px solid var(--color-ink);
+    background-color: var(--color-cream);
+    color: var(--color-ink);
+    font: inherit;
+    font-size: 14px;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+  .live-form select {
+    padding-right: 34px;
+  }
+  .live-form input:focus-visible,
+  .live-form select:focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 2px;
+  }
+  .live-form button {
+    min-height: 48px;
+  }
+  .live-token {
+    padding: 22px;
+  }
+  .live-token > .eyebrow {
+    color: var(--color-ink);
+  }
+  .live-token .meter-legend {
+    margin: 18px 0;
+  }
+  .live-token .strategy-list {
+    margin-bottom: 18px;
+  }
+  .live-quote {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px 20px;
+    border: 2px solid var(--color-ink);
+    background: var(--color-aq-sky);
+    color: var(--color-ink);
+  }
+  .live-quote p {
+    max-width: 620px;
+    margin: 6px 0 0;
+    color: var(--color-ink-soft);
+    font-size: 12px;
+  }
+  .live-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  .live-exit {
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 2px solid var(--color-ink);
+  }
+  .live-exit > summary {
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .live-exit p {
+    margin-top: 12px;
+    font-size: 13px;
+    line-height: 1.7;
+  }
+  .live-receipt {
+    padding: 16px 0;
+    border-top: 1px solid var(--color-rule);
+  }
+  .live-receipt summary {
+    font-weight: 700;
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+  }
+  .live-receipt .table-scroll {
+    margin: 16px 0;
+  }
+  .live-receipt table {
+    min-width: 570px;
+  }
+  .live-error {
+    padding: 16px 20px;
+    border-color: var(--color-bad);
+    color: var(--color-bad);
+    line-height: 1.6;
+  }
+  .live-instructions pre {
+    line-height: 1.8;
+  }
+  .live-instructions p {
+    line-height: 1.7;
+  }
+  .live-page > details.live-section > summary {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  @media (max-width: 700px) {
+    .live-page .page-heading {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 18px;
+    }
+    .live-page .live-notice,
+    .live-quote {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .live-section,
+    .live-token,
+    .live-instructions {
+      padding: 18px;
+    }
+    .live-section > .panel-heading {
+      margin: -18px -18px 16px;
+      padding: 14px 18px;
+    }
+    .live-form {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .live-form label {
+      flex-basis: auto;
+    }
+    .live-page .section-head {
+      align-items: start;
+      gap: 14px;
+    }
+    .live-page .section-head h2 {
+      font-size: 19px;
+    }
+    .live-actions .button {
+      flex: 1 1 130px;
+    }
+  }
+}

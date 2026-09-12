@@ -1,8 +1,8 @@
 # AquaQoS handoff
 
-Updated 2026-09-12. Current phase: integrated five-route Next.js product refactor. The
-public-repository cleanup and fresh-clone release rehearsal are complete. Submission packaging
-remains deferred until the product is fully polished and independently reviewed.
+Updated 2026-09-12. Current phase: final integration of the polished five-route Next.js and
+Fumadocs product surface. Submission packaging remains deferred until the owner accepts the
+product and the release gates are repeated from the committed source.
 
 ## Verified state
 
@@ -39,10 +39,12 @@ remains deferred until the product is fully polished and independently reviewed.
 - The landing, `/workspace/`, `/live/`, `/proof/`, and curated `/docs/` routes are implemented.
   The supplied logo remains byte-identical, and the public pages distinguish recorded, live-local,
   and Sepolia evidence.
-- The integrated browser checks pass 72 comparison selections, all proof/docs evidence links,
-  malformed-evidence recovery, real local fills/rejections/replenishment/exit, and
-  1440/390/320px layouts without console or HTTP errors. Production dependencies report no known
-  vulnerabilities. A separate frontend evidence-path/accessibility review is still required.
+- The integrated browser checks pass 72 comparison selections, all eight proof records, static
+  Fumadocs search/navigation, malformed-evidence recovery, real local fills/rejections/
+  replenishment/exit, and 1440/390/320px layouts without console or HTTP errors. Production
+  dependencies report no known vulnerabilities. The root review found no demonstrated release
+  blocker; two separate reviewer attempts produced no report because their services were
+  unavailable, so no independent frontend approval is claimed.
 
 ## Supported claim and limits
 
@@ -59,15 +61,17 @@ gas measurements are scenario bounds; broader prior art and external audit remai
 
 - No protocol implementation blocker.
 - Rotate the previously exposed Context7 credential; no secret value is needed in this repo.
+- Confirm the permitted visual-reference boundary recorded in `THIRD_PARTY.md` before public
+  product release; no reference files are committed or deployed.
 - Repository visibility, GitHub security settings, release publication, wallet custody, video,
   and ETHGlobal dashboard actions require the owner. See
   [manual actions](archive/ethonline-2026/MANUAL_ACTIONS.md).
 
 ## Next three tasks
 
-1. Run a separate frontend evidence-path/accessibility review and resolve its findings.
-2. Re-run protocol, evidence, benchmark, web, link, secret, and fresh-checkout release gates.
-3. Prepare the owner-approved public `v0.1.0` prerelease only after product polish is accepted.
+1. Commit this integration and repeat the frozen-install/build/evidence gates from a fresh worktree.
+2. Obtain owner visual acceptance and, when reviewer capacity is available, an independent UI pass.
+3. Prepare the owner-approved public `v0.1.0` prerelease only after those gates are accepted.
 
 Historical milestone detail is retained in
 [STATUS_HISTORY.md](archive/development/STATUS_HISTORY.md).

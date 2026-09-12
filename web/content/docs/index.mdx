@@ -1,0 +1,74 @@
+---
+title: Introduction
+description: What AquaQoS is, the vocabulary used throughout these docs and how to read its evidence.
+---
+
+AquaQoS is an experimental capacity scheduler for makers who run several strategies on
+[1inch Aqua](https://1inch.com/aqua). It protects configured capacity for every registered
+strategy and lets unused shared inventory burst to whichever strategy is filling. It adds
+one custom SwapVM instruction, `CAPACITY_GUARD`, and a restricted maker vault. Official Aqua
+still performs every virtual-balance update and every ERC-20 transfer.
+
+<ScheduleFlow />
+
+## Read evidence by its label [#truth-labels]
+
+Every number in these docs comes from one of four environments. They are never
+interchangeable: a local receipt is not a public transaction, and a planned item is not evidence.
+
+| Label | Meaning |
+| --- | --- |
+| <Truth kind="recorded" /> | Retained local transaction evidence from the benchmark report |
+| <Truth kind="live" /> | A fresh isolated local EVM session with mock tokens |
+| <Truth kind="testnet" /> | A deployed environment with chain, block and address evidence |
+| <Truth kind="planned" /> | Not implemented and not evidence |
+
+<Callout type="warn" title="Supported domain">
+  One immutable token pair, up to eight fee-free XYC strategies, standard honest ERC-20
+  tokens and pinned Aqua/SwapVM code. AquaQoS does not claim general solvency,
+  profitability, hostile-token coverage or an external audit.
+</Callout>
+
+## Vocabulary [#vocabulary]
+
+| Term | Meaning |
+| --- | --- |
+| Strategy | One Aqua order: maker, app, program bytes and token pair. Its identity is the Aqua order hash. |
+| Virtual balance `v` | Aqua's per-strategy, per-token ledger. It prices quotes; it is not owned capital. |
+| Real inventory `I` | What the vault can actually transfer: `min(balanceOf(vault), allowance(vault, Aqua))`. |
+| Guarantee `g` | The configured maximum entitlement a strategy keeps protected, in raw token units. |
+| Baseline `b` | The surplus recorded at activation, `v - g`. Entitlement is measured above it. |
+| Remaining entitlement | `min(g, max(v - b - r, 0))`: the part of `g` the strategy has not consumed. |
+| Reservation `r` | A transient debit held for an in-progress fill and cleared at transaction end. |
+| Debit `d` | The final maker output of the current fill: `amountOut` in the fee-free v0 program. |
+| Burst | Inventory above every remaining entitlement, usable by whichever strategy fills. |
+| Group | One vault, one router and one sorted token pair, with at most eight strategies. |
+| `CAPACITY_GUARD` | SwapVM opcode `0x05`. It runs the program, then checks and reserves the debit. |
+
+## Where to go next [#next]
+
+<Cards>
+  <Card title="The shared-inventory problem" href="/docs/problem/">
+    Why independent virtual ledgers can outrun one real balance.
+  </Card>
+  <Card title="Capacity model" href="/docs/capacity/">
+    The admission invariant, consumption, replenishment and burst.
+  </Card>
+  <Card title="Security model" href="/docs/security/">
+    Trust assumptions, enforced boundaries and accepted limits.
+  </Card>
+  <Card title="Reproduce" href="/docs/reproduce/">
+    The commands behind every number on this site.
+  </Card>
+</Cards>
+
+## Verify [#verify]
+
+<Verify
+  items={[
+    { label: "Project README", path: "README.md" },
+    { label: "Current status and handoff", path: "docs/STATUS.md" },
+    { label: "CAPACITY_GUARD specification", path: "docs/CAPACITY_GUARD_SPEC.md" },
+    { label: "1inch Aqua", href: "https://1inch.com/aqua" },
+  ]}
+/>

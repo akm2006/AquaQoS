@@ -1,5 +1,13 @@
 # AI and work provenance
 
+2026-09-12 product polish integration: Anik (`ansu555`) supplied the Fumadocs, visual-surface,
+README and SVG work in refactor commits `d9bb690` through `0c3c126`. Codex selectively ported
+that work onto the newer protocol-evidence state, retained Sepolia and threat-model evidence,
+restored all eight proof records, made static docs search/navigation compatible with the local
+export server, and removed motion that hid off-screen content. Codex then ran the protocol,
+evidence, production-build and browser gates. No additional human review or test execution is
+inferred from the integration.
+
 2026-09-11: owner requested final checks before fork evidence, with testnet afterward
 if practical. Codex authored release/trace and upstream-authentication scripts, ran
 clean-checkout checks and documented source drift. Receipts/traces are EVM-generated.
