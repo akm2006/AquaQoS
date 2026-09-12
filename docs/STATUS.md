@@ -50,6 +50,12 @@ deferred until the owner accepts the product.
   The app footer now carries the full Aqua and SwapVM attribution notices.
 - Verification after the footer change: `pnpm --dir web typecheck` and the Vercel-mode static
   build passed (22 pages). The build retains the known non-blocking Geist Pixel fallback warning.
+- Final release recheck passed compilation, 30 Solidity tests, model, transaction replay,
+  benchmark, rejection replay, local/fork evidence, bootstrap and Sepolia evidence checks.
+  The Sepolia checker now falls back to a second public endpoint when the historical default
+  RPC omits retained receipts.
+- Vercel is linked to `github / akm2006 / AquaQoS` with `main` as its production branch.
+  The next push is the first post-link automatic-deployment test.
 
 ## Supported claim and limits
 

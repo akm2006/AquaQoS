@@ -21,7 +21,24 @@ assert.deepEqual(report.actions.map(a => Number(a.receipt.status)), [0, 1, 0, 1,
 assert.equal(report.verification?.length, 4);
 for (const value of report.verification)
   assert.ok(value.status === 'already_verified' || value.status === 'match' || value.status === 'exact_match');
-const provider = new JsonRpcProvider(process.env.SEPOLIA_RPC_URL ?? config.rpcUrl, config.chainId, { staticNetwork: true });
+const rpcUrls = process.env.SEPOLIA_RPC_URL
+  ? [process.env.SEPOLIA_RPC_URL, config.rpcUrl, 'https://sepolia.gateway.tenderly.co']
+  : [config.rpcUrl, 'https://sepolia.gateway.tenderly.co'];
+let provider;
+for (const rpcUrl of [...new Set(rpcUrls)]) {
+  const candidate = new JsonRpcProvider(rpcUrl, config.chainId, { staticNetwork: true });
+  try {
+    assert.equal((await candidate.getNetwork()).chainId, BigInt(config.chainId));
+    if (await candidate.getTransactionReceipt(report.deployments[0].transactionHash)) {
+      provider = candidate;
+      break;
+    }
+  } catch {
+    // Try the next public endpoint. Historical receipt retention varies by provider.
+  }
+  candidate.destroy();
+}
+assert.ok(provider, 'No configured Sepolia RPC returned the deployment receipt; set SEPOLIA_RPC_URL to an archival endpoint.');
 assert.equal((await provider.getNetwork()).chainId, BigInt(config.chainId));
 assert.equal(keccak256(await provider.getCode(config.aqua.address)), config.aqua.runtimeHash);
 for (const deployed of report.deployments) {
