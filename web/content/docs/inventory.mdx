@@ -52,7 +52,8 @@ backing Aqua is no longer allowed to pull.
 
 AquaQoS therefore treats the allowance as part of capacity and keeps a full guarantee
 allowance floor on every guarded output. The [capacity model](/docs/capacity/#allowance-floor)
-gives the exact rule. It was added after an internal review finding (M1), recorded as decision D008.
+gives the exact rule. This floor addresses an issue found during internal review: `Aqua.push`
+can restore virtual entitlement without restoring the token allowance needed to settle it.
 
 ## Verify [#verify]
 
@@ -64,6 +65,6 @@ gives the exact rule. It was added after an internal review finding (M1), record
     },
     { label: "Source-level protocol baseline", path: "docs/PROTOCOL_BASELINE.md" },
     { label: "Vault inventory()", path: "contracts/AquaQoSVault.sol#L191-L196" },
-    { label: "D008: preserve allowance for replenishment", path: "docs/DECISIONS.md" },
+    { label: "Allowance-floor design rationale", path: "docs/DECISIONS.md" },
   ]}
 />

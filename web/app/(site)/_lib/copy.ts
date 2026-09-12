@@ -21,8 +21,13 @@ export const environments = {
     label: "Live local",
     detail: "A fresh isolated local EVM session with mock tokens",
   },
+  fork: {
+    label: "Local fork",
+    detail:
+      "A local EVM using copied Ethereum state; transactions are not on Ethereum",
+  },
   testnet: {
-    label: "Fork/testnet",
+    label: "Public testnet",
     detail: "A deployed environment with chain, block and address evidence",
   },
   planned: {

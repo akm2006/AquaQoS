@@ -1,6 +1,6 @@
 ---
 title: Security model
-description: What AquaQoS trusts, which paths it enforces, what internal review found, and what remains open.
+description: What AquaQoS trusts, which paths it enforces, what project reviews covered, and what remains open.
 ---
 
 <Callout type="error" title="Internal review only">
@@ -33,19 +33,19 @@ description: What AquaQoS trusts, which paths it enforces, what internal review 
 | Allowance | The full guarantee allowance floor is preserved on every output |
 | Vault surface | No generic call, delegatecall, arbitrary approval or upgrade entrypoint |
 
-## Resolved finding M1 [#m1]
+## Allowance-floor correction [#allowance-floor]
 
 The first output policy checked transferable inventory against remaining entitlements only.
 Because standard tokens can decrement even a maximum approval, and `Aqua.push` is
 permissionless, enough trading could leave restored entitlement without transferable backing.
-The fix, decision D008, requires `allowance >= sum(g) + sum(r) + d` on every output. A
-follow-up reviewer confirmed M1 closed under the supported token and dependency assumptions.
+The implemented rule requires `allowance >= sum(g) + sum(r) + d` on every output. A follow-up
+review confirmed the correction within the supported token and dependency assumptions.
 
 ## Review record [#reviews]
 
 | Date | Scope | Result |
 | --- | --- | --- |
-| 2026-09-06 | v0 router, vault and canonical programs | M1 found and closed; prototype limits accepted |
+| 2026-09-06 | Router, vault and canonical programs | Allowance accounting issue identified and corrected; prototype limits accepted |
 | 2026-09-08 | Independent review of callback and conservatism tests | No production or blocking test defect |
 | 2026-09-09 | Release review of authorization, programs, floors and exits | No new blocker in the v0 domain |
 | 2026-09-10 | Independent internal source review | No release-blocking defect in the v0 domain |

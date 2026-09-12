@@ -10,6 +10,7 @@ const badges: Record<StatusKind, { icon: string; label: string }> = {
   rejected: { icon: "×", label: "Rejected" },
   recorded: { icon: "■", label: environments.recorded.label },
   live: { icon: "●", label: environments.live.label },
+  fork: { icon: "◇", label: environments.fork.label },
   testnet: { icon: "◆", label: environments.testnet.label },
   planned: { icon: "○", label: environments.planned.label },
 };

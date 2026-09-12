@@ -83,7 +83,7 @@ export default function Proof() {
         <div className="split-frame">
           <div className="split-body">
             <div className="frame-head">
-              <span>DOMAIN.md</span>
+              <span>SUPPORTED DOMAIN</span>
               <span>one token pair</span>
             </div>
             <div className="split-copy">
@@ -103,7 +103,7 @@ export default function Proof() {
           </div>
           <div className="split-body proof-domain-body">
             <div className="frame-head">
-              <span>SCOPE.md</span>
+              <span>EVIDENCE SCOPE</span>
               <span>{num(sepolia.transactions)} public txs</span>
             </div>
             <div className="split-copy">

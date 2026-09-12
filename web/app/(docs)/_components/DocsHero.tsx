@@ -9,7 +9,7 @@ export function DocsHero() {
   return (
     <header className="doc-frame not-prose mb-10">
       <div className="doc-frame-head">
-        <span>docs/index</span>
+        <span>AQUAQOS / GUIDE</span>
         <span>v0 prototype</span>
       </div>
       <div className="grid gap-10 p-6 sm:p-8 lg:grid-cols-[1fr_auto]">
@@ -34,7 +34,7 @@ export function DocsHero() {
               Read the capacity model
             </Link>
             <Link href="/docs/reproduce/" className="doc-button">
-              Developer reproduction
+              Reproduce the evidence
             </Link>
             <a
               href={routes.proof}

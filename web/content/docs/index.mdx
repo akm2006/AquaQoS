@@ -20,6 +20,7 @@ interchangeable: a local receipt is not a public transaction, and a planned item
 | --- | --- |
 | <Truth kind="recorded" /> | Retained local transaction evidence from the benchmark report |
 | <Truth kind="live" /> | A fresh isolated local EVM session with mock tokens |
+| <Truth kind="fork" /> | A local EVM using copied Ethereum state; no transactions are sent to Ethereum |
 | <Truth kind="testnet" /> | A deployed environment with chain, block and address evidence |
 | <Truth kind="planned" /> | Not implemented and not evidence |
 
@@ -57,7 +58,7 @@ interchangeable: a local receipt is not a public transaction, and a planned item
   <Card title="Security model" href="/docs/security/">
     Trust assumptions, enforced boundaries and accepted limits.
   </Card>
-  <Card title="Developer reproduction" href="/docs/reproduce/">
+  <Card title="Reproduce the evidence" href="/docs/reproduce/">
     The commands behind every number on this site.
   </Card>
 </Cards>
@@ -67,7 +68,6 @@ interchangeable: a local receipt is not a public transaction, and a planned item
 <Verify
   items={[
     { label: "Project README", path: "README.md" },
-    { label: "Current status and handoff", path: "docs/STATUS.md" },
     { label: "CAPACITY_GUARD specification", path: "docs/CAPACITY_GUARD_SPEC.md" },
     { label: "1inch Aqua", href: "https://1inch.com/aqua" },
   ]}

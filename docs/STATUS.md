@@ -42,9 +42,10 @@ deferred until the owner accepts the product.
 - Public documentation now separates curated product evidence from a concise event-compliance
   archive. Required sanitized prompts remain retained; operational credential and tool-diagnostic
   details are not tracked in public documentation.
-- The local documentation cleanup now makes `/docs/` the public explanation layer and `/proof/`
-  the verification path. Raw Markdown is no longer exported by the app; repository links remain
-  the source-material surface. The refreshed app has not yet been pushed or deployed.
+- The public copy now distinguishes a local Ethereum fork from a public testnet, removes the
+  internal handoff link and decision IDs, and uses reader-facing labels. Raw Markdown is not
+  exported by the app; repository links remain the source-material surface. Vercel's CLI project
+  is linked locally, but the project has no Git repository link, so pushes do not auto-deploy yet.
 - The app and README use AquaQoS branding only; provider logos are omitted pending permission.
   The app footer now carries the full Aqua and SwapVM attribution notices.
 - Verification after the footer change: `pnpm --dir web typecheck` and the Vercel-mode static

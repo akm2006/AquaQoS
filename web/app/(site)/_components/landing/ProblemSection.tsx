@@ -62,7 +62,10 @@ export function ProblemSection() {
         <div className="split-frame">
           <VirtualVsReal />
           <div className="split-body">
-            <FrameHead label="PROBLEM.md" meta={`source ${recordedStep.strategies} strategies`} />
+            <FrameHead
+              label="THE PROBLEM"
+              meta={`${recordedStep.strategies}-strategy example`}
+            />
             <div className="split-copy">
               <h2 id="problem">
                 Virtual balances are independent.

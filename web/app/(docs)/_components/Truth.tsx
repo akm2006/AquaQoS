@@ -4,6 +4,7 @@ import { environments } from "../../(site)/_lib/copy";
 const labels = {
   recorded: environments.recorded.label,
   live: environments.live.label,
+  fork: environments.fork.label,
   testnet: environments.testnet.label,
   planned: environments.planned.label,
   pinned: "Source-pinned",

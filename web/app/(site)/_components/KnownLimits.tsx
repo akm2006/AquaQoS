@@ -10,7 +10,7 @@ export function KnownLimits() {
   return (
     <div className="frame">
       <div className="frame-head">
-        <span>KNOWN_LIMITS.md</span>
+        <span>KNOWN LIMITS</span>
         <span>{limitations.length} items</span>
       </div>
       <ol className="limits-list">
