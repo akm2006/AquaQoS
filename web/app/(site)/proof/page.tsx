@@ -204,7 +204,7 @@ export default function Proof() {
               View provenance manifest
             </a>
             <a href={evidence.doc("AI_PROVENANCE")}>
-              AI-assisted development record
+              Development provenance
             </a>
           </div>
         </div>

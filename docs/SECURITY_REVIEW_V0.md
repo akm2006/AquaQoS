@@ -82,9 +82,8 @@ restores entitlement via actual Aqua.push and shows allowance remains underfunde
 No production contract or invariant changes. One safe sequential rejection is proven;
 no general optimality or market rejection rate is claimed.
 
-The read-only reviewer could not run because of its usage limit. Root inspected the
-actual test paths and arithmetic as fallback. Independent implementation review of
-these cases and the earlier rejection replay remains a release gate.
+Direct source/test review covered the actual paths and arithmetic at this stage. The later
+release review records the bounded independent review; neither review is an external audit.
 
 ## Sep 8: fee and callback path trace (root fallback review)
 

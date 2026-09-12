@@ -48,7 +48,7 @@ certification.
 - [Execution plan](EXECUTION_PLAN.md)
 - [Primary research sources](RESEARCH_SOURCES.md)
 - [Third-party provenance](THIRD_PARTY.md)
-- [ETHOnline 2026 provenance and requirements](archive/ethonline-2026/)
+- [ETHOnline 2026 compliance archive](archive/ethonline-2026/README.md)
 
 Raw machine-readable benchmark and deployment evidence remains in `benchmarks/raw/` and
 `deployments/`; it is intentionally retained outside the narrative documentation tree.

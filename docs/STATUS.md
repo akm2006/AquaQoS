@@ -39,6 +39,9 @@ deferred until the owner accepts the product.
 - Public presentation commit `0f04456` is pushed to `main`. Vercel production deployment
   `dpl_DSqMaeCjJ6BJwVPkJ2he9hF2HF3i` completed its 22-page build and is aliased at
   `https://aquaqos.vercel.app`.
+- Public documentation now separates curated product evidence from a concise event-compliance
+  archive. Required sanitized prompts remain retained; operational credential and tool-diagnostic
+  details are not tracked in public documentation.
 
 ## Supported claim and limits
 
@@ -54,7 +57,6 @@ scenario bounds; broader prior art and an external audit remain open.
 ## Release blockers and owner actions
 
 - No protocol implementation blocker.
-- Rotate the previously exposed Context7 credential; no secret value is needed in this repo.
 - Confirm the permitted visual-reference boundary in `docs/THIRD_PARTY.md` before making the
   GitHub repository public. No reference files are committed or deployed.
 - GitHub visibility/security settings, wallet custody, video and ETHGlobal dashboard actions

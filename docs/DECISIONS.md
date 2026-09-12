@@ -39,17 +39,13 @@ specify protected-domain closure, guarantee consumption/replenishment and total 
 test nested sibling execution. If needed, retain a restricted maker Vault or narrow claims
 to a cooperative-maker policy with explicit external-spend exclusions. Record next ADR.
 
-## 2026-09-05 — D004: Small local control plane
+## 2026-09-05 — D004: Small repository-local contributor controls
 
-Decision: three short domain skills and three read-only reviewer roles; inherit active model,
-set high reasoning for protocol/security, medium for benchmark audit. Current bundled catalog
-includes Astra, Sol, Terra and Luna; no obsolete model fixed in project files. Local config
-limits spawned concurrency to two and depth to one. Root remains writer.
-Alternatives: duplicate global infrastructure skills, broad MCP bundle, many writers.
-Evidence: CLI 0.153.4 supports standalone `.codex/agents/*.toml` and project skill discovery;
-Context7/web/shell and existing browser/review skills cover present needs.
-Reason: domain review needs precise instructions, not more tooling. Consequences: no new MCPs;
-relaunch to activate capabilities, inspect loaded roles, fallback to global read-only auditor.
+Decision: retain concise repository-local instructions for protocol, validation, and submission
+work, plus read-only review roles. Alternatives: duplicate global tooling, add broad integrations,
+or use many overlapping writers. Reason: financial-code review needs precise constraints rather
+than more automation. Consequences: no runtime dependency or protocol behavior relies on these
+optional contributor tools.
 
 ## 2026-09-05 — D005: Local demo first; publication gated
 

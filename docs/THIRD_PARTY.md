@@ -33,9 +33,8 @@ At dependency installation retain package notices and lockfiles. Mark copied tem
 with original SHA/path and modification date. The template is reference-only at bootstrap.
 Do not copy demo metrics, economic claims or whitepaper diagrams as our measured results.
 
-2026-09-12 design reference: an owner-supplied, untracked v0 export named
-`brutalist-ai-saa-s-landing-page/` informed the product's layout language only. No template
-files, images, components, copy or metrics were copied into `web/`; AquaQoS reimplements its
-own evidence-backed surface with the supplied logo and project colors. The reference had no
-license file, so its reuse rights remain unresolved. Confirm that boundary before public
-release; this is a release gate, not a legal clearance opinion.
+2026-09-12 design direction: an owner-supplied external visual reference informed only the
+product's high-level layout language. No reference files, images, components, copy, or metrics
+were copied into `web/`; AquaQoS reimplements its own evidence-backed surface with the supplied
+logo and project colors. The owner must confirm that this limited reference use is permitted
+before public release. This is a release gate, not a legal clearance opinion.

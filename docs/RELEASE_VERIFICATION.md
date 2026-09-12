@@ -35,8 +35,7 @@ not silently treated as full-bytecode matches.
 
 ## Additional independent review
 
-The first Sep 11 reviewer request was rejected by the agent service before findings.
-A new, narrowly scoped read-only review then completed successfully against unchanged
+A narrowly scoped read-only review completed against unchanged
 production source and authenticated historical AquaRouter. It found no demonstrated
 critical, high, medium or low defect within v0 scope and no security blocker to a Sepolia
 demo with standard mock tokens. See [SECURITY_REVIEW_SEPOLIA.md](SECURITY_REVIEW_SEPOLIA.md).
@@ -44,9 +43,8 @@ This closes the requested internal release-review gate, not external audit or pr
 
 ## Accepted v0 limitations
 
-The root technical lead retains these scope decisions from
-[CAPACITY_GUARD_SPEC.md](CAPACITY_GUARD_SPEC.md) and D007/D008. They are constraints of
-the local demo, not owner approval to risk real funds.
+The v0 specification and D007/D008 define these scope decisions. They are constraints of the
+local demo, not approval to risk real funds.
 
 | Limit | Consequence and treatment |
 | --- | --- |

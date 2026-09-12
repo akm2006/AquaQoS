@@ -93,8 +93,7 @@ The required comparison contract is defined in [BENCHMARK_METHODOLOGY.md](BENCHM
   fixtures, displays checked local receipts and labels its non-live environment.
 - [x] Recorded workspace browser regression passes fill/rejection/push values, evidence
   links, failed-load retry and 1440/390/320px layouts. Static build and typecheck pass.
-- [ ] Independent review of the Next.js evidence-to-display path; the earlier reviewer reached
-  the usage limit without a completed report.
+- [ ] Independent review of the Next.js evidence-to-display path remains pending.
 - [x] Live local maker config, capacity explanation, competing fills and proof page use real
   contract state, receipts and token-transfer evidence.
 - [x] No invented addresses/metrics in the live flow; chain, mock tokens, local state, stale

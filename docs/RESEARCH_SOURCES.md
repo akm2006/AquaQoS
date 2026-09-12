@@ -9,7 +9,7 @@
   hashes/settings/differences are recorded in [FORK_PROOF.md](FORK_PROOF.md). No deployed
   source Git SHA is inferred from explorer metadata.
 - [Hardhat network manager](https://hardhat.org/docs/reference/network-manager) and
-  [fork guide](https://hardhat.org/docs/guides/forking), fetched through Context7:
+  [fork guide](https://hardhat.org/docs/guides/forking):
   `network.create` overrides and pinned-block local forking. Installed 3.8.0 types
   confirm exact interfaces; no plugin was required.
 
@@ -17,8 +17,8 @@
 
 - [Ethereum networks](https://ethereum.org/developers/docs/networks/): Sepolia is the
   application-development testnet; faucet ETH has no mainnet balance or value continuity.
-- [Ethers v6 deployment/provider documentation](https://docs.ethers.org/v6/), fetched via
-  Context7 `/websites/ethers_v6`: ContractFactory deployment requests, transaction broadcast
+- [Ethers v6 deployment/provider documentation](https://docs.ethers.org/v6/): ContractFactory
+  deployment requests, transaction broadcast
   and confirmation waits used by the repository script. Installed version remains 6.13.4.
 - [Sourcify API v2](https://sourcify.dev/server/api-docs/): standard JSON verification,
   creation transaction binding and asynchronous job result schema. Source submission publicly
@@ -50,9 +50,6 @@ it is not a claim that the proposed guard is correct.
 | S1 | [Aqua SDK](https://github.com/1inch/sdks/tree/cf377ec45b32fb5b5d141b9407f4635b9895f89d/typescript/aqua) | Package 0.3.1, viem dependency; AquaProtocolContract source encodes ship/dock and hashes strategy bytes; README/source comments contain older example links |
 | H1 | [Hardhat Node support](https://hardhat.org/docs/reference/nodejs-support) | Node >=22.13.0; installed 22.16.0 satisfies documented floor |
 | H2 | [Hardhat Solidity tests](https://hardhat.org/docs/reference/foundry-compatibility) | Foundry-style Solidity tests; local 3.8.0 execution still pending |
-| C1 | [Codex subagents](https://learn.chatgpt.com/docs/agent-configuration/subagents) | Standalone project TOML, required name/description/instructions; inherited models, read-only mode |
-| C2 | [Codex source via Context7](https://github.com/openai/codex/blob/main/codex-rs/ext/skills/src/host_roots.rs) | `.agents/skills` discovery; installed prompt loader validation supplements moving-source docs |
-| P1 | [Official Aqua workflows](https://github.com/1inch/1inch-ai/tree/e60a741a50c7f0b61881c7551b8caaf48a7e0b68/skills/1inch-aqua) | Existing maker/taker workflow tooling; no reason to install another integration/MCP now |
 | N1 | [Next.js App Router project structure](https://nextjs.org/docs/app/getting-started/project-structure) | 2026-09-10 check: shared layouts, route files, loading/error/not-found conventions, private folders and route groups |
 | N2 | [Next.js production checklist](https://nextjs.org/docs/app/guides/production-checklist) | 2026-09-10 check: Server/Client boundaries, metadata, fonts, accessibility, error states and static-build guidance |
 | M1 | [Motion for React accessibility](https://motion.dev/docs/react-accessibility) | 2026-09-10 check: client-only App Router usage, SVG animation and reduced-motion behavior; optional dependency only |
@@ -92,13 +89,13 @@ Supported claims: canonical wrapper dispatch through virtual _runOpcode; quote's
 static context; fee-free final amountOut debit; independent virtual markers;
 permissionless push; per-order lock plus callback timing. Native Simulator always
 reverts delegated effects; inherited rescue can transfer router-held balances only.
-Context7 `/1inch/aqua` documentation described docking as withdrawal; pinned source
+Available Aqua documentation described docking as withdrawal; pinned source
 sets virtual state/markers and makes no real-token transfer. Source takes precedence.
 
-2026-09-06 replay tooling: Context7 `/websites/hardhat` and installed Hardhat 3.8.0
+2026-09-06 replay tooling: official Hardhat documentation and installed Hardhat 3.8.0
 `dist/src/types/network.d.ts` confirm network.create (connect deprecated),
-provider.request, artifact/build-info APIs and npmFilesToBuild. Context7
-`/websites/ethers_v6` [ABI reference](https://docs.ethers.org/v6/api/abi/) supports
+provider.request, artifact/build-info APIs and npmFilesToBuild. The
+[ABI reference](https://docs.ethers.org/v6/api/abi/) supports
 Interface encoding/decoding; pinned ethers 6.13.4 was already installed transitively
 and is now a direct dependency. No new Hardhat plugin is needed. Pinned TakerTraits.sol
 build packs ten uint16 indexes and uint16 flags; script encodes only its empty-slice
@@ -127,8 +124,8 @@ This is pinned implementation verification, not a change to protocol dependencie
 ## 2026-09-09 Next.js frontend baseline
 
 - [Official App Router installation](https://nextjs.org/docs/app/getting-started/installation)
-  and [static export guide](https://nextjs.org/docs/app/guides/static-exports): checked via
-  Context7 `/vercel/next.js` and the installed version's `next/dist/docs/` Markdown.
+  and [static export guide](https://nextjs.org/docs/app/guides/static-exports): checked against
+  the installed version's `next/dist/docs/` Markdown.
   Supports App Router, TypeScript, client interactivity and `output: export`.
 - npm registry queries selected exact Next.js 16.3.4 and React/React DOM 19.2.8;
   TypeScript 5.9.3 is used as the conservative compiler version. `web/pnpm-lock.yaml`
